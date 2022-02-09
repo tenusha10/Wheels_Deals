@@ -1,6 +1,6 @@
-# icar
+# wheels_deals
 
-A new Flutter application.
+Buy and Sell cars online
 
 ## Getting Started
 
