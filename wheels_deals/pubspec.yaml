@@ -78,6 +78,9 @@ flutter:
     - family: Varela
       fonts:
         - asset: fonts/VarelaRound-Regular.ttf
+    - family: Gugi
+      fonts:
+        - asset: fonts/Gugi-Regular.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
