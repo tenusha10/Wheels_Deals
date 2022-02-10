@@ -25,7 +25,7 @@ class _loginScreenState extends State<loginScreen> {
                         tileMode: TileMode.clamp)),
               ),
               title: Text(
-                "Wheels and Deals",
+                "Wheels & Deals",
                 style: TextStyle(
                     fontSize: 25, color: Colors.white, fontFamily: "Gugi"),
               ),
