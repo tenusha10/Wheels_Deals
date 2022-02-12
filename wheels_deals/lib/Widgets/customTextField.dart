@@ -16,7 +16,7 @@ class CustomTextField extends StatelessWidget {
         _screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      width: _screenWidth * 0.5,
+      width: _screenWidth * 0.7,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -31,7 +31,7 @@ class CustomTextField extends StatelessWidget {
             border: InputBorder.none,
             prefixIcon: Icon(
               data,
-              color: Colors.cyan,
+              color: Colors.deepPurple,
             ),
             focusColor: Theme.of(context).primaryColor,
             hintText: hintText),
