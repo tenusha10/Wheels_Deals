@@ -10,6 +10,7 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     return Container();
 <<<<<<< HEAD
+<<<<<<< HEAD
   }
 
   void _register() async {
@@ -22,6 +23,8 @@ class _registerState extends State<register> {
         .then((auth) {
       currentUser = auth.user;
     });
+=======
+>>>>>>> parent of e9c0fd5 (12/2 Login designs and Initial firebase)
 =======
 >>>>>>> parent of e9c0fd5 (12/2 Login designs and Initial firebase)
   }
