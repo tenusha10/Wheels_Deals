@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class register extends StatefulWidget {
   @override
@@ -17,7 +15,6 @@ class _registerState extends State<register> {
       TextEditingController();
   final TextEditingController _phoneConfirmController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
