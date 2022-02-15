@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1049862105791",
+    "project_id": "wheelsdeals-b19a3",
+    "storage_bucket": "wheelsdeals-b19a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049862105791:android:ade9e2a633b38c7b2d340a",
+        "android_client_info": {
+          "package_name": "com.example.wheels_deals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049862105791-udlips59ehfa4i8sirdbs525dm8igie1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcynB3rMcPJ7uMpmGX9qzHioUtYcqO42U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049862105791-udlips59ehfa4i8sirdbs525dm8igie1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1049862105791-1kl0t6br5embt5q72tnmj2d1934geoav.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tenusha10.wheelsDeals"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
