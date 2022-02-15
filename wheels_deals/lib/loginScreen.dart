@@ -25,9 +25,9 @@ class _loginScreenState extends State<loginScreen> {
                         tileMode: TileMode.clamp)),
               ),
               title: Text(
-                "Wheels & Deals",
+                "Welcome to Wheels & Deals",
                 style: TextStyle(
-                    fontSize: 25, color: Colors.white, fontFamily: "Gugi"),
+                    fontSize: 20, color: Colors.white, fontFamily: "Gugi"),
               ),
               centerTitle: true,
               bottom: TabBar(
