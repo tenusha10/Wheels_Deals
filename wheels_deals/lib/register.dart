@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
+import 'package:wheels_deals/HomeScreen.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wheels_deals/globalVariables.dart';
 
 class register extends StatefulWidget {
   @override
@@ -15,6 +20,7 @@ class _registerState extends State<register> {
       TextEditingController();
   final TextEditingController _phoneConfirmController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +88,9 @@ class _registerState extends State<register> {
               height: MediaQuery.of(context).size.height * 0.05,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                onPressed: () {},
+                onPressed: () {
+                  _register();
+                },
                 child: Text(
                   'Sign Up',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -96,5 +104,45 @@ class _registerState extends State<register> {
         ),
       ),
     );
+  }
+
+  void saveUserData() {
+    Map<String, dynamic> userData = {
+      'userName': _nameController.text.trim(),
+      'uId': userId,
+      'userNumber': _phoneConfirmController.text.trim(),
+      'time': DateTime.now()
+    };
+
+    FirebaseFirestore.instance.collection('users').doc(userId).set(userData);
+  }
+
+  void _register() async {
+    User currentUser;
+    await _auth
+        .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _confirmPasswordController.text.trim())
+        .then((auth) {
+      currentUser = auth.user;
+      userId = currentUser.uid;
+      userEmail = currentUser.email;
+      getUserName = _nameController.text.trim();
+      saveUserData();
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (con) {
+            return ErrorAlertDialog(
+              message: error.message.toString(),
+            );
+          });
+    });
+
+    if (currentUser != null) {
+      Route newRoute = MaterialPageRoute(builder: (context) => HomeScreen());
+      Navigator.pushReplacement(context, newRoute);
+    }
   }
 }
