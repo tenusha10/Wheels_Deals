@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
+import 'package:wheels_deals/DialogBox/loadingDialog.dart';
+import 'package:wheels_deals/HomeScreen.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class login extends StatefulWidget {
   @override
@@ -11,6 +16,7 @@ class _loginState extends State<login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +65,20 @@ class _loginState extends State<login> {
               height: MediaQuery.of(context).size.height * 0.05,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                onPressed: () {},
+                onPressed: () {
+                  if (_emailController.text.isNotEmpty &&
+                      _passwordController.text.isNotEmpty) {
+                    _login();
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (con) {
+                          return ErrorAlertDialog(
+                            message: 'Email or Password cannot be empty!',
+                          );
+                        });
+                  }
+                },
                 child: Text(
                   'Sign-in',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -73,5 +92,42 @@ class _loginState extends State<login> {
         ),
       ),
     );
+  }
+
+  void _login() async {
+    showDialog(
+        context: context,
+        builder: (con) {
+          return loadingAlertDialog(
+            message: 'Please Wait!',
+          );
+        });
+    User currentUser;
+
+    await _auth
+        .signInWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    )
+        .then((auth) {
+      currentUser = auth.user;
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (con) {
+            return ErrorAlertDialog(
+              message: error.message.toString(),
+            );
+          });
+    });
+
+    if (currentUser != null) {
+      Navigator.pop(context);
+      Route newRoute = MaterialPageRoute(builder: (context) => HomeScreen());
+      Navigator.pushReplacement(context, newRoute);
+    } else {
+      print('Error Occured !');
+    }
   }
 }
