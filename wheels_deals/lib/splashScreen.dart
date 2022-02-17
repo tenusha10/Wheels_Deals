@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:wheels_deals/HomeScreen.dart';
 import 'package:wheels_deals/loginScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class splashScreen extends StatefulWidget {
   //const splashScreen({Key? key}) : super(key: key);
@@ -11,9 +12,14 @@ class splashScreen extends StatefulWidget {
 
 class _splashScreenState extends State<splashScreen> {
   startTimer() {
-    Timer(Duration(seconds: 4), () async {
-      Route newRoute = MaterialPageRoute(builder: (context) => loginScreen());
-      Navigator.pushReplacement(context, newRoute);
+    Timer(Duration(seconds: 3), () async {
+      if (FirebaseAuth.instance.currentUser != null) {
+        Route newRoute = MaterialPageRoute(builder: (context) => HomeScreen());
+        Navigator.pushReplacement(context, newRoute);
+      } else {
+        Route newRoute = MaterialPageRoute(builder: (context) => loginScreen());
+        Navigator.pushReplacement(context, newRoute);
+      }
     });
   }
 
