@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           title: 'Wheels and Deals',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            textTheme: GoogleFonts.patrickHandTextTheme(
+            textTheme: GoogleFonts.robotoCondensedTextTheme(
               Theme.of(context).textTheme,
             ),
             primarySwatch: Colors.purple,

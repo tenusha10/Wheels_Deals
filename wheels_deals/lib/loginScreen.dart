@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/login.dart';
 import 'package:wheels_deals/register.dart';
 
@@ -25,8 +26,8 @@ class _loginScreenState extends State<loginScreen> {
                         tileMode: TileMode.clamp)),
               ),
               title: Text(
-                "Welcome to Wheels & Deals",
-                style: TextStyle(
+                "Welcome",
+                style: GoogleFonts.patrickHand(
                   fontSize: 30,
                   color: Colors.white,
                 ),

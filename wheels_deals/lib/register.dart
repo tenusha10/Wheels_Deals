@@ -74,7 +74,7 @@ class _registerState extends State<register> {
                   CustomTextField(
                     data: Icons.lock,
                     controller: _confirmPasswordController,
-                    hintText: 're-enter Password',
+                    hintText: 'Re-enter Password',
                     isObsecure: true,
                   ),
                 ],
@@ -93,7 +93,7 @@ class _registerState extends State<register> {
                 },
                 child: Text(
                   'Sign Up',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
             ),
