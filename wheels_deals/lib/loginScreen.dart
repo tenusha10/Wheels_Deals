@@ -27,7 +27,9 @@ class _loginScreenState extends State<loginScreen> {
               title: Text(
                 "Welcome to Wheels & Deals",
                 style: TextStyle(
-                    fontSize: 20, color: Colors.white, fontFamily: "Gugi"),
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
               ),
               centerTitle: true,
               bottom: TabBar(
