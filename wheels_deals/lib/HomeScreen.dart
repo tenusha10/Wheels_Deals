@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:wheels_deals/authentication_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wheels_deals/login.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+          child: Column(
+        children: [
+          Text('Home'),
+          ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                return login();
+              },
+              child: Text('Sign out'))
+        ],
+      )),
+    );
   }
 }
