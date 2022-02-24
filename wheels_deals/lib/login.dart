@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
 import 'package:wheels_deals/DialogBox/loadingDialog.dart';
-import 'package:wheels_deals/HomeScreen.dart';
+import 'package:wheels_deals/Screens/HomeScreen.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

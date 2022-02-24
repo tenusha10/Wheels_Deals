@@ -3,7 +3,7 @@ import 'package:wheels_deals/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wheels_deals/login.dart';
 
-class HomeScreen extends StatelessWidget {
+class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
