@@ -1,6 +1,6 @@
 class DVLACar {
   final String registrationNumber;
-  final int co2Emissions;
+  final int co2Emissions, revenueWeight, yearOfManufacture;
   final int engineCapacity;
   final String euroStatus;
   final bool markedForExport;
@@ -12,10 +12,8 @@ class DVLACar {
       monthOfFirstRegistration,
       colour,
       artEndDate,
-      revenueWeight,
       typeApproval,
       wheeelplan,
-      yearOfManufacture,
       realDrivingEmissions,
       dateOfLastV5CIssued;
 

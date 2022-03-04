@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wheels_deals/car_methods.dart';
+import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
 
 class sellCars extends StatefulWidget {
   sellCars({Key key}) : super(key: key);
@@ -33,7 +34,9 @@ class _sellCarsState extends State<sellCars> {
   TextEditingController _makeController = TextEditingController();
   DVLACar fetchedCar = new DVLACar();
 
-  Future<bool> showDialogEditAdd() async {
+  Future<bool> showDialogEditAdd(regPlate) async {
+    var car = await getcarsdvla(regPlate);
+    print(car.make);
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -93,31 +96,6 @@ class _sellCarsState extends State<sellCars> {
         });
   }
 
-  /*Future<void> getcarsdvla(reg) async {
-    var data = {"registrationNumber": "$reg"};
-    Map<String, dynamic> carMap;
-    // DVLACar car;
-    final response = await http.post(
-        Uri.parse(
-            'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles'),
-        headers: {
-          'x-api-key': 'q7eOaPr0A65sIpmBT3DJA6gW9oSW9EvaPZAO1gQ1',
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode(data));
-
-    if (response.statusCode == 200) {
-      //car = DVLACar.fromJson(jsonDecode(response.body));
-      carMap = jsonDecode(response.body);
-      registrationNumber = carMap['registrationNumber'];
-      engineCapacity = carMap['engineCapacity'];
-      fuelType = carMap['fuelType'];
-      make = carMap['make'];
-    } else {
-      throw Exception('Failed to retrive Car');
-    }
-  } */
-
   Future<DVLACar> getcarsdvla(reg) async {
     var data = {"registrationNumber": "$reg"};
     final response = await http.post(
@@ -132,7 +110,24 @@ class _sellCarsState extends State<sellCars> {
     if (response.statusCode == 200) {
       return DVLACar.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to retrive Car');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Unable to Find your Car !"),
+              content: Text('Invalid vehicle registration number'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          });
     }
   }
 
@@ -142,7 +137,7 @@ class _sellCarsState extends State<sellCars> {
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 20,
+            height: 30,
           ),
           Text(
             'Post an Advert',
@@ -160,7 +155,7 @@ class _sellCarsState extends State<sellCars> {
             style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
           ),
           SizedBox(
-            height: 20,
+            height: 50,
           ),
           Form(
               key: _formKeySell,
@@ -174,6 +169,12 @@ class _sellCarsState extends State<sellCars> {
                       _reg = value.toUpperCase().trim();
                     },
                     style: TextStyle(fontSize: 20),
+                    validator: (value) {
+                      if (value == null || value.isEmpty || value.length > 7) {
+                        return 'Please enter a valid Registration Number';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     decoration:
@@ -181,7 +182,14 @@ class _sellCarsState extends State<sellCars> {
                     onChanged: (String value) {
                       _mileage = value.trim();
                     },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the current Mileage';
+                      }
+                      return null;
+                    },
                     style: TextStyle(fontSize: 20),
+                    keyboardType: TextInputType.number,
                   ),
                   SizedBox(
                     height: 60,
@@ -193,13 +201,9 @@ class _sellCarsState extends State<sellCars> {
                       style:
                           ElevatedButton.styleFrom(primary: Colors.deepPurple),
                       onPressed: () {
-                        if (_reg != '' && _mileage != '') {
-                          getcarsdvla(_reg).then((value) {
-                            setState(() {
-                              fetchedCar = value;
-                            });
-                          });
-                        } else {}
+                        if (_formKeySell.currentState.validate()) {
+                          showDialogEditAdd(_reg);
+                        }
                       },
                       child: Text(
                         'Find Car',
