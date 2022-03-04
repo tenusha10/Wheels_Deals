@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/AccountPage.dart';
+import 'package:wheels_deals/Screens/Sell_cars.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -24,9 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Center(
       child: Text('Search'),
     ),
-    Center(
-      child: Text('Sell'),
-    ),
+    sellCars(),
     Center(
       child: Text('Saved'),
     ),
@@ -60,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.home_filled,
+                Icons.home,
               ),
               label: 'Home',
               backgroundColor: Colors.deepPurple),
@@ -72,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Colors.orangeAccent),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.sell,
+                Icons.car_rental,
               ),
               label: 'Sell',
               backgroundColor: Colors.green),
