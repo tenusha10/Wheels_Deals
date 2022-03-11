@@ -49,10 +49,10 @@ class _sellCarsState extends State<sellCars> {
       NoofDoors = 'Number of Doors',
       Description;
   QuerySnapshot cars;
-  File _image;
+  //File _image;
   ImagePicker picker = ImagePicker();
   // String imageUrl = '';
-  File image, image2;
+  File image1, image2, image3, image4, image5, image6, nullimage;
   //carMethods carObj = new carMethods();
   //DVLACar fetchedCar = new DVLACar();
 
@@ -626,7 +626,7 @@ class _sellCarsState extends State<sellCars> {
     }
   }
 
-  Future pickImage(ImageSource source) async {
+  /*Future pickImage(ImageSource source) async {
     try {
       XFile image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
@@ -638,12 +638,12 @@ class _sellCarsState extends State<sellCars> {
     } on PlatformException catch (e) {
       print('Failed to pick Image: $e');
     }
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: <Widget>[
           SizedBox(
             height: 10,
@@ -690,53 +690,134 @@ class _sellCarsState extends State<sellCars> {
                   ),
                 ],
               )),
-          /*ElevatedButton(
-              onPressed: () {
-                pickImage(ImageSource.gallery);
-              },
-              child: Text('Take photo')), //Image.file(_image), */
-          /*Row(
-            children: _image == null
-                ? [Text('Image is not loaded ')]
-                : [
-                    Image.file(
-                      _image,
-                      height: 200,
-                      width: 400,
-                    )
-                  ],
+          SizedBox(
+            height: 5,
           ),
-           */
-          Row(
-            children: [
-              UserImage(
-                onFileChanged: ((image) {
-                  setState(() {
-                    this.image = image;
-                  });
-                }),
-              ),
-              UserImage(
-                onFileChanged: ((image2) {
-                  setState(() {
-                    this.image2 = image2;
-                  });
-                }),
-              )
-            ],
+          Text(
+            'Please upload 6 photos of your vechicle',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
           ),
           SizedBox(
-            height: 50,
+            height: 5,
+          ),
+          Container(
+            width: 330,
+            height: 450,
+            //color: Colors.purpleAccent,
+            //padding: EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      UserImage(
+                        onFileChanged: ((image1) {
+                          setState(() {
+                            this.image1 = image1;
+                          });
+                        }),
+                      ),
+                      SizedBox(
+                        width: 100,
+                      ),
+                      UserImage(
+                        onFileChanged: ((image2) {
+                          setState(() {
+                            this.image2 = image2;
+                          });
+                        }),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      UserImage(
+                        onFileChanged: ((image3) {
+                          setState(() {
+                            this.image3 = image3;
+                          });
+                        }),
+                      ),
+                      SizedBox(
+                        width: 100,
+                      ),
+                      UserImage(
+                        onFileChanged: ((image4) {
+                          setState(() {
+                            this.image4 = image4;
+                          });
+                        }),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      UserImage(
+                        onFileChanged: ((image5) {
+                          setState(() {
+                            this.image5 = image5;
+                          });
+                        }),
+                      ),
+                      SizedBox(
+                        width: 100,
+                      ),
+                      UserImage(
+                        onFileChanged: ((image6) {
+                          setState(() {
+                            this.image6 = image6;
+                          });
+                        }),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 30,
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.4,
             height: MediaQuery.of(context).size.height * 0.04,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
+              style: ElevatedButton.styleFrom(primary: Colors.green),
               onPressed: () {
                 if (_formKeySell.currentState.validate()) {
-                  //showDialogEditAdd(_reg);
-                  showView(_reg);
+                  if (image1 == nullimage ||
+                      image2 == nullimage ||
+                      image3 == nullimage ||
+                      image4 == nullimage ||
+                      image5 == nullimage ||
+                      image6 == nullimage) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Missing Images"),
+                            content: Text('Please, Upload 6 images'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'OK'),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    showView(_reg);
+                  }
                 }
               },
               child: Text(

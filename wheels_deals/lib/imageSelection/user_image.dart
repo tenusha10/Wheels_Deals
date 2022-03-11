@@ -26,8 +26,8 @@ class _UerImageState extends State<UserImage> {
         if (image == null)
           Icon(
             Icons.image,
-            size: 60,
-            color: Colors.deepPurple,
+            size: 100,
+            color: Colors.teal,
           )
         else if (image != null)
           InkWell(
@@ -37,7 +37,7 @@ class _UerImageState extends State<UserImage> {
               child: Image.file(
                 image,
                 width: 100,
-                height: 100,
+                height: 150,
               )),
         InkWell(
           onTap: () => _selectedPhoto(),
@@ -64,7 +64,7 @@ class _UerImageState extends State<UserImage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.camera),
+                    leading: Icon(Icons.camera_alt_rounded),
                     title: Text('Camera'),
                     onTap: () {
                       Navigator.of(context).pop();
