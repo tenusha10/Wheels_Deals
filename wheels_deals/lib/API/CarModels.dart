@@ -20,6 +20,7 @@ class carModels {
     return BodyTypes;
   }
 
+//need to make all model names uppercase
   List<String> getModels(String make) {
     List<String> ModelList = <String>[];
     if (make.contains('MERCEDES-BENZ')) {
@@ -222,7 +223,16 @@ class carModels {
     } else if (make.contains('Fiat')) {
     } else if (make.contains('Ferrari')) {
     } else if (make.contains('Dacia')) {
-    } else if (make.contains('Citroen')) {
+    } else if (make.contains('CITROEN')) {
+      ModelList = [
+        'Model',
+        'C1',
+        'C3',
+        'C4',
+        'C5',
+        'DS3',
+        'DS7',
+      ];
     } else if (make.contains('Chevrolet')) {
     } else if (make.contains('Chrysler')) {
     } else if (make.contains('Bentley')) {

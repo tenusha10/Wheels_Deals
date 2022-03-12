@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wheels_deals/API/CarModels.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
+import 'package:wheels_deals/API/firebase_api.dart';
+import 'package:wheels_deals/Screens/HomeScreen.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,8 +15,10 @@ import 'package:wheels_deals/car_methods.dart';
 import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:wheels_deals/globalVariables.dart';
 import 'package:wheels_deals/imageSelection/user_image.dart';
+import 'package:path/path.dart' as p;
 
 class sellCars extends StatefulWidget {
   sellCars({Key key}) : super(key: key);
@@ -26,11 +30,13 @@ class sellCars extends StatefulWidget {
 class _sellCarsState extends State<sellCars> {
   final GlobalKey<FormState> _formKeySell = GlobalKey<FormState>();
   String _reg;
-  String Name, Telephone, Email;
+  String Name, Telephone, Email, Postcode;
   double Price, mileage;
   bool CAT = false;
   bool visibility = false;
   FirebaseAuth auth = FirebaseAuth.instance;
+  List<String> imageUrlList = [];
+
   String make,
       model = "Model",
       colour,
@@ -53,215 +59,46 @@ class _sellCarsState extends State<sellCars> {
   ImagePicker picker = ImagePicker();
   // String imageUrl = '';
   File image1, image2, image3, image4, image5, image6, nullimage;
-  //carMethods carObj = new carMethods();
-  //DVLACar fetchedCar = new DVLACar();
 
-  /*Future<bool> showDialogEditAdd(regPlate) async {
-    var car = await getcarsdvla(regPlate);
-    //print(car.make);
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              "We found Your Car ! ",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            content: SingleChildScrollView(
-                child: Column(
-              mainAxisSize: MainAxisSize.max,
-              //mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Car details',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Registration: ' + car.registrationNumber,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Manufacturer: ' + car.make,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Colour: ' + car.colour,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Mileage (Miles) : ' + _mileage,
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Model Year: ' + car.yearOfManufacture.toString(),
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'First Registration Date: ' +
-                      car.monthOfFirstRegistration.toString(),
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Fuel Type: ' + car.fuelType,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Co2 Emmisions: ' + car.co2Emissions.toString(),
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Engine Capacity: ' + car.engineCapacity.toString(),
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'MOT Status: ' + car.motStatus,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Tax Status: ' + car.taxStatus,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Tax Due Date: ' + car.taxDueDate,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Date Last v5 Issued: ' + car.dateOfLastV5CIssued,
-                  //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-                TextField(
-                  decoration: InputDecoration(hintText: 'Asking Price £'),
-                  onChanged: (value) {
-                    this.Price = double.parse(value);
-                  },
-                  keyboardType: TextInputType.number,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                DropdownButton<String>(
-                  value: model,
-                  onChanged: (String val) {
-                    setState(() {
-                      model = val;
-                    });
-                  },
-                  items: Sitems.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Contact Details',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                TextField(
-                  decoration: InputDecoration(hintText: 'Name'),
-                  onChanged: (value) {
-                    this.Name = value;
-                  },
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                TextField(
-                  decoration: InputDecoration(hintText: 'Email Address'),
-                  onChanged: (value) {
-                    this.Email = value;
-                  },
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Phone Number',
-                  ),
-                  onChanged: (value) {
-                    this.Telephone = value;
-                  },
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Vechicle Location (PostCode)',
-                  ),
-                ),
-              ],
-            )),
-            actions: [
-              ElevatedButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          );
-        });
-  } */
+  bool isLoggedIn() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> addData(carData) async {
+    if (isLoggedIn()) {
+      FirebaseFirestore.instance
+          .collection('cars')
+          .add(carData)
+          .catchError((e) {
+        print(e);
+      });
+    } else {
+      print('Please Sign-in');
+    }
+  }
+
+  Future uploadFile(File image) async {
+    final String empty = "Failed to Upload";
+    firebase_storage.UploadTask task;
+    if (image == null) {
+      return empty;
+    }
+    final fileName = p.basename(image.path);
+    final destination = 'files/$fileName';
+    task = FirebaseApi.uploadFile(destination, image);
+
+    if (task == null) {
+      return empty;
+    }
+    final snapshot = await task.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print(urlDownload);
+    imageUrlList.add(urlDownload);
+  }
 
   Future<bool> showView(regPlate) async {
     var car = await getcarsdvla(regPlate);
@@ -289,7 +126,59 @@ class _sellCarsState extends State<sellCars> {
                       gearbox = 'GearBox';
                       NoofDoors = 'Number of Doors';
                     },
-                  )
+                  ),
+                  ElevatedButton(
+                    child: Text('Post Ad'),
+                    onPressed: () {
+                      uploadFile(image1);
+                      uploadFile(image2);
+                      print(imageUrlList);
+                      /*
+                      carMethods carObj;
+                      Map<String, dynamic> carData = {
+                        'userName': this.Name,
+                        'uId': userId,
+                        'userEmail': this.Email,
+                        'userPhoneNumber': this.Telephone,
+                        'userPostcode': this.Postcode,
+                        'registration': car.registrationNumber,
+                        'make': car.make,
+                        'colour': car.colour,
+                        'year': car.yearOfManufacture.toString(),
+                        'fuelType': car.fuelType,
+                        'co2': car.co2Emissions.toString(),
+                        'engineCapacity': car.engineCapacity.toString(),
+                        'model': this.model,
+                        'bodyType': this.bodyType,
+                        'gearbox': this.gearbox,
+                        'numofDoors': this.NoofDoors,
+                        'mileage': this.mileage.toString(),
+                        'cat': this.CAT.toString(),
+                        'description': this.Description,
+                        'price': this.Price.toString(),
+                        'time': DateTime.now().toString(),
+                      };
+
+                      addData(carData).then((value) {
+                        print('Data added');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()));
+                      }).catchError((onError) {
+                        print(onError);
+                      }); */
+                      /*carObj.addData(carData).then((value) {
+                        print('Data added');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()));
+                      }).catchError((onError) {
+                        print(onError);
+                      }); */
+                    },
+                  ),
                 ],
                 content: SingleChildScrollView(
                   child: Column(
@@ -404,7 +293,7 @@ class _sellCarsState extends State<sellCars> {
                           isExpanded: true,
                           onChanged: (String val) {
                             setState(() {
-                              model = val;
+                              this.model = val;
                             });
                           },
                           items: carmodels
@@ -423,7 +312,7 @@ class _sellCarsState extends State<sellCars> {
                           isExpanded: true,
                           onChanged: (String val) {
                             setState(() {
-                              bodyType = val;
+                              this.bodyType = val;
                             });
                           },
                           items: body_types
@@ -442,7 +331,7 @@ class _sellCarsState extends State<sellCars> {
                           isExpanded: true,
                           onChanged: (String val) {
                             setState(() {
-                              gearbox = val;
+                              this.gearbox = val;
                             });
                           },
                           items: gearbox_types
@@ -461,7 +350,7 @@ class _sellCarsState extends State<sellCars> {
                           isExpanded: true,
                           onChanged: (String val) {
                             setState(() {
-                              NoofDoors = val;
+                              this.NoofDoors = val;
                             });
                           },
                           items: seat_options
@@ -584,6 +473,9 @@ class _sellCarsState extends State<sellCars> {
                           decoration: InputDecoration(
                             hintText: 'Vechicle Location (PostCode)',
                           ),
+                          onChanged: (value) {
+                            this.Postcode = value;
+                          },
                         ),
                       ]),
                 ));
@@ -625,20 +517,6 @@ class _sellCarsState extends State<sellCars> {
           });
     }
   }
-
-  /*Future pickImage(ImageSource source) async {
-    try {
-      XFile image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-
-      setState(() {
-        this._image = imageTemp;
-      });
-    } on PlatformException catch (e) {
-      print('Failed to pick Image: $e');
-    }
-  } */
 
   @override
   Widget build(BuildContext context) {
@@ -786,7 +664,7 @@ class _sellCarsState extends State<sellCars> {
             ),
           ),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.4,
@@ -795,7 +673,7 @@ class _sellCarsState extends State<sellCars> {
               style: ElevatedButton.styleFrom(primary: Colors.green),
               onPressed: () {
                 if (_formKeySell.currentState.validate()) {
-                  if (image1 == nullimage ||
+                  /*if (image1 == nullimage ||
                       image2 == nullimage ||
                       image3 == nullimage ||
                       image4 == nullimage ||
@@ -817,7 +695,8 @@ class _sellCarsState extends State<sellCars> {
                         });
                   } else {
                     showView(_reg);
-                  }
+                  } */
+                  showView(_reg);
                 }
               },
               child: Text(
