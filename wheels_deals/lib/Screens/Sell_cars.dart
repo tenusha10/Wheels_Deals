@@ -96,12 +96,17 @@ class _sellCarsState extends State<sellCars> {
     }
     final snapshot = await task.whenComplete(() {});
     final urlDownload = await snapshot.ref.getDownloadURL();
-    print(urlDownload);
     imageUrlList.add(urlDownload);
   }
 
   Future<bool> showView(regPlate) async {
     var car = await getcarsdvla(regPlate);
+    await uploadFile(image1);
+    await uploadFile(image2);
+    await uploadFile(image3);
+    await uploadFile(image4);
+    await uploadFile(image5);
+    await uploadFile(image6);
     List<String> carmodels = carModels().getModels(car.make);
     List<String> body_types = carModels().getBodyTypes();
     List<String> gearbox_types = ['GearBox', 'Automatic', 'Manual'];
@@ -130,11 +135,6 @@ class _sellCarsState extends State<sellCars> {
                   ElevatedButton(
                     child: Text('Post Ad'),
                     onPressed: () {
-                      uploadFile(image1);
-                      uploadFile(image2);
-                      print(imageUrlList);
-                      /*
-                      carMethods carObj;
                       Map<String, dynamic> carData = {
                         'userName': this.Name,
                         'uId': userId,
@@ -156,27 +156,20 @@ class _sellCarsState extends State<sellCars> {
                         'cat': this.CAT.toString(),
                         'description': this.Description,
                         'price': this.Price.toString(),
+                        'imageURls': imageUrlList,
                         'time': DateTime.now().toString(),
                       };
 
                       addData(carData).then((value) {
                         print('Data added');
+                        imageUrlList = [];
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => HomeScreen()));
                       }).catchError((onError) {
                         print(onError);
-                      }); */
-                      /*carObj.addData(carData).then((value) {
-                        print('Data added');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()));
-                      }).catchError((onError) {
-                        print(onError);
-                      }); */
+                      });
                     },
                   ),
                 ],
@@ -673,7 +666,7 @@ class _sellCarsState extends State<sellCars> {
               style: ElevatedButton.styleFrom(primary: Colors.green),
               onPressed: () {
                 if (_formKeySell.currentState.validate()) {
-                  /*if (image1 == nullimage ||
+                  if (image1 == nullimage ||
                       image2 == nullimage ||
                       image3 == nullimage ||
                       image4 == nullimage ||
@@ -695,8 +688,8 @@ class _sellCarsState extends State<sellCars> {
                         });
                   } else {
                     showView(_reg);
-                  } */
-                  showView(_reg);
+                  }
+                  //showView(_reg);
                 }
               },
               child: Text(
