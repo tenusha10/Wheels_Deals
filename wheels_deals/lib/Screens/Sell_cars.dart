@@ -29,6 +29,7 @@ class sellCars extends StatefulWidget {
 
 class _sellCarsState extends State<sellCars> {
   final GlobalKey<FormState> _formKeySell = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyCarSell = GlobalKey<FormState>();
   String _reg;
   String Name, Telephone, Email, Postcode;
   double Price, mileage;
@@ -36,6 +37,14 @@ class _sellCarsState extends State<sellCars> {
   bool visibility = false;
   FirebaseAuth auth = FirebaseAuth.instance;
   List<String> imageUrlList = [];
+  RegExp regExp = new RegExp(
+    r'^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}',
+    caseSensitive: false,
+  );
+  RegExp regExp_Name = new RegExp(r'^([^0-9]*)$', caseSensitive: false);
+  RegExp regExp_Email =
+      new RegExp(r'^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$', caseSensitive: false);
+  RegExp regExp_phonenumber = new RegExp(r'^[0-9]*$', caseSensitive: false);
 
   String make,
       model = "Model",
@@ -59,6 +68,49 @@ class _sellCarsState extends State<sellCars> {
   ImagePicker picker = ImagePicker();
   // String imageUrl = '';
   File image1, image2, image3, image4, image5, image6, nullimage;
+
+  Future<DVLACar> getcarsdvla(reg) async {
+    var data = {"registrationNumber": "$reg"};
+    final response = await http.post(
+        Uri.parse(
+            'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles'),
+        headers: {
+          'x-api-key': 'q7eOaPr0A65sIpmBT3DJA6gW9oSW9EvaPZAO1gQ1',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      return DVLACar.fromJson(jsonDecode(response.body));
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Unable to Find your Car !"),
+              content: Text('Invalid vehicle registration number'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          });
+    }
+  }
+
+  Future<bool> checkPostcode(String postcode) async {
+    final response = await http.get(
+        Uri.parse('https://api.postcodes.io/postcodes/$postcode/validate'));
+    final data = jsonDecode(response.body);
+    bool check = data['result'];
+    return check;
+  }
 
   bool isLoggedIn() {
     if (FirebaseAuth.instance.currentUser != null) {
@@ -111,6 +163,7 @@ class _sellCarsState extends State<sellCars> {
     List<String> body_types = carModels().getBodyTypes();
     List<String> gearbox_types = ['GearBox', 'Automatic', 'Manual'];
     List<String> seat_options = ['Number of Doors', '3 Door', '5 Door'];
+    bool validPostcode = true;
     return showDialog(
         context: context,
         builder: (context) {
@@ -134,7 +187,11 @@ class _sellCarsState extends State<sellCars> {
                   ),
                   ElevatedButton(
                     child: Text('Post Ad'),
-                    onPressed: () {
+                    onPressed: () async {
+                      validPostcode = await checkPostcode(this.Postcode);
+                      if (_formKeyCarSell.currentState.validate()) {
+                        print('Validation complete');
+                      }
                       Map<String, dynamic> carData = {
                         'userName': this.Name,
                         'uId': userId,
@@ -174,341 +231,405 @@ class _sellCarsState extends State<sellCars> {
                   ),
                 ],
                 content: SingleChildScrollView(
-                  child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Text(
-                          'Car details',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Registration: ' + car.registrationNumber,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Manufacturer: ' + car.make,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Colour: ' + car.colour,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Model Year: ' + car.yearOfManufacture.toString(),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'First Registration Date: ' +
-                              car.monthOfFirstRegistration.toString(),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Fuel Type: ' + car.fuelType,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Co2 Emmisions: ' + car.co2Emissions.toString(),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Engine Capacity: ' + car.engineCapacity.toString(),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'MOT Status: ' + car.motStatus,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Tax Status: ' + car.taxStatus,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Tax Due Date: ' + car.taxDueDate,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Date Last v5 Issued: ' + car.dateOfLastV5CIssued,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Additional Car details',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        DropdownButton<String>(
-                          value: model,
-                          isExpanded: true,
-                          onChanged: (String val) {
-                            setState(() {
-                              this.model = val;
-                            });
-                          },
-                          items: carmodels
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        DropdownButton<String>(
-                          value: bodyType,
-                          isExpanded: true,
-                          onChanged: (String val) {
-                            setState(() {
-                              this.bodyType = val;
-                            });
-                          },
-                          items: body_types
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        DropdownButton<String>(
-                          value: gearbox,
-                          isExpanded: true,
-                          onChanged: (String val) {
-                            setState(() {
-                              this.gearbox = val;
-                            });
-                          },
-                          items: gearbox_types
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        DropdownButton<String>(
-                          value: NoofDoors,
-                          isExpanded: true,
-                          onChanged: (String val) {
-                            setState(() {
-                              this.NoofDoors = val;
-                            });
-                          },
-                          items: seat_options
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextField(
-                          decoration:
-                              InputDecoration(hintText: 'Mileage (Miles)'),
-                          onChanged: (value) {
-                            this.mileage = double.parse(value);
-                          },
-                          keyboardType: TextInputType.number,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'CAT C/D:',
+                  child: Form(
+                      key: _formKeyCarSell,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Car details',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Registration: ' + car.registrationNumber,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Manufacturer: ' + car.make,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Colour: ' + car.colour,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Model Year: ' + car.yearOfManufacture.toString(),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'First Registration Date: ' +
+                                car.monthOfFirstRegistration.toString(),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Fuel Type: ' + car.fuelType,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Co2 Emmisions: ' + car.co2Emissions.toString(),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Engine Capacity: ' + car.engineCapacity.toString(),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'MOT Status: ' + car.motStatus,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Tax Status: ' + car.taxStatus,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Tax Due Date: ' + car.taxDueDate,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Date Last v5 Issued: ' + car.dateOfLastV5CIssued,
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'Additional Car details',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          DropdownButtonFormField<String>(
+                            value: model,
+                            isExpanded: true,
+                            onChanged: (String val) {
+                              setState(() {
+                                this.model = val;
+                              });
+                            },
+                            items: carmodels
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            validator: (value) {
+                              if (value == 'Model') {
+                                return 'Please select a model';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          DropdownButtonFormField<String>(
+                            value: bodyType,
+                            isExpanded: true,
+                            onChanged: (String val) {
+                              setState(() {
+                                this.bodyType = val;
+                              });
+                            },
+                            items: body_types
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            validator: (value) {
+                              if (value == 'Body Type') {
+                                return 'Please select a Body Type';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          DropdownButtonFormField<String>(
+                            value: gearbox,
+                            isExpanded: true,
+                            onChanged: (String val) {
+                              setState(() {
+                                this.gearbox = val;
+                              });
+                            },
+                            items: gearbox_types
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            validator: (value) {
+                              if (value == 'GearBox') {
+                                return 'Please select the Gear box type';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          DropdownButtonFormField<String>(
+                            value: NoofDoors,
+                            isExpanded: true,
+                            onChanged: (String val) {
+                              setState(() {
+                                this.NoofDoors = val;
+                              });
+                            },
+                            items: seat_options
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            validator: (value) {
+                              if (value == 'Number of Doors') {
+                                return 'Please select the number of doors';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration:
+                                InputDecoration(hintText: 'Mileage (Miles)'),
+                            onChanged: (value) {
+                              this.mileage = double.parse(value);
+                            },
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Mileage cannot be empty';
+                              }
+
+                              if (double.parse(value) > 200000) {
+                                return 'Mileage is too high';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'CAT C/D:',
+                              ),
+                              CupertinoSwitch(
+                                  value: CAT,
+                                  activeColor: Colors.deepPurple,
+                                  onChanged: (bool value) {
+                                    setState((() {
+                                      CAT = value;
+                                    }));
+                                  }),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Description',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                              'Enter below all the additional features of your vehicle and a breif description for the listing'),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration:
+                                InputDecoration(hintText: 'Description of Ad'),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            onChanged: (value) {
+                              this.Description = value;
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a Description';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'Price',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          TextFormField(
+                            decoration:
+                                InputDecoration(hintText: 'Asking Price £'),
+                            onChanged: (value) {
+                              this.Price = double.parse(value);
+                            },
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a price £';
+                              }
+
+                              if (double.parse(value) <= 99) {
+                                return 'Car value is too low, minimum value = £100';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'Contact Details',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(hintText: 'Name'),
+                            onChanged: (value) {
+                              this.Name = value;
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a name';
+                              }
+                              if (!regExp_Name.hasMatch(value)) {
+                                return 'Invalid Name Format';
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.name,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            decoration:
+                                InputDecoration(hintText: 'Email Address'),
+                            onChanged: (value) {
+                              this.Email = value;
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter an email address';
+                              }
+                              if (!regExp_Email.hasMatch(value)) {
+                                return 'Invalid Email Format';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Phone Number',
                             ),
-                            CupertinoSwitch(
-                                value: CAT,
-                                activeColor: Colors.deepPurple,
-                                onChanged: (bool value) {
-                                  setState((() {
-                                    CAT = value;
-                                  }));
-                                }),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Description',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                            'Enter below all the additional features of your vehicle and a breif description for the listing'),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextField(
-                          decoration:
-                              InputDecoration(hintText: 'Description of Ad'),
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          onChanged: (value) {
-                            this.Description = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Price',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        TextField(
-                          decoration:
-                              InputDecoration(hintText: 'Asking Price £'),
-                          onChanged: (value) {
-                            this.Price = double.parse(value);
-                          },
-                          keyboardType: TextInputType.number,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Contact Details',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        TextField(
-                          decoration: InputDecoration(hintText: 'Name'),
-                          onChanged: (value) {
-                            this.Name = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextField(
-                          decoration:
-                              InputDecoration(hintText: 'Email Address'),
-                          onChanged: (value) {
-                            this.Email = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Phone Number',
+                            onChanged: (value) {
+                              this.Telephone = value;
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a phone number';
+                              }
+
+                              if (!regExp_phonenumber.hasMatch(value)) {
+                                return 'Invalid Phone number format';
+                              }
+
+                              if (value.length > 11) {
+                                return 'Number is too long';
+                              }
+                              return null;
+                            },
                           ),
-                          onChanged: (value) {
-                            this.Telephone = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Vechicle Location (PostCode)',
+                          SizedBox(
+                            height: 5,
                           ),
-                          onChanged: (value) {
-                            this.Postcode = value;
-                          },
-                        ),
-                      ]),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Vechicle Location (PostCode)',
+                            ),
+                            onChanged: (value) {
+                              this.Postcode = value;
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a postcode';
+                              }
+                              if (!regExp.hasMatch(value)) {
+                                return 'Invalid postcode Format';
+                              }
+                              if (validPostcode == false) {
+                                return 'Postcode not found';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      )),
                 ));
           });
         });
-  }
-
-  Future<DVLACar> getcarsdvla(reg) async {
-    var data = {"registrationNumber": "$reg"};
-    final response = await http.post(
-        Uri.parse(
-            'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles'),
-        headers: {
-          'x-api-key': 'q7eOaPr0A65sIpmBT3DJA6gW9oSW9EvaPZAO1gQ1',
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode(data));
-
-    if (response.statusCode == 200) {
-      return DVLACar.fromJson(jsonDecode(response.body));
-    } else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Unable to Find your Car !"),
-              content: Text('Invalid vehicle registration number'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
-                  child: const Text('OK'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
-          });
-    }
   }
 
   @override
