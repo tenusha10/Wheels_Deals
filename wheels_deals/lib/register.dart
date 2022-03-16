@@ -5,6 +5,9 @@ import 'package:wheels_deals/Widgets/customTextField.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wheels_deals/globalVariables.dart';
+import 'package:wheels_deals/imageSelection/profile_image.dart';
+import 'package:wheels_deals/imageSelection/user_image.dart';
+import 'dart:io';
 
 class register extends StatefulWidget {
   @override
@@ -21,6 +24,7 @@ class _registerState extends State<register> {
   final TextEditingController _phoneConfirmController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String imageUrl = '';
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,19 @@ class _registerState extends State<register> {
                 child: Image.asset(
                   'images/mainLogo.png',
                   height: 180.0,
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ProfileImage(
+                  onFileChanged: ((imageUrl) {
+                    setState(() {
+                      this.imageUrl = imageUrl;
+                    });
+                  }),
                 ),
               ),
             ),
@@ -111,6 +128,7 @@ class _registerState extends State<register> {
       'userName': _nameController.text.trim(),
       'uId': userId,
       'userNumber': _phoneConfirmController.text.trim(),
+      'imgPro': imageUrl,
       'time': DateTime.now()
     };
 

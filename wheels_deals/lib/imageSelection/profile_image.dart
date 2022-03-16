@@ -3,49 +3,49 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wheels_deals/imageSelection/round_images.dart';
 import 'dart:io';
-import 'dart:io' show Platform;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storage;
 
-class UserImage extends StatefulWidget {
-  final Function(File image) onFileChanged;
-  UserImage({
+class ProfileImage extends StatefulWidget {
+  final Function(String imageUrl) onFileChanged;
+  ProfileImage({
     this.onFileChanged,
   });
-
   @override
-  State<UserImage> createState() => _UerImageState();
+  State<ProfileImage> createState() => _ProfileImageState();
 }
 
-class _UerImageState extends State<UserImage> {
+class _ProfileImageState extends State<ProfileImage> {
   final ImagePicker _picker = ImagePicker();
   String imageUrl;
-  File image;
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (image == null)
+        if (imageUrl == null)
           Icon(
             Icons.image,
-            size: 100,
-            color: Colors.teal,
+            size: 80,
+            color: Theme.of(context).primaryColor,
           )
-        else if (image != null)
+        else if (imageUrl != null)
           InkWell(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () => _selectedPhoto(),
-              child: Image.file(
-                image,
-                width: 200,
-                height: 200,
+              child: AppRoundImage.url(
+                imageUrl,
+                height: 100,
+                width: 100,
               )),
         InkWell(
           onTap: () => _selectedPhoto(),
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              image != null ? 'Change' : 'Select',
+              imageUrl != null ? 'Change photo' : 'Select Profile Picture',
               style: TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.bold,
@@ -87,7 +87,8 @@ class _UerImageState extends State<UserImage> {
   }
 
   Future _pickImage(ImageSource source) async {
-    final pickedfile = await _picker.pickImage(source: source);
+    final pickedfile =
+        await _picker.pickImage(source: source, imageQuality: 50);
     if (pickedfile == null) {
       return;
     }
@@ -98,10 +99,32 @@ class _UerImageState extends State<UserImage> {
     if (file == null) {
       return;
     }
+    //file = await compressImage(file.path, 35);
+
+    await _uploadFile(file.path);
+  }
+
+  Future<File> compressImage(String path, int quality) async {
+    final newPath = p.join((await getTemporaryDirectory()).path,
+        '${DateTime.now()}.${p.extension(path)}');
+
+    final result = await FlutterImageCompress.compressAndGetFile(path, newPath,
+        quality: quality);
+
+    return result;
+  }
+
+  Future _uploadFile(String path) async {
+    final ref = storage.FirebaseStorage.instance
+        .ref()
+        .child('profileImages')
+        .child('${DateTime.now().toIso8601String() + p.basename(path)}');
+    final result = await ref.putFile(File(path));
+    final fileUrl = await result.ref.getDownloadURL();
 
     setState(() {
-      image = file;
+      imageUrl = fileUrl;
     });
-    widget.onFileChanged(file);
+    widget.onFileChanged(fileUrl);
   }
 }

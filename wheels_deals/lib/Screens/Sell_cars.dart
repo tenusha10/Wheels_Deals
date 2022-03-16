@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:wheels_deals/imageSelection/user_image.dart';
 import 'package:path/path.dart' as p;
+import 'package:wheels_deals/DialogBox/loadingDialog.dart';
+import 'package:wheels_deals/Widgets/loadingWidget.dart';
 
 class sellCars extends StatefulWidget {
   sellCars({Key key}) : super(key: key);
@@ -30,6 +33,7 @@ class sellCars extends StatefulWidget {
 class _sellCarsState extends State<sellCars> {
   final GlobalKey<FormState> _formKeySell = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyCarSell = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
   String _reg;
   String Name, Telephone, Email, Postcode;
   double Price, mileage;
@@ -68,6 +72,19 @@ class _sellCarsState extends State<sellCars> {
   ImagePicker picker = ImagePicker();
   // String imageUrl = '';
   File image1, image2, image3, image4, image5, image6, nullimage;
+
+  getUserData() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get()
+        .then((results) {
+      setState(() {
+        userImageUrl = results.data()['imgPro'];
+        getUserName = results.data()['userName'];
+      });
+    });
+  }
 
   Future<DVLACar> getcarsdvla(reg) async {
     var data = {"registrationNumber": "$reg"};
@@ -183,6 +200,7 @@ class _sellCarsState extends State<sellCars> {
                       bodyType = "Body Type";
                       gearbox = 'GearBox';
                       NoofDoors = 'Number of Doors';
+                      imageUrlList = [];
                     },
                   ),
                   ElevatedButton(
@@ -191,42 +209,43 @@ class _sellCarsState extends State<sellCars> {
                       validPostcode = await checkPostcode(this.Postcode);
                       if (_formKeyCarSell.currentState.validate()) {
                         print('Validation complete');
-                      }
-                      Map<String, dynamic> carData = {
-                        'userName': this.Name,
-                        'uId': userId,
-                        'userEmail': this.Email,
-                        'userPhoneNumber': this.Telephone,
-                        'userPostcode': this.Postcode,
-                        'registration': car.registrationNumber,
-                        'make': car.make,
-                        'colour': car.colour,
-                        'year': car.yearOfManufacture.toString(),
-                        'fuelType': car.fuelType,
-                        'co2': car.co2Emissions.toString(),
-                        'engineCapacity': car.engineCapacity.toString(),
-                        'model': this.model,
-                        'bodyType': this.bodyType,
-                        'gearbox': this.gearbox,
-                        'numofDoors': this.NoofDoors,
-                        'mileage': this.mileage.toString(),
-                        'cat': this.CAT.toString(),
-                        'description': this.Description,
-                        'price': this.Price.toString(),
-                        'imageURls': imageUrlList,
-                        'time': DateTime.now().toString(),
-                      };
+                        Map<String, dynamic> carData = {
+                          'userName': this.Name,
+                          'uId': userId,
+                          'imgPro': userImageUrl,
+                          'userEmail': this.Email,
+                          'userPhoneNumber': this.Telephone,
+                          'userPostcode': this.Postcode,
+                          'registration': car.registrationNumber,
+                          'make': car.make,
+                          'colour': car.colour,
+                          'year': car.yearOfManufacture.toString(),
+                          'fuelType': car.fuelType,
+                          'co2': car.co2Emissions.toString(),
+                          'engineCapacity': car.engineCapacity.toString(),
+                          'model': this.model,
+                          'bodyType': this.bodyType,
+                          'gearbox': this.gearbox,
+                          'numofDoors': this.NoofDoors,
+                          'mileage': this.mileage.toString(),
+                          'cat': this.CAT.toString(),
+                          'description': this.Description,
+                          'price': this.Price.toString(),
+                          'imageURls': imageUrlList,
+                          'time': DateTime.now().toString(),
+                        };
 
-                      addData(carData).then((value) {
-                        print('Data added');
-                        imageUrlList = [];
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()));
-                      }).catchError((onError) {
-                        print(onError);
-                      });
+                        addData(carData).then((value) {
+                          print('Data added');
+                          imageUrlList = [];
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        }).catchError((onError) {
+                          print(onError);
+                        });
+                      }
                     },
                   ),
                 ],
@@ -633,6 +652,14 @@ class _sellCarsState extends State<sellCars> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    userId = FirebaseAuth.instance.currentUser.uid;
+    userEmail = FirebaseAuth.instance.currentUser.email;
+    getUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -683,102 +710,98 @@ class _sellCarsState extends State<sellCars> {
                 ],
               )),
           SizedBox(
-            height: 5,
+            height: 50,
           ),
           Text(
-            'Please upload 6 photos of your vechicle',
+            'Please upload 5 photos of your vechicle',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
           ),
           SizedBox(
-            height: 5,
+            height: 25,
           ),
           Container(
-            width: 330,
-            height: 450,
-            //color: Colors.purpleAccent,
-            //padding: EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 5,
-                      ),
-                      UserImage(
+              width: MediaQuery.of(context).size.width * 5,
+              height: 300,
+              child: Scrollbar(
+                controller: _scrollController,
+                thickness: 8,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  controller: _scrollController,
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      child: UserImage(
                         onFileChanged: ((image1) {
                           setState(() {
                             this.image1 = image1;
                           });
                         }),
                       ),
-                      SizedBox(
-                        width: 100,
-                      ),
-                      UserImage(
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      height: 100,
+                      width: 100,
+                      child: UserImage(
                         onFileChanged: ((image2) {
                           setState(() {
                             this.image2 = image2;
                           });
                         }),
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 5,
-                      ),
-                      UserImage(
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      height: 100,
+                      width: 100,
+                      child: UserImage(
                         onFileChanged: ((image3) {
                           setState(() {
                             this.image3 = image3;
                           });
                         }),
                       ),
-                      SizedBox(
-                        width: 100,
-                      ),
-                      UserImage(
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      height: 100,
+                      width: 100,
+                      child: UserImage(
                         onFileChanged: ((image4) {
                           setState(() {
                             this.image4 = image4;
                           });
                         }),
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 5,
-                      ),
-                      UserImage(
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      height: 100,
+                      width: 100,
+                      child: UserImage(
                         onFileChanged: ((image5) {
                           setState(() {
                             this.image5 = image5;
                           });
                         }),
                       ),
-                      SizedBox(
-                        width: 100,
-                      ),
-                      UserImage(
-                        onFileChanged: ((image6) {
-                          setState(() {
-                            this.image6 = image6;
-                          });
-                        }),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+                    ),
+                  ],
+                ),
+              )),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.4,
@@ -791,14 +814,13 @@ class _sellCarsState extends State<sellCars> {
                       image2 == nullimage ||
                       image3 == nullimage ||
                       image4 == nullimage ||
-                      image5 == nullimage ||
-                      image6 == nullimage) {
+                      image5 == nullimage) {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text("Missing Images"),
-                            content: Text('Please, Upload 6 images'),
+                            content: Text('Please, Upload 5 images'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -808,6 +830,25 @@ class _sellCarsState extends State<sellCars> {
                           );
                         });
                   } else {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          Timer _timer = Timer(Duration(seconds: 7), (() {
+                            Navigator.pop(context);
+                          }));
+                          return AlertDialog(
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                circularProgress(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text("Please wait...")
+                              ],
+                            ),
+                          );
+                        });
                     showView(_reg);
                   }
                   //showView(_reg);

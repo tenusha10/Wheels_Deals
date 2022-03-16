@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,8 +8,11 @@ class AppRoundImage extends StatelessWidget {
   final double height;
   final double width;
 
-  AppRoundImage(NetworkImage networkImage,
-      {this.provider, this.height, this.width});
+  AppRoundImage(
+    this.provider, {
+    this.height,
+    this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
