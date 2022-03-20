@@ -71,7 +71,7 @@ class _sellCarsState extends State<sellCars> {
   //File _image;
   ImagePicker picker = ImagePicker();
   // String imageUrl = '';
-  File image1, image2, image3, image4, image5, image6, nullimage;
+  File image1, image2, image3, nullimage;
 
   getUserData() {
     FirebaseFirestore.instance
@@ -173,9 +173,6 @@ class _sellCarsState extends State<sellCars> {
     await uploadFile(image1);
     await uploadFile(image2);
     await uploadFile(image3);
-    await uploadFile(image4);
-    await uploadFile(image5);
-    await uploadFile(image6);
     List<String> carmodels = carModels().getModels(car.make);
     List<String> body_types = carModels().getBodyTypes();
     List<String> gearbox_types = ['GearBox', 'Automatic', 'Manual'];
@@ -463,15 +460,15 @@ class _sellCarsState extends State<sellCars> {
                             decoration:
                                 InputDecoration(hintText: 'Mileage (Miles)'),
                             onChanged: (value) {
-                              this.mileage = double.parse(value);
+                              this.mileage = double.parse(value.trim());
                             },
                             keyboardType: TextInputType.number,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value.trim() == null || value.isEmpty) {
                                 return 'Mileage cannot be empty';
                               }
 
-                              if (double.parse(value) > 200000) {
+                              if (double.parse(value.trim()) > 200000) {
                                 return 'Mileage is too high';
                               }
                               return null;
@@ -507,7 +504,7 @@ class _sellCarsState extends State<sellCars> {
                             height: 5,
                           ),
                           Text(
-                              'Enter below all the additional features of your vehicle and a breif description for the listing'),
+                              'Enter below all the additional features of your vehicle and a brief description for the listing'),
                           SizedBox(
                             height: 10,
                           ),
@@ -538,15 +535,15 @@ class _sellCarsState extends State<sellCars> {
                             decoration:
                                 InputDecoration(hintText: 'Asking Price £'),
                             onChanged: (value) {
-                              this.Price = double.parse(value);
+                              this.Price = double.parse(value.trim());
                             },
                             keyboardType: TextInputType.number,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value.trim() == null || value.isEmpty) {
                                 return 'Please enter a price £';
                               }
 
-                              if (double.parse(value) <= 99) {
+                              if (double.parse(value.trim()) <= 99) {
                                 return 'Car value is too low, minimum value = £100';
                               }
                               return null;
@@ -563,13 +560,13 @@ class _sellCarsState extends State<sellCars> {
                           TextFormField(
                             decoration: InputDecoration(hintText: 'Name'),
                             onChanged: (value) {
-                              this.Name = value;
+                              this.Name = value.trim();
                             },
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value.trim() == null || value.isEmpty) {
                                 return 'Please enter a name';
                               }
-                              if (!regExp_Name.hasMatch(value)) {
+                              if (!regExp_Name.hasMatch(value.trim())) {
                                 return 'Invalid Name Format';
                               }
                               return null;
@@ -583,14 +580,15 @@ class _sellCarsState extends State<sellCars> {
                             decoration:
                                 InputDecoration(hintText: 'Email Address'),
                             onChanged: (value) {
-                              this.Email = value;
+                              this.Email = value.trim();
                             },
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value.trim() == null ||
+                                  value.trim().isEmpty) {
                                 return 'Please enter an email address';
                               }
-                              if (!regExp_Email.hasMatch(value)) {
+                              if (!regExp_Email.hasMatch(value.trim())) {
                                 return 'Invalid Email Format';
                               }
                               return null;
@@ -604,18 +602,18 @@ class _sellCarsState extends State<sellCars> {
                               hintText: 'Phone Number',
                             ),
                             onChanged: (value) {
-                              this.Telephone = value;
+                              this.Telephone = value.trim();
                             },
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value.trim() == null || value.isEmpty) {
                                 return 'Please enter a phone number';
                               }
 
-                              if (!regExp_phonenumber.hasMatch(value)) {
+                              if (!regExp_phonenumber.hasMatch(value.trim())) {
                                 return 'Invalid Phone number format';
                               }
 
-                              if (value.length > 11) {
+                              if (value.trim().length > 11) {
                                 return 'Number is too long';
                               }
                               return null;
@@ -629,13 +627,13 @@ class _sellCarsState extends State<sellCars> {
                               hintText: 'Vechicle Location (PostCode)',
                             ),
                             onChanged: (value) {
-                              this.Postcode = value;
+                              this.Postcode = value.trim();
                             },
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value.trim() == null || value.isEmpty) {
                                 return 'Please enter a postcode';
                               }
-                              if (!regExp.hasMatch(value)) {
+                              if (!regExp.hasMatch(value.trim())) {
                                 return 'Invalid postcode Format';
                               }
                               if (validPostcode == false) {
@@ -662,7 +660,8 @@ class _sellCarsState extends State<sellCars> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+        body: SingleChildScrollView(
+      child: Column(
         children: <Widget>[
           SizedBox(
             height: 10,
@@ -698,7 +697,9 @@ class _sellCarsState extends State<sellCars> {
                     },
                     style: TextStyle(fontSize: 20),
                     validator: (value) {
-                      if (value == null || value.isEmpty || value.length > 7) {
+                      if (value.trim() == null ||
+                          value.trim().isEmpty ||
+                          value.trim().length > 7) {
                         return 'Please enter a valid Registration Number';
                       }
                       return null;
@@ -710,10 +711,10 @@ class _sellCarsState extends State<sellCars> {
                 ],
               )),
           SizedBox(
-            height: 50,
+            height: 10,
           ),
           Text(
-            'Please upload 5 photos of your vechicle',
+            'Please upload 3 photos of your vechicle',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
           ),
@@ -731,8 +732,8 @@ class _sellCarsState extends State<sellCars> {
                   controller: _scrollController,
                   children: [
                     Container(
-                      height: 100,
-                      width: 100,
+                      height: 200,
+                      width: 200,
                       child: UserImage(
                         onFileChanged: ((image1) {
                           setState(() {
@@ -745,8 +746,8 @@ class _sellCarsState extends State<sellCars> {
                       width: 5,
                     ),
                     Container(
-                      height: 100,
-                      width: 100,
+                      height: 200,
+                      width: 200,
                       child: UserImage(
                         onFileChanged: ((image2) {
                           setState(() {
@@ -759,8 +760,8 @@ class _sellCarsState extends State<sellCars> {
                       width: 5,
                     ),
                     Container(
-                      height: 100,
-                      width: 100,
+                      height: 200,
+                      width: 200,
                       child: UserImage(
                         onFileChanged: ((image3) {
                           setState(() {
@@ -769,39 +770,11 @@ class _sellCarsState extends State<sellCars> {
                         }),
                       ),
                     ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      height: 100,
-                      width: 100,
-                      child: UserImage(
-                        onFileChanged: ((image4) {
-                          setState(() {
-                            this.image4 = image4;
-                          });
-                        }),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      height: 100,
-                      width: 100,
-                      child: UserImage(
-                        onFileChanged: ((image5) {
-                          setState(() {
-                            this.image5 = image5;
-                          });
-                        }),
-                      ),
-                    ),
                   ],
                 ),
               )),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.4,
@@ -812,15 +785,13 @@ class _sellCarsState extends State<sellCars> {
                 if (_formKeySell.currentState.validate()) {
                   if (image1 == nullimage ||
                       image2 == nullimage ||
-                      image3 == nullimage ||
-                      image4 == nullimage ||
-                      image5 == nullimage) {
+                      image3 == nullimage) {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text("Missing Images"),
-                            content: Text('Please, Upload 5 images'),
+                            content: Text('Please, Upload 3 images'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -830,11 +801,12 @@ class _sellCarsState extends State<sellCars> {
                           );
                         });
                   } else {
+                    Timer _timer;
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          Timer _timer = Timer(Duration(seconds: 7), (() {
-                            Navigator.pop(context);
+                          _timer = Timer(Duration(seconds: 3), (() {
+                            Navigator.of(context).pop();
                           }));
                           return AlertDialog(
                             content: Column(
@@ -848,8 +820,13 @@ class _sellCarsState extends State<sellCars> {
                               ],
                             ),
                           );
-                        });
-                    showView(_reg);
+                        }).then((value) {
+                      if (_timer.isActive) {
+                        _timer.cancel();
+                      }
+                    }).then((value) {
+                      showView(_reg);
+                    });
                   }
                   //showView(_reg);
                 }
@@ -862,6 +839,6 @@ class _sellCarsState extends State<sellCars> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

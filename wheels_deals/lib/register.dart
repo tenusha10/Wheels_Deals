@@ -137,30 +137,41 @@ class _registerState extends State<register> {
 
   void _register() async {
     User currentUser;
-    await _auth
-        .createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _confirmPasswordController.text.trim())
-        .then((auth) {
-      currentUser = auth.user;
-      userId = currentUser.uid;
-      userEmail = currentUser.email;
-      getUserName = _nameController.text.trim();
-      saveUserData();
-    }).catchError((error) {
+    if (imageUrl == '') {
       Navigator.pop(context);
       showDialog(
           context: context,
           builder: (con) {
             return ErrorAlertDialog(
-              message: error.message.toString(),
+              message: 'Please, Upload a profile picture',
             );
           });
-    });
+    } else {
+      await _auth
+          .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _confirmPasswordController.text.trim())
+          .then((auth) {
+        currentUser = auth.user;
+        userId = currentUser.uid;
+        userEmail = currentUser.email;
+        getUserName = _nameController.text.trim();
+        saveUserData();
+      }).catchError((error) {
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            builder: (con) {
+              return ErrorAlertDialog(
+                message: error.message.toString(),
+              );
+            });
+      });
 
-    if (currentUser != null) {
-      Route newRoute = MaterialPageRoute(builder: (context) => HomeScreen());
-      Navigator.pushReplacement(context, newRoute);
+      if (currentUser != null) {
+        Route newRoute = MaterialPageRoute(builder: (context) => HomeScreen());
+        Navigator.pushReplacement(context, newRoute);
+      }
     }
   }
 }
