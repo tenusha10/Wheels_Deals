@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/AccountPage.dart';
+import 'package:wheels_deals/Screens/AccountScreen.dart';
 import 'package:wheels_deals/Screens/AdPage.dart';
 import 'package:wheels_deals/Screens/Sell_cars.dart';
 
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Center(
       child: Text('Saved'),
     ),
-    AccountPage(),
+    AccountScreen(),
   ];
 
   @override
