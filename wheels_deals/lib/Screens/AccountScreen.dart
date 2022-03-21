@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
 import 'package:http/http.dart' as http;
@@ -489,7 +490,7 @@ class _AccountScreenState extends State<AccountScreen> {
           children: [
             Container(
                 width: 80,
-                height: 80,
+                height: 60,
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () async {
@@ -497,6 +498,14 @@ class _AccountScreenState extends State<AccountScreen> {
                       return login();
                     },
                     child: Text('Sign out'))),
+            Text(
+              'Manage Ads',
+              style: GoogleFonts.patrickHand(
+                  fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               alignment: Alignment.center,
               height: 620,
