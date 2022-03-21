@@ -486,11 +486,12 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.deepPurple[50],
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
           children: [
             Container(
                 width: 80,
-                height: 60,
+                height: 80,
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () async {
@@ -822,6 +823,6 @@ class _AccountScreenState extends State<AccountScreen> {
                   }),
             )
           ],
-        ));
+        )));
   }
 }

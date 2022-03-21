@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wheels_deals/Screens/viewAd.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
 
@@ -68,6 +69,14 @@ class _AdPageState extends State<AdPage> {
                     clipBehavior: Clip.antiAlias,
                     child: Column(children: [
                       ListTile(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ViewAd(
+                                        AdvertID: document.id,
+                                      )));
+                        },
                         leading: GestureDetector(
                           onTap: () {},
                           child: Container(
@@ -119,16 +128,26 @@ class _AdPageState extends State<AdPage> {
                           ],
                         ),
                       ),
-                      Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                data['imageURls'][0],
-                                fit: BoxFit.cover,
-                                height: 300,
-                                width: 400,
-                              ))),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ViewAd(
+                                        AdvertID: document.id,
+                                      )));
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  data['imageURls'][0],
+                                  fit: BoxFit.cover,
+                                  height: 300,
+                                  width: 400,
+                                ))),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 15, right: 15, bottom: 3),
