@@ -59,6 +59,8 @@ class _AdPageState extends State<AdPage> {
                 children: snapshot.data.docs.map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data() as Map<String, dynamic>;
+                  double price = double.parse(data['price']);
+                  double mileage = double.parse(data['mileage']);
                   return Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -66,71 +68,57 @@ class _AdPageState extends State<AdPage> {
                     clipBehavior: Clip.antiAlias,
                     child: Column(children: [
                       ListTile(
-                          leading: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://carwow-uk-wp-3.imgix.net/Volvo-XC40-white-scaled.jpg'),
-                                      fit: BoxFit.fill)),
-                            ),
+                        leading: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: NetworkImage(data['imgPro']),
+                                    fit: BoxFit.fill)),
                           ),
-                          title: GestureDetector(
-                            onTap: () {},
-                            child: Text(data['userName']),
+                        ),
+                        title: GestureDetector(
+                          onTap: () {},
+                          child: Text(data['userName']),
+                        ),
+                        subtitle: GestureDetector(
+                          onTap: () {},
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.mapMarkerAlt,
+                                size: 20,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                data['userPostcode'].toString().toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.6)),
+                              ),
+                              SizedBox(
+                                width: 0.4,
+                              ),
+                            ],
                           ),
-                          subtitle: GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: Colors.grey,
-                                ),
-                                Text(
-                                  data['userPostcode'],
-                                  style: TextStyle(
-                                      color: Colors.black.withOpacity(0.6)),
-                                ),
-                                SizedBox(
-                                  width: 0.4,
-                                ),
-                              ],
-                            ),
-                          ),
-                          trailing: data['uId'] == userId
-                              ? Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (() {}),
-                                      child: Icon(
-                                        FontAwesomeIcons.edit,
-                                        size: 20,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    GestureDetector(
-                                        onDoubleTap: () {},
-                                        child: Icon(
-                                          FontAwesomeIcons.trashAlt,
-                                          size: 20,
-                                          color: Colors.black54,
-                                        )),
-                                  ],
-                                )
-                              : Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [],
-                                )),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.ad,
+                              size: 20,
+                              color: Colors.black54,
+                            )
+                          ],
+                        ),
+                      ),
                       Padding(
                           padding: const EdgeInsets.all(16),
                           child: ClipRRect(
@@ -143,7 +131,7 @@ class _AdPageState extends State<AdPage> {
                               ))),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 15, right: 15, bottom: 5),
+                            left: 15, right: 15, bottom: 3),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -155,7 +143,7 @@ class _AdPageState extends State<AdPage> {
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Align(
                                     child: Text(
-                                      data['price'].toString(),
+                                      price.round().toString(),
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),
@@ -167,16 +155,17 @@ class _AdPageState extends State<AdPage> {
                             ),
                             Row(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(mileage.round().toString() +
+                                          ' miles')),
+                                ),
                                 Icon(
                                   FontAwesome.tachometer,
                                   color: Colors.black54,
                                   size: 20,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(data['mileage'] + ' Miles')),
                                 ),
                               ],
                             )
@@ -187,7 +176,8 @@ class _AdPageState extends State<AdPage> {
                         height: 5,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, bottom: 3),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -214,16 +204,16 @@ class _AdPageState extends State<AdPage> {
                             ),
                             Row(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(data['year'])),
+                                ),
                                 Icon(
                                   FontAwesomeIcons.calendarAlt,
                                   color: Colors.black54,
-                                  size: 18,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(data['year'])),
+                                  size: 20,
                                 ),
                               ],
                             )
@@ -234,7 +224,8 @@ class _AdPageState extends State<AdPage> {
                         height: 10,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, bottom: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -261,16 +252,16 @@ class _AdPageState extends State<AdPage> {
                             ),
                             Row(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(data['gearbox'])),
+                                ),
                                 Icon(
                                   FontAwesomeIcons.cogs,
                                   color: Colors.black54,
-                                  size: 18,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(data['gearbox'])),
+                                  size: 20,
                                 ),
                               ],
                             )
@@ -281,7 +272,8 @@ class _AdPageState extends State<AdPage> {
                         height: 10,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, bottom: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -308,17 +300,17 @@ class _AdPageState extends State<AdPage> {
                             ),
                             Row(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(timeAgo.format(
+                                          DateTime.parse(data['time'])))),
+                                ),
                                 Icon(
                                   FontAwesomeIcons.clock,
                                   color: Colors.black54,
                                   size: 20,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(timeAgo.format(
-                                          DateTime.parse(data['time'])))),
                                 ),
                               ],
                             )
