@@ -99,7 +99,7 @@ class _AdPageState extends State<AdPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                FontAwesomeIcons.mapMarkerAlt,
+                                FontAwesomeIcons.locationDot,
                                 size: 20,
                                 color: Colors.grey,
                               ),
@@ -121,7 +121,7 @@ class _AdPageState extends State<AdPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
-                              FontAwesomeIcons.ad,
+                              FontAwesomeIcons.rectangleAd,
                               size: 20,
                               color: Colors.black54,
                             )
@@ -156,7 +156,7 @@ class _AdPageState extends State<AdPage> {
                           children: [
                             Row(
                               children: [
-                                Icon(FontAwesomeIcons.poundSign,
+                                Icon(FontAwesomeIcons.sterlingSign,
                                     size: 20, color: Colors.black54),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
@@ -230,7 +230,7 @@ class _AdPageState extends State<AdPage> {
                                       child: Text(data['year'])),
                                 ),
                                 Icon(
-                                  FontAwesomeIcons.calendarAlt,
+                                  FontAwesomeIcons.calendarDays,
                                   color: Colors.black54,
                                   size: 20,
                                 ),
@@ -278,7 +278,7 @@ class _AdPageState extends State<AdPage> {
                                       child: Text(data['gearbox'])),
                                 ),
                                 Icon(
-                                  FontAwesomeIcons.cogs,
+                                  FontAwesomeIcons.gears,
                                   color: Colors.black54,
                                   size: 20,
                                 ),

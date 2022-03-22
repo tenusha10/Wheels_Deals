@@ -50,7 +50,7 @@ class _ImageSwipeState extends State<ImageSwipe> {
                         width: selectedPage == i ? 25 : 10,
                         height: 10,
                         decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.black.withOpacity(0.4),
                             borderRadius: BorderRadius.circular(12)),
                       )
                   ],

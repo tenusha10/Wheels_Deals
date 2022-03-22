@@ -39,8 +39,9 @@ dependencies:
   flutter_image_compress: ^1.1.0
   timeago: ^3.2.2
   intl: ^0.17.0
-  font_awesome_flutter: ^8.8.1
+  font_awesome_flutter: ^10.0.0
   flutter_icons: ^1.1.0
+  line_awesome_icons: ^1.0.4+2
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +97,9 @@ flutter:
     - family: Gugi
       fonts:
         - asset: fonts/Gugi-Regular.ttf
+    - family:  MyFlutterApp
+      fonts:
+        - asset: fonts/CustomIcons.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

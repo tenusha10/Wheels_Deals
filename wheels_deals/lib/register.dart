@@ -129,7 +129,7 @@ class _registerState extends State<register> {
       'uId': userId,
       'userNumber': _phoneConfirmController.text.trim(),
       'imgPro': imageUrl,
-      'time': DateTime.now()
+      'time': DateTime.now().toString()
     };
 
     FirebaseFirestore.instance.collection('users').doc(userId).set(userData);

@@ -65,7 +65,8 @@ class _sellCarsState extends State<sellCars> {
       bodyType = "Body Type",
       gearbox = 'GearBox',
       NoofDoors = 'Number of Doors',
-      Description;
+      Description,
+      userCreatedTime;
   QuerySnapshot cars;
   //File _image;
   ImagePicker picker = ImagePicker();
@@ -81,6 +82,7 @@ class _sellCarsState extends State<sellCars> {
       setState(() {
         userImageUrl = results.data()['imgPro'];
         getUserName = results.data()['userName'];
+        userCreatedTime = results.data()['time'];
       });
     });
   }
@@ -203,6 +205,9 @@ class _sellCarsState extends State<sellCars> {
                     child: Text('Post Ad'),
                     onPressed: () async {
                       validPostcode = await checkPostcode(this.Postcode);
+                      String euro;
+                      if (car.euroStatus == null) {}
+
                       if (_formKeyCarSell.currentState.validate()) {
                         print('Validation complete');
                         Map<String, dynamic> carData = {
@@ -228,7 +233,12 @@ class _sellCarsState extends State<sellCars> {
                           'description': this.Description,
                           'price': this.Price.toString(),
                           'imageURls': imageUrlList,
+                          'taxStatus': car.taxStatus,
+                          'taxDueDate': car.taxDueDate,
+                          'motStatus': car.motStatus,
+                          'euroStatus': car.euroStatus,
                           'time': DateTime.now().toString(),
+                          'userCreatedTime': userCreatedTime
                         };
 
                         addData(carData).then((value) {
