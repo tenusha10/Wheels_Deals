@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/globalVariables.dart';
@@ -596,7 +597,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             }
                                           },
                                           child: Icon(
-                                            FontAwesomeIcons.trashAlt,
+                                            FontAwesomeIcons.trashCan,
                                             size: 20,
                                             color: Colors.black54,
                                           )),
@@ -621,7 +622,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        Icon(FontAwesomeIcons.poundSign,
+                                        Icon(FontAwesomeIcons.sterlingSign,
                                             size: 20, color: Colors.black54),
                                         Padding(
                                           padding:
@@ -650,7 +651,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                       ' miles')),
                                         ),
                                         Icon(
-                                          FontAwesomeIcons.tachometerAlt,
+                                          FontAwesome.tachometer,
                                           color: Colors.black54,
                                           size: 20,
                                         ),

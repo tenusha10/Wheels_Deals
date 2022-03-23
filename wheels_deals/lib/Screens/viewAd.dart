@@ -177,7 +177,7 @@ class _ViewAdState extends State<ViewAd> {
                                   size: 26,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 8),
                                   child: Align(
                                     child: Text(
                                       data['bodyType'],
@@ -225,7 +225,7 @@ class _ViewAdState extends State<ViewAd> {
                                   size: 26,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 8),
                                   child: Align(
                                     child: Text(
                                       data['engineCapacity'] + 'L',
@@ -274,15 +274,20 @@ class _ViewAdState extends State<ViewAd> {
                             Row(
                               children: [
                                 data['fuelType'] == 'ELECTRIC'
-                                    ? Icon(
-                                        MyFlutterApp.electric,
-                                        color: Colors.black54,
-                                        size: 20,
-                                      )
-                                    : Icon(
-                                        FontAwesomeIcons.gasPump,
-                                        color: Colors.black54,
-                                        size: 20,
+                                    ? Padding(
+                                        padding: EdgeInsets.only(left: 2),
+                                        child: Icon(
+                                          MyFlutterApp.electric,
+                                          color: Colors.black54,
+                                          size: 20,
+                                        ))
+                                    : Padding(
+                                        padding: EdgeInsets.only(left: 4),
+                                        child: Icon(
+                                          FontAwesomeIcons.gasPump,
+                                          color: Colors.black54,
+                                          size: 20,
+                                        ),
                                       ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
@@ -317,7 +322,7 @@ class _ViewAdState extends State<ViewAd> {
                         ),
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 7,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -391,7 +396,7 @@ class _ViewAdState extends State<ViewAd> {
                                   size: 28,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 7),
                                   child: Align(
                                     child: Text(
                                       data['taxStatus'],
@@ -430,6 +435,67 @@ class _ViewAdState extends State<ViewAd> {
                         ),
                       ),
                       SizedBox(
+                        height: 7,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, bottom: 3),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Icon(
+                                    FontAwesomeIcons.calendar,
+                                    color: Colors.black54,
+                                    size: 20,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Align(
+                                    child: Text(
+                                      'Tax Due Date : ' + data['taxDueDate'],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    alignment: Alignment.topLeft,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                data['numofDoors'] == '5 Door' ||
+                                        data['numofDoors'] == '3 Door'
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Text('4 Seats')),
+                                      )
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Text('7 Seats')),
+                                      ),
+                                Icon(
+                                  MyFlutterApp.car_seat,
+                                  color: Colors.black87,
+                                  size: 24,
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
                         height: 9,
                       ),
                       Padding(
@@ -440,10 +506,13 @@ class _ViewAdState extends State<ViewAd> {
                           children: [
                             Row(
                               children: [
-                                Icon(
-                                  MyFlutterApp.mot,
-                                  color: Colors.black87,
-                                  size: 22,
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Icon(
+                                    MyFlutterApp.mot,
+                                    color: Colors.black87,
+                                    size: 22,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
@@ -504,7 +573,7 @@ class _ViewAdState extends State<ViewAd> {
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
-                              shadowColor: Colors.black,
+                              shadowColor: Colors.grey,
                               clipBehavior: Clip.antiAlias,
                               child: Column(
                                 children: [
