@@ -87,7 +87,7 @@ class carModels {
         'iX',
         'Z4'
       ];
-    } else if (make.contains('Ford')) {
+    } else if (make.contains('FORD')) {
       ModelList = [
         'Model',
         'Ecosport',
@@ -102,7 +102,7 @@ class carModels {
         'S-Max',
         'Galaxy',
       ];
-    } else if (make.contains('Volkswagen')) {
+    } else if (make.contains('VOLKSWAGEN')) {
       ModelList = [
         'Arteon',
         'Beetle',
@@ -122,7 +122,7 @@ class carModels {
         'T-cross',
         'T-Roc'
       ];
-    } else if (make.contains('Toyota')) {
+    } else if (make.contains('TOYATA')) {
       ModelList = [
         'Aygo',
         'Yaris',
@@ -135,10 +135,10 @@ class carModels {
         'Highlander',
         'Mirai'
       ];
-    } else if (make.contains('Tesla')) {
-      ModelList = ['Model 3', 'Model S', 'Model X', 'Model Y'];
+    } else if (make.contains('TESLA')) {
+      ModelList = ['Model', 'Model 3', 'Model S', 'Model X', 'Model Y'];
     } else if (make.contains('Volvo')) {
-      ModelList = ['XC40', 'XC60', 'XC90', 'S60', 'S90', 'V60', 'V90'];
+      ModelList = ['Model', 'XC40', 'XC60', 'XC90', 'S60', 'S90', 'V60', 'V90'];
     } else if (make.contains('Subaru')) {
       ModelList = [
         'XV',
@@ -149,7 +149,7 @@ class carModels {
         'Outback',
         'WRX'
       ];
-    } else if (make.contains('Seat')) {
+    } else if (make.contains('SEAT')) {
       ModelList = ['Ibiza', 'Leon', 'Ateca', 'Arona', 'Tarraco', 'Mii'];
     } else if (make.contains('Skoda')) {
       ModelList = [
@@ -161,8 +161,8 @@ class carModels {
         'Karoq',
         'Enyaq'
       ];
-    } else if (make.contains('Cupra')) {
-      ModelList = ['Formentor', 'Ateca'];
+    } else if (make.toLowerCase() == 'cupra') {
+      ModelList = ['Model', 'Formentor', 'Ateca', 'Leon'];
     } else if (make.contains('Smart')) {
       ModelList = ['Smart Eq'];
     } else if (make.contains('Renault')) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/Screens/AccountScreen.dart';
 import 'package:wheels_deals/Screens/AdPage.dart';
+import 'package:wheels_deals/Screens/Search_cars.dart';
 import 'package:wheels_deals/Screens/Sell_cars.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,9 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final screens = [
     AdPage(),
-    Center(
-      child: Text('Search'),
-    ),
+    SearchCars(),
     sellCars(),
     Center(
       child: Text('Saved'),

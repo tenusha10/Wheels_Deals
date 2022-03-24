@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Screens/viewAd.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
+import 'package:wheels_deals/presentation/my_flutter_app_icons.dart';
 
 class AdPage extends StatefulWidget {
   @override
@@ -33,6 +35,11 @@ class _AdPageState extends State<AdPage> {
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width,
         _screenHeight = MediaQuery.of(context).size.height;
+
+    Future<String> getCity(postcode) async {
+      return await geocodeRequest
+          .geolocationPostcodetoCity(postcode.toString().toLowerCase());
+    }
 
     return Container(
         padding: EdgeInsets.all(5),
@@ -62,6 +69,8 @@ class _AdPageState extends State<AdPage> {
                       document.data() as Map<String, dynamic>;
                   double price = double.parse(data['price']);
                   double mileage = double.parse(data['mileage']);
+                  String postcode = data['userPostcode'];
+
                   return Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -74,8 +83,8 @@ class _AdPageState extends State<AdPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ViewAd(
-                                        AdvertID: document.id,
-                                      )));
+                                      AdvertID: document.id,
+                                      estlocation: postcode)));
                         },
                         leading: GestureDetector(
                           onTap: () {},
@@ -107,7 +116,7 @@ class _AdPageState extends State<AdPage> {
                                 width: 5,
                               ),
                               Text(
-                                data['userPostcode'].toString().toUpperCase(),
+                                data['location'],
                                 style: TextStyle(
                                     color: Colors.black.withOpacity(0.6)),
                               ),
@@ -134,8 +143,8 @@ class _AdPageState extends State<AdPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ViewAd(
-                                        AdvertID: document.id,
-                                      )));
+                                      AdvertID: document.id,
+                                      estlocation: postcode)));
                         },
                         child: Padding(
                             padding: const EdgeInsets.all(16),
@@ -277,11 +286,17 @@ class _AdPageState extends State<AdPage> {
                                       alignment: Alignment.topRight,
                                       child: Text(data['gearbox'])),
                                 ),
-                                Icon(
-                                  FontAwesomeIcons.gears,
-                                  color: Colors.black54,
-                                  size: 20,
-                                ),
+                                data['gearbox'] == 'Manual'
+                                    ? Icon(
+                                        MyFlutterApp.manual_transmission,
+                                        color: Colors.black54,
+                                        size: 22,
+                                      )
+                                    : Icon(
+                                        MyFlutterApp.automatic_transmission,
+                                        color: Colors.black54,
+                                        size: 24,
+                                      ),
                               ],
                             )
                           ],

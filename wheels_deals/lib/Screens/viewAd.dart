@@ -1,20 +1,24 @@
 import 'dart:convert';
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
+import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Widgets/image_swipe.dart';
 import '/presentation/my_flutter_app_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:timeago/timeago.dart' as timeAgo;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_static_maps_controller/google_static_maps_controller.dart'
+    as sMaps;
 
 class ViewAd extends StatefulWidget {
   final String AdvertID;
-  ViewAd({this.AdvertID});
+  final String estlocation;
+  ViewAd({this.AdvertID, this.estlocation});
 
   @override
   State<ViewAd> createState() => _ViewAdState();
@@ -23,6 +27,20 @@ class ViewAd extends StatefulWidget {
 class _ViewAdState extends State<ViewAd> {
   final CollectionReference _carAdReference =
       FirebaseFirestore.instance.collection('cars');
+  List latlng;
+
+  void getlatlng() async {
+    latlng =
+        await geocodeRequest.geolocationPostcodetolatlng(widget.estlocation);
+  }
+
+  @override
+  void initState() {
+    print(widget.estlocation);
+    print(widget.AdvertID);
+    getlatlng();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +90,19 @@ class _ViewAdState extends State<ViewAd> {
                 double price = double.parse(data['price']);
                 double mileage = double.parse(data['mileage']);
                 List imageList = data['imageURls'];
+
                 String membersince =
                     timeAgo.format(DateTime.parse(data['userCreatedTime']));
+
+                sMaps.StaticMapController _controller =
+                    sMaps.StaticMapController(
+                        width: 300,
+                        height: 300,
+                        googleApiKey: 'AIzaSyCsnujoiLStcDjAxK4Ier7paGsTxifP2Y4',
+                        zoom: 12,
+                        center: sMaps.Location(double.parse(data['latlng'][0]),
+                            double.parse(data['latlng'][1])));
+                ImageProvider image = _controller.image;
 
                 return ListView(
                     //padding: EdgeInsets.only(left: 1, right: 1),
@@ -111,22 +140,22 @@ class _ViewAdState extends State<ViewAd> {
                                   fontSize: 20, color: Colors.deepPurple),
                               textAlign: TextAlign.left,
                             ),
-                            SizedBox(
-                              width: 230,
+                            Padding(
+                              padding: EdgeInsets.only(left: 200),
+                              child: Text(
+                                mileage.round().toString() + ' miles',
+                                style: GoogleFonts.anton(
+                                    fontSize: 18, color: Colors.black87),
+                                textAlign: TextAlign.right,
+                              ),
                             ),
-                            Text(
-                              mileage.round().toString() + ' miles',
-                              style: GoogleFonts.anton(
-                                  fontSize: 18, color: Colors.black87),
-                              textAlign: TextAlign.right,
-                            ),
-                            SizedBox(
-                              width: 7,
-                            ),
-                            Icon(
-                              FontAwesome.tachometer,
-                              size: 20,
-                              color: Colors.black87,
+                            Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Icon(
+                                FontAwesome.tachometer,
+                                size: 20,
+                                color: Colors.black87,
+                              ),
                             )
                           ],
                         ),
@@ -456,12 +485,20 @@ class _ViewAdState extends State<ViewAd> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Align(
-                                    child: Text(
-                                      'Tax Due Date : ' + data['taxDueDate'],
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
+                                    child: data['taxDueDate'] != null
+                                        ? Text(
+                                            'Tax Due Date : ' +
+                                                data['taxDueDate'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          )
+                                        : Text(
+                                            'Tax Due Date : ' + 'N/A',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
                                     alignment: Alignment.topLeft,
                                   ),
                                 )
@@ -686,7 +723,19 @@ class _ViewAdState extends State<ViewAd> {
                                 ],
                               ),
                             ),
-                          ))
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, right: 5),
+                        child: Text(
+                          'Seller Location',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Image(image: image),
+                      )
                     ]);
               }
               return Scaffold(

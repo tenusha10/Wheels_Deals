@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:wheels_deals/Screens/HomeScreen.dart';
 import 'package:wheels_deals/authentication_service.dart';

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:wheels_deals/API/CarModels.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
 import 'package:wheels_deals/API/firebase_api.dart';
+import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Screens/HomeScreen.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
 import 'package:http/http.dart' as http;
@@ -171,14 +172,16 @@ class _sellCarsState extends State<sellCars> {
 
   Future<bool> showView(regPlate) async {
     var car = await getcarsdvla(regPlate);
-    await uploadFile(image1);
+    /*await uploadFile(image1);
     await uploadFile(image2);
-    await uploadFile(image3);
+    await uploadFile(image3); */
     List<String> carmodels = carModels().getModels(car.make);
     List<String> body_types = carModels().getBodyTypes();
     List<String> gearbox_types = ['GearBox', 'Automatic', 'Manual'];
     List<String> seat_options = ['Number of Doors', '3 Door', '5 Door'];
     bool validPostcode = true;
+    String location = "";
+    List latlng;
     return showDialog(
         context: context,
         builder: (context) {
@@ -205,9 +208,22 @@ class _sellCarsState extends State<sellCars> {
                     child: Text('Post Ad'),
                     onPressed: () async {
                       validPostcode = await checkPostcode(this.Postcode);
-                      String euro;
-                      if (car.euroStatus == null) {}
+                      location = await geocodeRequest
+                          .geolocationPostcodetoCity(this.Postcode);
+                      latlng = await geocodeRequest
+                          .geolocationPostcodetolatlng(this.Postcode);
+                      String eurostatus = "", taxdue = "";
 
+                      if (car.euroStatus != null) {
+                        eurostatus = car.euroStatus;
+                      } else {
+                        eurostatus = "";
+                      }
+                      if (car.taxStatus == 'SORN') {
+                        taxdue = "";
+                      } else {
+                        taxdue = car.taxDueDate;
+                      }
                       if (_formKeyCarSell.currentState.validate()) {
                         print('Validation complete');
                         Map<String, dynamic> carData = {
@@ -234,11 +250,13 @@ class _sellCarsState extends State<sellCars> {
                           'price': this.Price.toString(),
                           'imageURls': imageUrlList,
                           'taxStatus': car.taxStatus,
-                          'taxDueDate': car.taxDueDate,
+                          'taxDueDate': taxdue,
                           'motStatus': car.motStatus,
-                          'euroStatus': car.euroStatus,
+                          'euroStatus': eurostatus,
                           'time': DateTime.now().toString(),
-                          'userCreatedTime': userCreatedTime
+                          'userCreatedTime': userCreatedTime,
+                          'location': location,
+                          'latlng': latlng
                         };
 
                         addData(carData).then((value) {
@@ -342,10 +360,15 @@ class _sellCarsState extends State<sellCars> {
                           SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            'Tax Due Date: ' + car.taxDueDate,
-                            textAlign: TextAlign.left,
-                          ),
+                          car.taxStatus == 'SORN'
+                              ? Text(
+                                  'Tax Due Date: ' + 'N/A',
+                                  textAlign: TextAlign.left,
+                                )
+                              : Text(
+                                  'Tax Due Date: ' + car.taxDueDate,
+                                  textAlign: TextAlign.left,
+                                ),
                           SizedBox(
                             height: 5,
                           ),
@@ -792,7 +815,7 @@ class _sellCarsState extends State<sellCars> {
               style: ElevatedButton.styleFrom(primary: Colors.green),
               onPressed: () {
                 if (_formKeySell.currentState.validate()) {
-                  if (image1 == nullimage ||
+                  /*if (image1 == nullimage ||
                       image2 == nullimage ||
                       image3 == nullimage) {
                     showDialog(
@@ -836,8 +859,8 @@ class _sellCarsState extends State<sellCars> {
                     }).then((value) {
                       showView(_reg);
                     });
-                  }
-                  //showView(_reg);
+                  } */
+                  showView(_reg);
                 }
               },
               child: Text(

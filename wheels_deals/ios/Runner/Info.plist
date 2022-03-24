@@ -28,6 +28,8 @@
 	<string>Capture car photos</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Capture car videos</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs access to location when open.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

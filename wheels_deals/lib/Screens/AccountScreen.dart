@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
 import 'package:http/http.dart' as http;
@@ -105,6 +106,11 @@ class _AccountScreenState extends State<AccountScreen> {
                       CollectionReference cars =
                           FirebaseFirestore.instance.collection('cars');
                       validPostcode = await checkPostcode(Postcode);
+                      String location = await geocodeRequest
+                          .geolocationPostcodetoCity(Postcode);
+                      List latlng;
+                      latlng = await geocodeRequest
+                          .geolocationPostcodetolatlng(Postcode);
                       if (_formKeyUpdateCar.currentState.validate()) {
                         Map<String, dynamic> carData = {
                           'userName': Name,
@@ -119,6 +125,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           'cat': CAT.toString(),
                           'description': Description,
                           'price': Price.toString(),
+                          'location': location,
+                          'latlng': latlng
                         };
                         cars.doc(docID).update(carData).then((value) {
                           print('updated');
