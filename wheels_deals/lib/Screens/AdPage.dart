@@ -27,7 +27,6 @@ class _AdPageState extends State<AdPage> {
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser.uid;
-    print(userId);
     userEmail = FirebaseAuth.instance.currentUser.email;
   }
 

@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
+import 'package:wheels_deals/Googlemaps_requests/MapUtils.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Widgets/image_swipe.dart';
 import '/presentation/my_flutter_app_icons.dart';
@@ -36,14 +39,28 @@ class _ViewAdState extends State<ViewAd> {
 
   @override
   void initState() {
-    print(widget.estlocation);
-    print(widget.AdvertID);
     getlatlng();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    sendtxt(String phoneNumber) async {
+      if (Platform.isAndroid) {
+        String uri = 'sms:${phoneNumber}?body=Hi';
+        await launch(uri);
+      } else if (Platform.isIOS) {
+        // iOS
+        String uri = 'sms:${phoneNumber}';
+        await launch(uri);
+      }
+    }
+
+    sendEmail(String email) async {
+      String uri = "mailto:smith@example.org?subject=News&body=New%20plugin";
+      await launch(uri);
+    }
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -96,12 +113,22 @@ class _ViewAdState extends State<ViewAd> {
 
                 sMaps.StaticMapController _controller =
                     sMaps.StaticMapController(
-                        width: 300,
+                        width: 500,
                         height: 300,
                         googleApiKey: 'AIzaSyCsnujoiLStcDjAxK4Ier7paGsTxifP2Y4',
-                        zoom: 12,
+                        zoom: 13,
                         center: sMaps.Location(double.parse(data['latlng'][0]),
-                            double.parse(data['latlng'][1])));
+                            double.parse(data['latlng'][1])),
+                        markers: <sMaps.Marker>[
+                      sMaps.Marker(
+                        color: Colors.purple,
+                        locations: [
+                          sMaps.Location(double.parse(data['latlng'][0]),
+                              double.parse(data['latlng'][1]))
+                        ],
+                      )
+                    ]);
+
                 ImageProvider image = _controller.image;
 
                 return ListView(
@@ -302,13 +329,13 @@ class _ViewAdState extends State<ViewAd> {
                           children: [
                             Row(
                               children: [
-                                data['fuelType'] == 'ELECTRIC'
+                                data['fuelType'] == 'ELECTRICITY'
                                     ? Padding(
                                         padding: EdgeInsets.only(left: 2),
                                         child: Icon(
                                           MyFlutterApp.electric,
-                                          color: Colors.black54,
-                                          size: 20,
+                                          color: Colors.black87,
+                                          size: 22,
                                         ))
                                     : Padding(
                                         padding: EdgeInsets.only(left: 4),
@@ -725,7 +752,7 @@ class _ViewAdState extends State<ViewAd> {
                             ),
                           )),
                       Padding(
-                        padding: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 5, right: 5, top: 5),
                         child: Text(
                           'Seller Location',
                           style: TextStyle(
@@ -733,9 +760,140 @@ class _ViewAdState extends State<ViewAd> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Image(image: image),
-                      )
+                        padding: EdgeInsets.only(left: 5, right: 5, top: 5),
+                        child: Text(
+                          data['location'],
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, right: 5, top: 5),
+                        child: Text(
+                          'Location is approximate',
+                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 5, right: 5, top: 2),
+                          child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                              alignment: Alignment.topLeft,
+                              height: 250,
+                              width: MediaQuery.of(context).size.width,
+                              child: InkWell(
+                                onTap: () {
+                                  MapUtils.openMap(
+                                      double.parse(data['latlng'][0]),
+                                      double.parse(data['latlng'][1]));
+                                },
+                                child: Image(
+                                  image: image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ))),
+                      Padding(
+                          padding:
+                              EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  sendtxt(data['userPhoneNumber'].toString());
+                                },
+                                child: Container(
+                                    height: 40,
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                        gradient: new LinearGradient(
+                                            colors: [
+                                              Colors.deepPurpleAccent,
+                                              Colors.indigoAccent,
+                                            ],
+                                            begin: const FractionalOffset(
+                                                0.0, 0.0),
+                                            end: const FractionalOffset(
+                                                1.0, 0.0),
+                                            stops: [0.0, 1.0],
+                                            tileMode: TileMode.clamp),
+                                        borderRadius:
+                                            BorderRadius.circular(16)),
+                                    //alignment: Alignment.center,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          FontAwesomeIcons.commentSms,
+                                          color: Colors.white,
+                                          size: 26,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Text Seller',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18),
+                                        )
+                                      ],
+                                    )),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20, right: 5),
+                                  child: InkWell(
+                                    onTap: () {
+                                      sendEmail(data['userEmail']);
+                                    },
+                                    child: Container(
+                                        height: 40,
+                                        width: 180,
+                                        decoration: BoxDecoration(
+                                            gradient: new LinearGradient(
+                                                colors: [
+                                                  Colors.deepPurpleAccent,
+                                                  Colors.purpleAccent,
+                                                ],
+                                                begin: const FractionalOffset(
+                                                    0.0, 0.0),
+                                                end: const FractionalOffset(
+                                                    1.0, 0.0),
+                                                stops: [0.0, 1.0],
+                                                tileMode: TileMode.clamp),
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        //alignment: Alignment.center,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Icon(
+                                              FontAwesomeIcons.envelope,
+                                              color: Colors.white,
+                                              size: 26,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'Email Seller',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18),
+                                            )
+                                          ],
+                                        )),
+                                  ))
+                            ],
+                          ))
                     ]);
               }
               return Scaffold(

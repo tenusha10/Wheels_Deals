@@ -29,7 +29,12 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Capture car videos</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-<string>This app needs access to location when open.</string>
+	<string>This app needs access to location when open.</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    	<string>googlechromes</string>
+    	<string>comgooglemaps</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
