@@ -1,5 +1,5 @@
+//import 'dart:html';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:wheels_deals/Googlemaps_requests/distanceMatrix.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Screens/viewAd.dart';
 import 'package:wheels_deals/globalVariables.dart';
@@ -44,7 +45,6 @@ class _AdPageState extends State<AdPage> {
             colors: [Colors.deepPurple[50], Colors.purple[100]],
           ),
         ),
-        //color: Color.fromARGB(255, 202, 200, 200),
         child: StreamBuilder<QuerySnapshot>(
             stream: _carsStream,
             builder:
@@ -126,7 +126,7 @@ class _AdPageState extends State<AdPage> {
                               FontAwesomeIcons.rectangleAd,
                               size: 20,
                               color: Colors.deepPurple,
-                            )
+                            ),
                           ],
                         ),
                       ),

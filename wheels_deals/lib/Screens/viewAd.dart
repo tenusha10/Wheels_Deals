@@ -9,8 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
 import 'package:wheels_deals/Googlemaps_requests/MapUtils.dart';
+import 'package:wheels_deals/Googlemaps_requests/distanceMatrix.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Widgets/image_swipe.dart';
+import 'package:wheels_deals/globalVariables.dart';
 import '/presentation/my_flutter_app_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:timeago/timeago.dart' as timeAgo;
@@ -31,10 +33,24 @@ class _ViewAdState extends State<ViewAd> {
   final CollectionReference _carAdReference =
       FirebaseFirestore.instance.collection('cars');
   List latlng;
+  var distanceData;
+  bool f = false;
 
   void getlatlng() async {
     latlng =
         await geocodeRequest.geolocationPostcodetolatlng(widget.estlocation);
+  }
+
+  Future<dynamic> calculateDistance(
+    String destlat,
+    String destlng,
+    String originlat,
+    String originlng,
+  ) async {
+    var res = await distanceMatrix.getDistance(
+        destlat, destlng, originlat, originlng);
+
+    return res;
   }
 
   @override
@@ -760,18 +776,93 @@ class _ViewAdState extends State<ViewAd> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 5, right: 5, top: 5),
-                        child: Text(
-                          data['location'],
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
+                          padding: EdgeInsets.only(left: 5, right: 5, top: 15),
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.locationDot,
+                                color: Colors.black54,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                data['location'],
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                            ],
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                        child: FutureBuilder(
+                          future: calculateDistance(
+                              UserlatlngPosition.latitude.toString(),
+                              UserlatlngPosition.longitude.toString(),
+                              data['latlng'][0],
+                              data['latlng'][1]),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot2) {
+                            if (snapshot2.hasError) {
+                              return Text('Error: ${snapshot2.error}');
+                            }
+                            if (snapshot2.hasData) {
+                              var result = snapshot2.data;
+                              //print(snapshot2.data);
+                              return Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.locationArrow,
+                                    color: Colors.black54,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    result['rows'][0]['elements'][0]['distance']
+                                                ['text']
+                                            .toString() +
+                                        ' away',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 50),
+                                      child: Icon(
+                                        FontAwesomeIcons.route,
+                                        color: Colors.black54,
+                                        size: 20,
+                                      )),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 5),
+                                    child: Text(
+                                      result['rows'][0]['elements'][0]
+                                                  ['duration']['text']
+                                              .toString() +
+                                          ' away*',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            return Text('Loading');
+                          },
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5, right: 5, top: 5),
                         child: Text(
-                          'Location is approximate',
+                          'Location and Travel Times are approximate',
                           style: TextStyle(fontSize: 14, color: Colors.black54),
                         ),
                       ),
