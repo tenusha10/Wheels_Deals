@@ -22,7 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final screens = [
     AdPage(),
-    SearchCars(),
+    Center(
+      child: Text('Search'),
+    ),
     sellCars(),
     Center(
       child: Text('Saved'),

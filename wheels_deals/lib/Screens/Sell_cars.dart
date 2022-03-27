@@ -18,6 +18,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:wheels_deals/globalVariables.dart';
+import 'package:wheels_deals/imageSelection/car_image.dart';
 import 'package:wheels_deals/imageSelection/user_image.dart';
 import 'package:path/path.dart' as p;
 import 'package:wheels_deals/DialogBox/loadingDialog.dart';
@@ -31,9 +32,12 @@ class sellCars extends StatefulWidget {
 }
 
 class _sellCarsState extends State<sellCars> {
-  final GlobalKey<FormState> _formKeySell = GlobalKey<FormState>();
-  final GlobalKey<FormState> _formKeyCarSell = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeySell2 = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyCarSell2 = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
+  final _Name = TextEditingController();
+  final _Telephone = TextEditingController();
+  final _Email = TextEditingController();
   String _reg;
   String Name, Telephone, Email, Postcode;
   double Price, mileage;
@@ -71,8 +75,8 @@ class _sellCarsState extends State<sellCars> {
   QuerySnapshot cars;
   //File _image;
   ImagePicker picker = ImagePicker();
-  // String imageUrl = '';
-  File image1, image2, image3, nullimage;
+  String imageUrl1 = '', imageUrl2 = '', imageUrl3 = '';
+  // File image1, image2, image3, nullimage;
 
   getUserData() {
     FirebaseFirestore.instance
@@ -84,6 +88,10 @@ class _sellCarsState extends State<sellCars> {
         userImageUrl = results.data()['imgPro'];
         getUserName = results.data()['userName'];
         userCreatedTime = results.data()['time'];
+        _Name.text = results.data()['userName'].toString();
+        Name = _Name.text;
+        _Telephone.text = results.data()['userNumber'].toString();
+        Telephone = _Telephone.text;
       });
     });
   }
@@ -172,9 +180,6 @@ class _sellCarsState extends State<sellCars> {
 
   Future<bool> showView(regPlate) async {
     var car = await getcarsdvla(regPlate);
-    /*await uploadFile(image1);
-    await uploadFile(image2);
-    await uploadFile(image3); */
     List<String> carmodels = carModels().getModels(car.make);
     List<String> body_types = carModels().getBodyTypes();
     List<String> gearbox_types = ['GearBox', 'Automatic', 'Manual'];
@@ -187,6 +192,7 @@ class _sellCarsState extends State<sellCars> {
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
+                backgroundColor: Color.fromARGB(255, 240, 240, 240),
                 title: Text(
                   "We found Your Car ! ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -208,10 +214,7 @@ class _sellCarsState extends State<sellCars> {
                     child: Text('Post Ad'),
                     onPressed: () async {
                       validPostcode = await checkPostcode(this.Postcode);
-                      location = await geocodeRequest
-                          .geolocationPostcodetoCity(this.Postcode);
-                      latlng = await geocodeRequest
-                          .geolocationPostcodetolatlng(this.Postcode);
+
                       String eurostatus = "", taxdue = "";
 
                       if (car.euroStatus != null) {
@@ -224,7 +227,11 @@ class _sellCarsState extends State<sellCars> {
                       } else {
                         taxdue = car.taxDueDate;
                       }
-                      if (_formKeyCarSell.currentState.validate()) {
+                      if (_formKeyCarSell2.currentState.validate()) {
+                        location = await geocodeRequest
+                            .geolocationPostcodetoCity(this.Postcode);
+                        latlng = await geocodeRequest
+                            .geolocationPostcodetolatlng(this.Postcode);
                         print('Validation complete');
                         Map<String, dynamic> carData = {
                           'userName': this.Name,
@@ -275,7 +282,7 @@ class _sellCarsState extends State<sellCars> {
                 ],
                 content: SingleChildScrollView(
                   child: Form(
-                      key: _formKeyCarSell,
+                      key: _formKeyCarSell2,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -590,6 +597,7 @@ class _sellCarsState extends State<sellCars> {
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           TextFormField(
+                            controller: _Name,
                             decoration: InputDecoration(hintText: 'Name'),
                             onChanged: (value) {
                               this.Name = value.trim();
@@ -609,6 +617,7 @@ class _sellCarsState extends State<sellCars> {
                             height: 5,
                           ),
                           TextFormField(
+                            controller: _Email,
                             decoration:
                                 InputDecoration(hintText: 'Email Address'),
                             onChanged: (value) {
@@ -630,6 +639,7 @@ class _sellCarsState extends State<sellCars> {
                             height: 5,
                           ),
                           TextFormField(
+                            controller: _Telephone,
                             decoration: InputDecoration(
                               hintText: 'Phone Number',
                             ),
@@ -686,6 +696,8 @@ class _sellCarsState extends State<sellCars> {
     super.initState();
     userId = FirebaseAuth.instance.currentUser.uid;
     userEmail = FirebaseAuth.instance.currentUser.email;
+    _Email.text = userEmail.toString();
+    Email = _Email.text;
     getUserData();
   }
 
@@ -695,177 +707,185 @@ class _sellCarsState extends State<sellCars> {
         body: SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Post an Advert',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Please enter your car Registration Number',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Form(
-              key: _formKeySell,
+          Padding(
+            padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+            child: Container(
+              alignment: Alignment.center,
+              height: 250,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  color: Color.fromARGB(255, 239, 207, 243)),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'Registration Plate'),
-                    onChanged: (String value) {
-                      _reg = value.toUpperCase().trim();
-                    },
-                    style: TextStyle(fontSize: 20),
-                    validator: (value) {
-                      if (value.trim() == null ||
-                          value.trim().isEmpty ||
-                          value.trim().length > 7) {
-                        return 'Please enter a valid Registration Number';
-                      }
-                      return null;
-                    },
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Post an Advert',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                ],
-              )),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Please upload 3 photos of your vechicle',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width * 5,
-              height: 300,
-              child: Scrollbar(
-                controller: _scrollController,
-                thickness: 8,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  controller: _scrollController,
-                  children: [
-                    Container(
-                      height: 200,
-                      width: 200,
-                      child: UserImage(
-                        onFileChanged: ((image1) {
-                          setState(() {
-                            this.image1 = image1;
-                          });
-                        }),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      height: 200,
-                      width: 200,
-                      child: UserImage(
-                        onFileChanged: ((image2) {
-                          setState(() {
-                            this.image2 = image2;
-                          });
-                        }),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      height: 200,
-                      width: 200,
-                      child: UserImage(
-                        onFileChanged: ((image3) {
-                          setState(() {
-                            this.image3 = image3;
-                          });
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.4,
-            height: MediaQuery.of(context).size.height * 0.04,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              onPressed: () {
-                if (_formKeySell.currentState.validate()) {
-                  /*if (image1 == nullimage ||
-                      image2 == nullimage ||
-                      image3 == nullimage) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Missing Images"),
-                            content: Text('Please, Upload 3 images'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, 'OK'),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        });
-                  } else {
-                    Timer _timer;
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          _timer = Timer(Duration(seconds: 3), (() {
-                            Navigator.of(context).pop();
-                          }));
-                          return AlertDialog(
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                circularProgress(),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text("Please wait...")
-                              ],
+                  Text(
+                    'Please enter your car Registration Number',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                    width: 200,
+                    height: 90,
+                    child: Form(
+                        key: _formKeySell2,
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            TextFormField(
+                              decoration: InputDecoration(
+                                  labelText: 'Registration Plate'),
+                              onChanged: (String value) {
+                                _reg = value.toUpperCase().trim();
+                              },
+                              style: TextStyle(fontSize: 20),
+                              validator: (value) {
+                                if (value.trim() == null ||
+                                    value.trim().isEmpty ||
+                                    value.trim().length > 7) {
+                                  return 'Please enter a valid Registration Number';
+                                }
+                                return null;
+                              },
                             ),
-                          );
-                        }).then((value) {
-                      if (_timer.isActive) {
-                        _timer.cancel();
-                      }
-                    }).then((value) {
-                      showView(_reg);
-                    });
-                  } */
-                  showView(_reg);
-                }
-              },
-              child: Text(
-                'Find Car',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                          ],
+                        )),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                    width: 150,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKeySell2.currentState.validate()) {
+                          if (!imageUrl1.isEmpty) {
+                            imageUrlList.add(imageUrl1);
+                          } else if (!imageUrl2.isEmpty) {
+                            imageUrlList.add(imageUrl2);
+                          } else if (!imageUrl3.isEmpty) {
+                            imageUrlList.add(imageUrl3);
+                          } else {
+                            print('no images');
+                          }
+                          if (imageUrlList.isNotEmpty) {
+                            showView(_reg);
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: Text("Missing Images"),
+                                      content: Text(
+                                          'Please, Upload at least 1 image'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'),
+                                        )
+                                      ]);
+                                });
+                          }
+                        }
+                      },
+                      child: Text(
+                        'Find Car',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  color: Color.fromARGB(255, 240, 239, 240)),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Please upload upto 3 photos of your vechicle',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width * 5,
+                      height: 300,
+                      child: Scrollbar(
+                        controller: _scrollController,
+                        thickness: 8,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          controller: _scrollController,
+                          children: [
+                            Container(
+                              height: 200,
+                              width: 200,
+                              child: carImage(
+                                onFileChanged: ((image) {
+                                  setState(() {
+                                    this.imageUrl1 = image;
+                                  });
+                                }),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Container(
+                              height: 200,
+                              width: 200,
+                              child: carImage(
+                                onFileChanged: ((image2) {
+                                  setState(() {
+                                    this.imageUrl2 = image2;
+                                  });
+                                }),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Container(
+                              height: 200,
+                              width: 200,
+                              child: carImage(
+                                onFileChanged: ((image3) {
+                                  setState(() {
+                                    this.imageUrl3 = image3;
+                                  });
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                ],
               ),
             ),
           ),

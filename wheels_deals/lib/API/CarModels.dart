@@ -104,6 +104,7 @@ class carModels {
       ];
     } else if (make.contains('VOLKSWAGEN')) {
       ModelList = [
+        'Model',
         'Arteon',
         'Beetle',
         'Eos',
@@ -124,6 +125,7 @@ class carModels {
       ];
     } else if (make.contains('TOYATA')) {
       ModelList = [
+        'Model',
         'Aygo',
         'Yaris',
         'Corolla',
@@ -137,9 +139,9 @@ class carModels {
       ];
     } else if (make.contains('TESLA')) {
       ModelList = ['Model', 'Model 3', 'Model S', 'Model X', 'Model Y'];
-    } else if (make.contains('Volvo')) {
+    } else if (make.contains('VOLVO')) {
       ModelList = ['Model', 'XC40', 'XC60', 'XC90', 'S60', 'S90', 'V60', 'V90'];
-    } else if (make.contains('Subaru')) {
+    } else if (make.contains('SUBARU')) {
       ModelList = [
         'XV',
         'Impreza',
@@ -151,26 +153,45 @@ class carModels {
       ];
     } else if (make.contains('SEAT')) {
       ModelList = ['Ibiza', 'Leon', 'Ateca', 'Arona', 'Tarraco', 'Mii'];
-    } else if (make.contains('Skoda')) {
+    } else if (make.contains('SKODA')) {
       ModelList = [
+        'Model',
         'Kamiq',
         'Scala',
         'Fabia',
         'Octavia',
         'Superb',
         'Karoq',
-        'Enyaq'
+        'Enyaq',
+        'Citigo'
       ];
     } else if (make.toLowerCase() == 'cupra') {
       ModelList = ['Model', 'Formentor', 'Ateca', 'Leon'];
-    } else if (make.contains('Smart')) {
-      ModelList = ['Smart Eq'];
-    } else if (make.contains('Renault')) {
-      ModelList = ['Clio', 'Captur', 'ZOE', 'Kadjar', 'Koleos', 'Megane'];
-    } else if (make.contains('Porsche')) {
-      ModelList = ['718', '911', 'Taycan', 'Panamera', 'Macan', 'Cayenne'];
-    } else if (make.contains('Vauxhall')) {
+    } else if (make.contains('SMART')) {
+      ModelList = ['Model', 'Smart Eq'];
+    } else if (make.contains('RENAULT')) {
       ModelList = [
+        'Model',
+        'Clio',
+        'Captur',
+        'ZOE',
+        'Kadjar',
+        'Koleos',
+        'Megane'
+      ];
+    } else if (make.contains('PORSCHE')) {
+      ModelList = [
+        'Model',
+        '718',
+        '911',
+        'Taycan',
+        'Panamera',
+        'Macan',
+        'Cayenne'
+      ];
+    } else if (make.toLowerCase() == ('Vauxhall')) {
+      ModelList = [
+        'Model',
         'Corsa',
         'Mokka',
         'Astra',
@@ -179,14 +200,21 @@ class carModels {
         'Vivaro',
         'Insignia'
       ];
-    } else if (make.contains('Nissan')) {
-      ModelList = ['Leaf', 'Ariya', 'Micra', 'Juke', 'Qashqai', 'GTR'];
-    } else if (make.contains('Mini')) {
-      ModelList = ['3 Door Hatch', '5 Door Hatch', 'Clubman', 'CountryMan'];
-    } else if (make.contains('Mitsubishi')) {
-      ModelList = ['Outlander', 'ASX', 'Mirage', 'Shogun', 'Eclipse'];
-    } else if (make.contains('Mazda')) {
+    } else if (make.toLowerCase() == ('nissan').toLowerCase()) {
+      ModelList = ['Model', 'Leaf', 'Ariya', 'Micra', 'Juke', 'Qashqai', 'GTR'];
+    } else if (make.toLowerCase() == ('Mini')) {
       ModelList = [
+        'Model',
+        '3 Door Hatch',
+        '5 Door Hatch',
+        'Clubman',
+        'CountryMan'
+      ];
+    } else if (make.toLowerCase() == ('Mitsubishi')) {
+      ModelList = ['Model', 'Outlander', 'ASX', 'Mirage', 'Shogun', 'Eclipse'];
+    } else if (make.toLowerCase() == ('Mazda')) {
+      ModelList = [
+        'Model',
         'CX-5',
         'Mazda 3',
         'Mazda 6',
@@ -196,13 +224,13 @@ class carModels {
         'MX-30',
         'MX-5'
       ];
-    } else if (make.contains('Maserati')) {
+    } else if (make.toLowerCase() == ('Maserati')) {
       ModelList = ['Quattroporte', 'Levante', 'GT', 'GranCabrio'];
-    } else if (make.contains('Lotus')) {
+    } else if (make.toLowerCase() == ('Lotus')) {
       ModelList = ['Elise', 'Exige', 'Evora'];
-    } else if (make.contains('Lexus')) {
+    } else if (make.toLowerCase() == ('Lexus')) {
       ModelList = ['UX', 'NX', 'ES', 'RX', 'RC', 'LC', 'LS', 'LFA'];
-    } else if (make.contains('Land Rover')) {
+    } else if (make.toLowerCase() == ('Land Rover')) {
       ModelList = [
         'Range Rover',
         'Defender',
@@ -212,18 +240,18 @@ class carModels {
         'Range Rover Sport',
         'Range Rover Velar'
       ];
-    } else if (make.contains('Lamborghini')) {
-    } else if (make.contains('Kia')) {
-    } else if (make.contains('Jeep')) {
-    } else if (make.contains('Jaguar')) {
-    } else if (make.contains('Isuzu')) {
+    } else if (make.toLowerCase() == ('Lamborghini')) {
+    } else if (make.toLowerCase() == ('Kia')) {
+    } else if (make.toLowerCase() == ('Jeep')) {
+    } else if (make.toLowerCase() == ('Jaguar')) {
+    } else if (make.toLowerCase() == ('Isuzu')) {
     } else if (make.contains('Infinity')) {
     } else if (make.contains('Hyundai')) {
     } else if (make.contains('Honda')) {
     } else if (make.contains('Fiat')) {
     } else if (make.contains('Ferrari')) {
     } else if (make.contains('Dacia')) {
-    } else if (make.contains('CITROEN')) {
+    } else if (make.toLowerCase() == ('CITROEN')) {
       ModelList = [
         'Model',
         'C1',
