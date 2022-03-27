@@ -230,7 +230,7 @@ class carModels {
       ModelList = ['Elise', 'Exige', 'Evora'];
     } else if (make.toLowerCase() == ('Lexus')) {
       ModelList = ['UX', 'NX', 'ES', 'RX', 'RC', 'LC', 'LS', 'LFA'];
-    } else if (make.toLowerCase() == ('Land Rover')) {
+    } else if (make.toLowerCase() == ('Land Rover').toLowerCase()) {
       ModelList = [
         'Range Rover',
         'Defender',
@@ -251,7 +251,7 @@ class carModels {
     } else if (make.contains('Fiat')) {
     } else if (make.contains('Ferrari')) {
     } else if (make.contains('Dacia')) {
-    } else if (make.toLowerCase() == ('CITROEN')) {
+    } else if (make.toLowerCase() == ('CITROEN').toLowerCase()) {
       ModelList = [
         'Model',
         'C1',

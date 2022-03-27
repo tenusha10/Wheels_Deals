@@ -123,6 +123,18 @@ class _ViewAdState extends State<ViewAd> {
                 double price = double.parse(data['price']);
                 double mileage = double.parse(data['mileage']);
                 List imageList = data['imageURls'];
+                if (data['euroStatus'].toString().isNotEmpty ||
+                    data['euroStatus'].toString() == 'Elec') {
+                  ulez = true;
+                } else if (data['fuelType'] == 'DIESEL' &&
+                    int.parse(data['year'].toString()) < 2015) {
+                  ulez = false;
+                } else if (data['fuelType'] == 'PETROL' &&
+                    int.parse(data['year'].toString()) < 2006) {
+                  ulez = false;
+                } else {
+                  ulez = true;
+                }
 
                 String membersince =
                     timeAgo.format(DateTime.parse(data['userCreatedTime']));
@@ -610,20 +622,80 @@ class _ViewAdState extends State<ViewAd> {
                             ),
                             Row(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(data['colour'])),
+                                ),
+                                Icon(
+                                  FontAwesomeIcons.brush,
+                                  color: Colors.black54,
+                                  size: 20,
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 9,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, bottom: 3),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Icon(
+                                    FontAwesomeIcons.calendarDay,
+                                    color: Colors.black54,
+                                    size: 20,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Align(
+                                    child: data['motExpiry'] != ''
+                                        ? Text(
+                                            'MOT Due Date: ' +
+                                                data['motExpiry'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          )
+                                        : Text(
+                                            'MOT Due Date: N/A',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                    alignment: Alignment.topLeft,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
                                 data['cat'] == 'true'
                                     ? Padding(
                                         padding:
                                             const EdgeInsets.only(right: 10),
                                         child: Align(
                                             alignment: Alignment.topRight,
-                                            child: Text('Declared : CAT S/N')),
+                                            child: Text('CAT S/N: Declared')),
                                       )
                                     : Padding(
                                         padding:
                                             const EdgeInsets.only(right: 10),
                                         child: Align(
                                             alignment: Alignment.topRight,
-                                            child: Text('Not Declared')),
+                                            child:
+                                                Text('CAT S/N: Not Declared')),
                                       ),
                                 Icon(
                                   FontAwesomeIcons.carBurst,

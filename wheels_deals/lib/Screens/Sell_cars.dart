@@ -215,13 +215,21 @@ class _sellCarsState extends State<sellCars> {
                     onPressed: () async {
                       validPostcode = await checkPostcode(this.Postcode);
 
-                      String eurostatus = "", taxdue = "";
+                      String eurostatus = "", taxdue = "", motExpiry = "";
 
                       if (car.euroStatus != null) {
                         eurostatus = car.euroStatus;
+                      } else if (car.fuelType == 'ELECTRICITY') {
+                        eurostatus = "Elec";
                       } else {
                         eurostatus = "";
                       }
+                      if (car.motExpiry != null) {
+                        motExpiry = car.motExpiry;
+                      } else {
+                        motExpiry = "No Records";
+                      }
+
                       if (car.taxStatus == 'SORN') {
                         taxdue = "";
                       } else {
@@ -259,6 +267,7 @@ class _sellCarsState extends State<sellCars> {
                           'taxStatus': car.taxStatus,
                           'taxDueDate': taxdue,
                           'motStatus': car.motStatus,
+                          'motExpiry': motExpiry,
                           'euroStatus': eurostatus,
                           'time': DateTime.now().toString(),
                           'userCreatedTime': userCreatedTime,
