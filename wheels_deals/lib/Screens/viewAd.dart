@@ -835,7 +835,7 @@ class _ViewAdState extends State<ViewAd> {
                                     width: 50,
                                   ),
                                   Padding(
-                                      padding: EdgeInsets.only(left: 50),
+                                      padding: EdgeInsets.only(left: 40),
                                       child: Icon(
                                         FontAwesomeIcons.route,
                                         color: Colors.black54,
@@ -845,10 +845,10 @@ class _ViewAdState extends State<ViewAd> {
                                     padding:
                                         EdgeInsets.only(left: 10, right: 5),
                                     child: Text(
-                                      result['rows'][0]['elements'][0]
+                                      'Travel time: ' +
+                                          result['rows'][0]['elements'][0]
                                                   ['duration']['text']
-                                              .toString() +
-                                          ' away*',
+                                              .toString(),
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
