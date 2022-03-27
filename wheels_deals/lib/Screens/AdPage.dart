@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Screens/viewAd.dart';
 import 'package:wheels_deals/globalVariables.dart';
@@ -32,14 +34,6 @@ class _AdPageState extends State<AdPage> {
 
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width,
-        _screenHeight = MediaQuery.of(context).size.height;
-
-    Future<String> getCity(postcode) async {
-      return await geocodeRequest
-          .geolocationPostcodetoCity(postcode.toString().toLowerCase());
-    }
-
     return Container(
         padding: EdgeInsets.all(5),
         //height: MediaQuery.of(context).size.height,
@@ -131,7 +125,7 @@ class _AdPageState extends State<AdPage> {
                             Icon(
                               FontAwesomeIcons.rectangleAd,
                               size: 20,
-                              color: Colors.black54,
+                              color: Colors.deepPurple,
                             )
                           ],
                         ),
