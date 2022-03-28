@@ -19,17 +19,21 @@ import 'package:timeago/timeago.dart' as timeAgo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_static_maps_controller/google_static_maps_controller.dart'
     as sMaps;
+import 'package:favorite_button/favorite_button.dart';
 
 class ViewAd extends StatefulWidget {
   final String AdvertID;
   final String estlocation;
-  ViewAd({this.AdvertID, this.estlocation});
+  final bool isFav;
+  ViewAd({this.AdvertID, this.estlocation, this.isFav});
 
   @override
   State<ViewAd> createState() => _ViewAdState();
 }
 
 class _ViewAdState extends State<ViewAd> {
+  final CollectionReference _usersAdref =
+      FirebaseFirestore.instance.collection('users');
   final CollectionReference _carAdReference =
       FirebaseFirestore.instance.collection('cars');
   List latlng;
@@ -40,6 +44,37 @@ class _ViewAdState extends State<ViewAd> {
     latlng =
         await geocodeRequest.geolocationPostcodetolatlng(widget.estlocation);
   }
+
+  Future addToSaved() {
+    return _usersAdref
+        .doc(userId)
+        .collection('Saved')
+        .doc(widget.AdvertID)
+        .set({});
+  }
+
+  Future removeSaved() {
+    return _usersAdref
+        .doc(userId)
+        .collection('Saved')
+        .doc(widget.AdvertID)
+        .delete();
+  }
+
+  final SnackBar _snackBarAdd = SnackBar(
+    content: Text(
+      'Added to Favourites',
+      style: TextStyle(color: Colors.white, fontSize: 18),
+    ),
+    backgroundColor: Colors.deepPurple,
+  );
+  final SnackBar _snackBarRemove = SnackBar(
+    content: Text(
+      'Removed from Favourites',
+      style: TextStyle(color: Colors.white, fontSize: 18),
+    ),
+    backgroundColor: Colors.deepPurple,
+  );
 
   Future<dynamic> calculateDistance(
     String destlat,
@@ -82,9 +117,23 @@ class _ViewAdState extends State<ViewAd> {
         actions: [
           Padding(
             padding: EdgeInsets.all(15),
-            child: IconButton(
-                onPressed: () {}, icon: Icon(FontAwesomeIcons.heart)),
-          )
+            child: FavoriteButton(
+              isFavorite: widget.isFav,
+              valueChanged: (valueChanged) async {
+                if (valueChanged == false) {
+                  print('remove item');
+                  await removeSaved();
+                  ScaffoldMessenger.of(context).showSnackBar(_snackBarRemove);
+                } else {
+                  print('add item');
+                  await addToSaved();
+                  ScaffoldMessenger.of(context).showSnackBar(_snackBarAdd);
+                }
+              },
+              iconColor: Colors.yellow,
+              iconSize: 45,
+            ),
+          ),
         ],
         flexibleSpace: Container(
           decoration: new BoxDecoration(

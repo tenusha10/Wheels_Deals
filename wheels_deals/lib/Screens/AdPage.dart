@@ -25,12 +25,27 @@ class _AdPageState extends State<AdPage> {
       .collection('cars')
       .orderBy("time", descending: true)
       .snapshots();
+  final CollectionReference _usersAdref =
+      FirebaseFirestore.instance.collection('users');
 
   @override
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser.uid;
     userEmail = FirebaseAuth.instance.currentUser.email;
+  }
+
+  Future<bool> checkifFavourites(String adId) async {
+    DocumentSnapshot<Map<String, dynamic>> res;
+    res = await _usersAdref.doc(userId).collection('Saved').doc(adId).get();
+    if (res != null) {
+      Map<String, dynamic> d = res.data();
+      if (d == null) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 
   @override
@@ -71,13 +86,17 @@ class _AdPageState extends State<AdPage> {
                     clipBehavior: Clip.antiAlias,
                     child: Column(children: [
                       ListTile(
-                        onTap: () {
+                        onTap: () async {
+                          bool f = false;
+                          f = await checkifFavourites(document.id);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ViewAd(
-                                      AdvertID: document.id,
-                                      estlocation: postcode)));
+                                        AdvertID: document.id,
+                                        estlocation: postcode,
+                                        isFav: f,
+                                      )));
                         },
                         leading: GestureDetector(
                           onTap: () {},
@@ -131,13 +150,18 @@ class _AdPageState extends State<AdPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          bool f = false;
+                          f = await checkifFavourites(document.id);
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ViewAd(
-                                      AdvertID: document.id,
-                                      estlocation: postcode)));
+                                        AdvertID: document.id,
+                                        estlocation: postcode,
+                                        isFav: f,
+                                      )));
                         },
                         child: Padding(
                             padding: const EdgeInsets.all(16),
