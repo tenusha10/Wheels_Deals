@@ -77,7 +77,6 @@ class _AdPageState extends State<AdPage> {
                       document.data() as Map<String, dynamic>;
                   double price = double.parse(data['price']);
                   double mileage = double.parse(data['mileage']);
-                  String postcode = data['userPostcode'];
 
                   return Card(
                     shape: RoundedRectangleBorder(
@@ -94,7 +93,6 @@ class _AdPageState extends State<AdPage> {
                               MaterialPageRoute(
                                   builder: (context) => ViewAd(
                                         AdvertID: document.id,
-                                        estlocation: postcode,
                                         isFav: f,
                                       )));
                         },
@@ -159,7 +157,6 @@ class _AdPageState extends State<AdPage> {
                               MaterialPageRoute(
                                   builder: (context) => ViewAd(
                                         AdvertID: document.id,
-                                        estlocation: postcode,
                                         isFav: f,
                                       )));
                         },

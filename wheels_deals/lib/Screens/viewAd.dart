@@ -23,9 +23,8 @@ import 'package:favorite_button/favorite_button.dart';
 
 class ViewAd extends StatefulWidget {
   final String AdvertID;
-  final String estlocation;
   final bool isFav;
-  ViewAd({this.AdvertID, this.estlocation, this.isFav});
+  ViewAd({this.AdvertID, this.isFav});
 
   @override
   State<ViewAd> createState() => _ViewAdState();
@@ -36,14 +35,8 @@ class _ViewAdState extends State<ViewAd> {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference _carAdReference =
       FirebaseFirestore.instance.collection('cars');
-  List latlng;
   var distanceData;
   bool f = false;
-
-  void getlatlng() async {
-    latlng =
-        await geocodeRequest.geolocationPostcodetolatlng(widget.estlocation);
-  }
 
   Future addToSaved() {
     return _usersAdref
@@ -90,7 +83,6 @@ class _ViewAdState extends State<ViewAd> {
 
   @override
   void initState() {
-    getlatlng();
     super.initState();
   }
 
@@ -121,11 +113,9 @@ class _ViewAdState extends State<ViewAd> {
               isFavorite: widget.isFav,
               valueChanged: (valueChanged) async {
                 if (valueChanged == false) {
-                  print('remove item');
                   await removeSaved();
                   ScaffoldMessenger.of(context).showSnackBar(_snackBarRemove);
                 } else {
-                  print('add item');
                   await addToSaved();
                   ScaffoldMessenger.of(context).showSnackBar(_snackBarAdd);
                 }

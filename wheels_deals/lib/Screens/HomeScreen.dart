@@ -4,6 +4,7 @@ import 'package:wheels_deals/Screens/AccountScreen.dart';
 import 'package:wheels_deals/Screens/AdPage.dart';
 import 'package:wheels_deals/Screens/Search_cars.dart';
 import 'package:wheels_deals/Screens/Sell_cars.dart';
+import 'package:wheels_deals/Screens/saved_ads.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -26,9 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Text('Search'),
     ),
     sellCars(),
-    Center(
-      child: Text('Saved'),
-    ),
+    saveAds(),
     AccountScreen(),
   ];
 

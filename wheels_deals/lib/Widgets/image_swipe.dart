@@ -15,6 +15,7 @@ class _ImageSwipeState extends State<ImageSwipe> {
   Widget build(BuildContext context) {
     return Container(
         height: 300,
+        width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             PageView(
