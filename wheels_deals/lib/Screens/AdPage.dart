@@ -85,17 +85,6 @@ class _AdPageState extends State<AdPage> {
                     clipBehavior: Clip.antiAlias,
                     child: Column(children: [
                       ListTile(
-                        onTap: () async {
-                          bool f = false;
-                          f = await checkifFavourites(document.id);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ViewAd(
-                                        AdvertID: document.id,
-                                        isFav: f,
-                                      )));
-                        },
                         leading: GestureDetector(
                           onTap: () {},
                           child: Container(
