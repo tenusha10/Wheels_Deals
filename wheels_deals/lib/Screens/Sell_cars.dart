@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wheels_deals/API/CarModels.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
 import 'package:wheels_deals/API/firebase_api.dart';
@@ -702,10 +703,11 @@ class _sellCarsState extends State<sellCars> {
                     EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
                 child: Container(
                   alignment: Alignment.center,
-                  height: 250,
+                  height: 260,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Color.fromARGB(255, 239, 207, 243)),
+                      border: Border.all(color: Colors.black, width: 4),
+                      color: Color.fromARGB(255, 240, 239, 240)),
                   child: Column(
                     children: [
                       SizedBox(
@@ -725,7 +727,9 @@ class _sellCarsState extends State<sellCars> {
                         'Please enter your car Registration Number',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 16, fontStyle: FontStyle.italic),
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
                       SizedBox(
                         height: 25,
@@ -740,7 +744,10 @@ class _sellCarsState extends State<sellCars> {
                               children: <Widget>[
                                 TextFormField(
                                   decoration: InputDecoration(
-                                      labelText: 'Registration Plate'),
+                                      icon: Icon(FontAwesomeIcons.registered),
+                                      labelText: 'Registration Plate',
+                                      hintStyle:
+                                          TextStyle(color: Colors.white)),
                                   onChanged: (String value) {
                                     _reg = value.toUpperCase().trim();
                                   },
@@ -811,7 +818,8 @@ class _sellCarsState extends State<sellCars> {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Color.fromARGB(255, 240, 239, 240)),
+                      color: Color.fromARGB(255, 240, 239, 240),
+                      border: Border.all(color: Colors.black, width: 4)),
                   child: Column(
                     children: [
                       SizedBox(

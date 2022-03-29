@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wheels_deals/Screens/seller_page.dart';
 import 'package:wheels_deals/Screens/viewAd.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
@@ -96,6 +97,8 @@ class _saveAdsState extends State<saveAds> {
                               Map data = Adsnap.data.data();
                               double price = double.parse(data['price']);
                               double mileage = double.parse(data['mileage']);
+                              String membersince = timeAgo.format(
+                                  DateTime.parse(data['userCreatedTime']));
 
                               return Card(
                                 shape: RoundedRectangleBorder(
@@ -106,7 +109,18 @@ class _saveAdsState extends State<saveAds> {
                                   ListTile(
                                     leading: GestureDetector(
                                       onTap: () async {
-                                        print('profile');
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    sellerPage(
+                                                      sellerName:
+                                                          data['userName'],
+                                                      sellerImage:
+                                                          data['imgPro'],
+                                                      sellerSince: membersince,
+                                                      sellerId: data['uId'],
+                                                    )));
                                       },
                                       child: Container(
                                         width: 60,
