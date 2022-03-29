@@ -8,9 +8,11 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
+import 'package:wheels_deals/authentication_service.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
 import 'package:http/http.dart' as http;
+import 'package:wheels_deals/loginScreen.dart';
 
 import '../API/CarModels.dart';
 import '../login.dart';
@@ -483,8 +485,18 @@ class _AccountScreenState extends State<AccountScreen> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                      login();
+                      await FirebaseAuth.instance.signOut().then((value) {
+                        /*Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => loginScreen())); */
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => loginScreen()));
+                        //loginScreen();
+                      });
                     },
                     child: Text('Sign out'))),
             Text(
