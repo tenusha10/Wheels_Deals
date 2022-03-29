@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:wheels_deals/Googlemaps_requests/distanceMatrix.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
+import 'package:wheels_deals/Screens/seller_page.dart';
 import 'package:wheels_deals/Screens/viewAd.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
@@ -57,7 +58,7 @@ class _AdPageState extends State<AdPage> {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [Colors.deepPurple[50], Colors.purple[100]],
+            colors: [Colors.deepPurple, Colors.deepPurpleAccent],
           ),
         ),
         child: StreamBuilder<QuerySnapshot>(
@@ -77,6 +78,8 @@ class _AdPageState extends State<AdPage> {
                       document.data() as Map<String, dynamic>;
                   double price = double.parse(data['price']);
                   double mileage = double.parse(data['mileage']);
+                  String membersince =
+                      timeAgo.format(DateTime.parse(data['userCreatedTime']));
 
                   return Card(
                     shape: RoundedRectangleBorder(
@@ -86,7 +89,17 @@ class _AdPageState extends State<AdPage> {
                     child: Column(children: [
                       ListTile(
                         leading: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => sellerPage(
+                                          sellerName: data['userName'],
+                                          sellerImage: data['imgPro'],
+                                          sellerSince: membersince,
+                                          sellerId: data['uId'],
+                                        )));
+                          },
                           child: Container(
                             width: 60,
                             height: 60,

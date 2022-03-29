@@ -67,8 +67,7 @@ class _AccountScreenState extends State<AccountScreen> {
     } else {
       CAT = false;
     }
-    final _Name = TextEditingController();
-    _Name.text = DBdata['userName'].toString();
+
     final _Email = TextEditingController();
     _Email.text = DBdata['userEmail'].toString();
     final _Telephone = TextEditingController();
@@ -357,26 +356,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(hintText: 'Name'),
-                            controller: _Name,
-                            onChanged: (value) {
-                              Name = value.trim();
-                            },
-                            validator: (value) {
-                              if (value.trim() == null || value.isEmpty) {
-                                return 'Please enter a name';
-                              }
-                              if (!regExp_Name.hasMatch(value.trim())) {
-                                return 'Invalid Name Format';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.name,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          TextFormField(
                             controller: _Email,
                             decoration:
                                 InputDecoration(hintText: 'Email Address'),
@@ -505,7 +484,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: ElevatedButton(
                     onPressed: () async {
                       await FirebaseAuth.instance.signOut();
-                      return login();
+                      login();
                     },
                     child: Text('Sign out'))),
             Text(

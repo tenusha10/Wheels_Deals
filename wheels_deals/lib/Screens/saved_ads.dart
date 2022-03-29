@@ -42,25 +42,36 @@ class _saveAdsState extends State<saveAds> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.deepPurple[50],
+        backgroundColor: Colors.deepPurple,
         body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Saved Ads',
-                  style: GoogleFonts.patrickHand(
-                      fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: Icon(
+                          FontAwesomeIcons.heart,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      Text(
+                        'Saved Ads',
+                        style: GoogleFonts.patrickHand(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )),
               Container(
                 alignment: Alignment.center,
-                height: 650,
-                width: 500,
+                height: MediaQuery.of(context).size.height * 0.73,
+                width: MediaQuery.of(context).size.width * 0.95,
                 child: StreamBuilder<QuerySnapshot>(
                     stream: _savedAdstream,
                     builder: (BuildContext context,

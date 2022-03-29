@@ -11,6 +11,7 @@ import 'package:wheels_deals/API/fetchedCar.dart';
 import 'package:wheels_deals/Googlemaps_requests/MapUtils.dart';
 import 'package:wheels_deals/Googlemaps_requests/distanceMatrix.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
+import 'package:wheels_deals/Screens/seller_page.dart';
 import 'package:wheels_deals/Widgets/image_swipe.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import '/presentation/my_flutter_app_icons.dart';
@@ -771,7 +772,20 @@ class _ViewAdState extends State<ViewAd> {
                                   ListTile(
                                     onTap: () {},
                                     leading: GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    sellerPage(
+                                                      sellerName:
+                                                          data['userName'],
+                                                      sellerImage:
+                                                          data['imgPro'],
+                                                      sellerSince: membersince,
+                                                      sellerId: data['uId'],
+                                                    )));
+                                      },
                                       child: Container(
                                         width: 60,
                                         height: 60,
@@ -784,7 +798,21 @@ class _ViewAdState extends State<ViewAd> {
                                       ),
                                     ),
                                     title: GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      sellerPage(
+                                                        sellerName:
+                                                            data['userName'],
+                                                        sellerImage:
+                                                            data['imgPro'],
+                                                        sellerSince:
+                                                            membersince,
+                                                        sellerId: data['uId'],
+                                                      )));
+                                        },
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                               top: 10, bottom: 10),
@@ -796,7 +824,21 @@ class _ViewAdState extends State<ViewAd> {
                                           ),
                                         )),
                                     subtitle: GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      sellerPage(
+                                                        sellerName:
+                                                            data['userName'],
+                                                        sellerImage:
+                                                            data['imgPro'],
+                                                        sellerSince:
+                                                            membersince,
+                                                        sellerId: data['uId'],
+                                                      )));
+                                        },
                                         child: Column(
                                           children: [
                                             Row(

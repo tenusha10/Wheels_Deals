@@ -242,7 +242,7 @@ class _sellCarsState extends State<sellCars> {
                             .geolocationPostcodetolatlng(this.Postcode);
                         print('Validation complete');
                         Map<String, dynamic> carData = {
-                          'userName': this.Name,
+                          'userName': getUserName,
                           'uId': userId,
                           'imgPro': userImageUrl,
                           'userEmail': this.Email,
@@ -278,10 +278,7 @@ class _sellCarsState extends State<sellCars> {
                         addData(carData).then((value) {
                           print('Data added');
                           imageUrlList = [];
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
+                          HomeScreen();
                         }).catchError((onError) {
                           print(onError);
                         });
@@ -605,23 +602,6 @@ class _sellCarsState extends State<sellCars> {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          TextFormField(
-                            controller: _Name,
-                            decoration: InputDecoration(hintText: 'Name'),
-                            onChanged: (value) {
-                              this.Name = value.trim();
-                            },
-                            validator: (value) {
-                              if (value.trim() == null || value.isEmpty) {
-                                return 'Please enter a name';
-                              }
-                              if (!regExp_Name.hasMatch(value.trim())) {
-                                return 'Invalid Name Format';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.name,
-                          ),
                           SizedBox(
                             height: 5,
                           ),
@@ -713,193 +693,197 @@ class _sellCarsState extends State<sellCars> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.deepPurple,
         body: SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
-            child: Container(
-              alignment: Alignment.center,
-              height: 250,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  color: Color.fromARGB(255, 239, 207, 243)),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    'Post an Advert',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Please enter your car Registration Number',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    width: 200,
-                    height: 90,
-                    child: Form(
-                        key: _formKeySell2,
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: 'Registration Plate'),
-                              onChanged: (String value) {
-                                _reg = value.toUpperCase().trim();
-                              },
-                              style: TextStyle(fontSize: 20),
-                              validator: (value) {
-                                if (value.trim() == null ||
-                                    value.trim().isEmpty ||
-                                    value.trim().length > 7) {
-                                  return 'Please enter a valid Registration Number';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        )),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    width: 150,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKeySell2.currentState.validate()) {
-                          if (!imageUrl1.isEmpty) {
-                            imageUrlList.add(imageUrl1);
-                          } else if (!imageUrl2.isEmpty) {
-                            imageUrlList.add(imageUrl2);
-                          } else if (!imageUrl3.isEmpty) {
-                            imageUrlList.add(imageUrl3);
-                          } else {
-                            print('no images');
-                          }
-                          if (imageUrlList.isNotEmpty) {
-                            showView(_reg);
-                          } else {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      title: Text("Missing Images"),
-                                      content: Text(
-                                          'Please, Upload at least 1 image'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        )
-                                      ]);
-                                });
-                          }
-                        }
-                      },
-                      child: Text(
-                        'Find Car',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 250,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Color.fromARGB(255, 239, 207, 243)),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 5,
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  color: Color.fromARGB(255, 240, 239, 240)),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    'Please upload upto 3 photos of your vechicle',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width * 5,
-                      height: 300,
-                      child: Scrollbar(
-                        controller: _scrollController,
-                        thickness: 8,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          controller: _scrollController,
-                          children: [
-                            Container(
-                              height: 200,
-                              width: 200,
-                              child: carImage(
-                                onFileChanged: ((image) {
-                                  setState(() {
-                                    this.imageUrl1 = image;
-                                  });
-                                }),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              height: 200,
-                              width: 200,
-                              child: carImage(
-                                onFileChanged: ((image2) {
-                                  setState(() {
-                                    this.imageUrl2 = image2;
-                                  });
-                                }),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              height: 200,
-                              width: 200,
-                              child: carImage(
-                                onFileChanged: ((image3) {
-                                  setState(() {
-                                    this.imageUrl3 = image3;
-                                  });
-                                }),
-                              ),
-                            ),
-                          ],
+                      Text(
+                        'Post an Advert',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
                         ),
-                      )),
-                ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Please enter your car Registration Number',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16, fontStyle: FontStyle.italic),
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Container(
+                        width: 200,
+                        height: 90,
+                        child: Form(
+                            key: _formKeySell2,
+                            child: Column(
+                              //mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                      labelText: 'Registration Plate'),
+                                  onChanged: (String value) {
+                                    _reg = value.toUpperCase().trim();
+                                  },
+                                  style: TextStyle(fontSize: 20),
+                                  validator: (value) {
+                                    if (value.trim() == null ||
+                                        value.trim().isEmpty ||
+                                        value.trim().length > 7) {
+                                      return 'Please enter a valid Registration Number';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            )),
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Container(
+                        width: 150,
+                        height: 40,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKeySell2.currentState.validate()) {
+                              if (!imageUrl1.isEmpty) {
+                                imageUrlList.add(imageUrl1);
+                              } else if (!imageUrl2.isEmpty) {
+                                imageUrlList.add(imageUrl2);
+                              } else if (!imageUrl3.isEmpty) {
+                                imageUrlList.add(imageUrl3);
+                              } else {
+                                print('no images');
+                              }
+                              if (imageUrlList.isNotEmpty) {
+                                showView(_reg);
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          title: Text("Missing Images"),
+                                          content: Text(
+                                              'Please, Upload at least 1 image'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            )
+                                          ]);
+                                    });
+                              }
+                            }
+                          },
+                          child: Text(
+                            'Find Car',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Color.fromARGB(255, 240, 239, 240)),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Please upload upto 3 photos of your vechicle',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16, fontStyle: FontStyle.italic),
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Container(
+                          width: MediaQuery.of(context).size.width * 5,
+                          height: 300,
+                          child: Scrollbar(
+                            controller: _scrollController,
+                            thickness: 8,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              controller: _scrollController,
+                              children: [
+                                Container(
+                                  height: 200,
+                                  width: 200,
+                                  child: carImage(
+                                    onFileChanged: ((image) {
+                                      setState(() {
+                                        this.imageUrl1 = image;
+                                      });
+                                    }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Container(
+                                  height: 200,
+                                  width: 200,
+                                  child: carImage(
+                                    onFileChanged: ((image2) {
+                                      setState(() {
+                                        this.imageUrl2 = image2;
+                                      });
+                                    }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Container(
+                                  height: 200,
+                                  width: 200,
+                                  child: carImage(
+                                    onFileChanged: ((image3) {
+                                      setState(() {
+                                        this.imageUrl3 = image3;
+                                      });
+                                    }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 }
