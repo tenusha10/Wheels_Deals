@@ -20,10 +20,84 @@ class carModels {
     return BodyTypes;
   }
 
+  List<String> getMakes() {
+    List<String> BodyTypes = <String>[];
+    BodyTypes = [
+      "Abarth",
+      "Alfa Romeo",
+      "Ariel",
+      "Aston Martin",
+      "Audi",
+      "Bentley",
+      "BMW",
+      "Bugatti",
+      "Chevrolet",
+      "Chrysler",
+      "Citroen",
+      "Corvette",
+      "Cupra",
+      "Dacia",
+      "Dodge",
+      "Ferrari",
+      "Fiat",
+      "Ford",
+      "General Motors",
+      "GMC",
+      "Honda",
+      "Hummer",
+      "Hyundai",
+      "Infiniti",
+      "Isuzu",
+      "Jaguar",
+      "Jeep",
+      "Kia",
+      "Koenigsegg",
+      "Lamborghini",
+      "Lancia",
+      "Land Rover",
+      "Lexus",
+      "Lotus",
+      "Maserati",
+      "Maybach",
+      "Mazda",
+      "Mclaren",
+      "Mercedes-Benz",
+      "Mini",
+      "Mitsubishi",
+      "Nissan",
+      "Opel",
+      "Pagani",
+      "Peugeot",
+      "Porsche",
+      "Proton",
+      "Renault",
+      "Rimac",
+      "Rolls Royce",
+      "Scania",
+      "Seat",
+      "Skoda",
+      "Smart",
+      "Subaru",
+      "Suzuki",
+      "Tatra",
+      "Tesla",
+      "Toyota",
+      "Vauxhall",
+      "Vector Motors",
+      "Venturi",
+      "Volkswagen",
+      "Volvo",
+      "Zagato",
+      "Zaz",
+      "Zil",
+    ];
+    return BodyTypes;
+  }
+
 //need to make all model names uppercase
   List<String> getModels(String make) {
     List<String> ModelList = <String>[];
-    if (make.contains('MERCEDES-BENZ')) {
+    if (make.toUpperCase().contains('MERCEDES-BENZ')) {
       ModelList = [
         'Model',
         'A-class',
@@ -46,7 +120,7 @@ class carModels {
         'EQE',
         'EQS',
       ];
-    } else if (make.contains('AUDI')) {
+    } else if (make.toUpperCase().contains('AUDI')) {
       ModelList = [
         'Model',
         'A1',
@@ -87,7 +161,7 @@ class carModels {
         'iX',
         'Z4'
       ];
-    } else if (make.contains('FORD')) {
+    } else if (make.toUpperCase().contains('FORD')) {
       ModelList = [
         'Model',
         'Ecosport',
@@ -102,7 +176,7 @@ class carModels {
         'S-Max',
         'Galaxy',
       ];
-    } else if (make.contains('VOLKSWAGEN')) {
+    } else if (make.toUpperCase().contains('VOLKSWAGEN')) {
       ModelList = [
         'Model',
         'Arteon',
@@ -123,7 +197,7 @@ class carModels {
         'T-cross',
         'T-Roc'
       ];
-    } else if (make.contains('TOYATA')) {
+    } else if (make.toUpperCase().contains('TOYOTA')) {
       ModelList = [
         'Model',
         'Aygo',
@@ -137,11 +211,11 @@ class carModels {
         'Highlander',
         'Mirai'
       ];
-    } else if (make.contains('TESLA')) {
+    } else if (make.toUpperCase().contains('TESLA')) {
       ModelList = ['Model', 'Model 3', 'Model S', 'Model X', 'Model Y'];
-    } else if (make.contains('VOLVO')) {
+    } else if (make.toUpperCase().contains('VOLVO')) {
       ModelList = ['Model', 'XC40', 'XC60', 'XC90', 'S60', 'S90', 'V60', 'V90'];
-    } else if (make.contains('SUBARU')) {
+    } else if (make.toUpperCase().contains('SUBARU')) {
       ModelList = [
         'XV',
         'Impreza',
@@ -151,9 +225,9 @@ class carModels {
         'Outback',
         'WRX'
       ];
-    } else if (make.contains('SEAT')) {
+    } else if (make.toUpperCase().contains('SEAT')) {
       ModelList = ['Ibiza', 'Leon', 'Ateca', 'Arona', 'Tarraco', 'Mii'];
-    } else if (make.contains('SKODA')) {
+    } else if (make.toUpperCase().contains('SKODA')) {
       ModelList = [
         'Model',
         'Kamiq',
@@ -167,9 +241,9 @@ class carModels {
       ];
     } else if (make.toLowerCase() == 'cupra') {
       ModelList = ['Model', 'Formentor', 'Ateca', 'Leon'];
-    } else if (make.contains('SMART')) {
+    } else if (make.toUpperCase().contains('SMART')) {
       ModelList = ['Model', 'Smart Eq'];
-    } else if (make.contains('RENAULT')) {
+    } else if (make.toUpperCase().contains('RENAULT')) {
       ModelList = [
         'Model',
         'Clio',
@@ -179,7 +253,7 @@ class carModels {
         'Koleos',
         'Megane'
       ];
-    } else if (make.contains('PORSCHE')) {
+    } else if (make.toUpperCase().contains('PORSCHE')) {
       ModelList = [
         'Model',
         '718',
@@ -189,7 +263,7 @@ class carModels {
         'Macan',
         'Cayenne'
       ];
-    } else if (make.toLowerCase() == ('Vauxhall')) {
+    } else if (make.toLowerCase() == ('vauxhall')) {
       ModelList = [
         'Model',
         'Corsa',
@@ -202,7 +276,7 @@ class carModels {
       ];
     } else if (make.toLowerCase() == ('nissan').toLowerCase()) {
       ModelList = ['Model', 'Leaf', 'Ariya', 'Micra', 'Juke', 'Qashqai', 'GTR'];
-    } else if (make.toLowerCase() == ('Mini')) {
+    } else if (make.toLowerCase() == ('mini')) {
       ModelList = [
         'Model',
         '3 Door Hatch',
@@ -210,9 +284,9 @@ class carModels {
         'Clubman',
         'CountryMan'
       ];
-    } else if (make.toLowerCase() == ('Mitsubishi')) {
+    } else if (make.toLowerCase() == ('mitsubishi')) {
       ModelList = ['Model', 'Outlander', 'ASX', 'Mirage', 'Shogun', 'Eclipse'];
-    } else if (make.toLowerCase() == ('Mazda')) {
+    } else if (make.toLowerCase() == ('mazda')) {
       ModelList = [
         'Model',
         'CX-5',
@@ -224,13 +298,13 @@ class carModels {
         'MX-30',
         'MX-5'
       ];
-    } else if (make.toLowerCase() == ('Maserati')) {
+    } else if (make.toLowerCase() == ('maserati')) {
       ModelList = ['Quattroporte', 'Levante', 'GT', 'GranCabrio'];
-    } else if (make.toLowerCase() == ('Lotus')) {
+    } else if (make.toLowerCase() == ('lotus')) {
       ModelList = ['Elise', 'Exige', 'Evora'];
-    } else if (make.toLowerCase() == ('Lexus')) {
+    } else if (make.toLowerCase() == ('lexus')) {
       ModelList = ['UX', 'NX', 'ES', 'RX', 'RC', 'LC', 'LS', 'LFA'];
-    } else if (make.toLowerCase() == ('Land Rover').toLowerCase()) {
+    } else if (make.toLowerCase() == ('land Rover').toLowerCase()) {
       ModelList = [
         'Range Rover',
         'Defender',

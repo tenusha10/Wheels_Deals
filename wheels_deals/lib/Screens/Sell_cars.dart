@@ -8,6 +8,7 @@ import 'package:wheels_deals/API/CarModels.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
 import 'package:wheels_deals/API/firebase_api.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
+import 'package:wheels_deals/Screens/AdPage.dart';
 import 'package:wheels_deals/Screens/HomeScreen.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
 import 'package:http/http.dart' as http;
@@ -279,7 +280,11 @@ class _sellCarsState extends State<sellCars> {
                         addData(carData).then((value) {
                           print('Data added');
                           imageUrlList = [];
-                          HomeScreen();
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
                         }).catchError((onError) {
                           print(onError);
                         });
