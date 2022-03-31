@@ -158,23 +158,10 @@ class _ViewAdState extends State<ViewAd> {
                 );
               }
               if (snapshot.connectionState == ConnectionState.done) {
-                bool ulez;
                 Map<String, dynamic> data = snapshot.data.data();
                 double price = double.parse(data['price']);
                 double mileage = double.parse(data['mileage']);
                 List imageList = data['imageURls'];
-                if (data['euroStatus'].toString().isNotEmpty ||
-                    data['euroStatus'].toString() == 'Elec') {
-                  ulez = true;
-                } else if (data['fuelType'] == 'DIESEL' &&
-                    int.parse(data['year'].toString()) < 2015) {
-                  ulez = false;
-                } else if (data['fuelType'] == 'PETROL' &&
-                    int.parse(data['year'].toString()) < 2006) {
-                  ulez = false;
-                } else {
-                  ulez = true;
-                }
 
                 String membersince =
                     timeAgo.format(DateTime.parse(data['userCreatedTime']));
@@ -542,7 +529,7 @@ class _ViewAdState extends State<ViewAd> {
                                       child: Text(
                                           'ULEZ (Ultra Low Emission Zone):')),
                                 ),
-                                ulez == true
+                                data['ulez'] == 'true'
                                     ? Icon(
                                         FontAwesomeIcons.circleCheck,
                                         color: Colors.black54,

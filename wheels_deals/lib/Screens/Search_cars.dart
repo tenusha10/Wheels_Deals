@@ -23,8 +23,10 @@ class _SearchCarsState extends State<SearchCars> {
       numofDoors,
       engineCapacity,
       taxStatus,
-      motStatus;
-  bool CAT = false, ulez = false;
+      motStatus,
+      CAT,
+      ulez;
+
   String minYear,
       maxYear,
       minPrice,
@@ -70,6 +72,14 @@ class _SearchCarsState extends State<SearchCars> {
   List<String> motList = [
     'Valid',
     'Not valid',
+  ];
+  List<String> catList = [
+    'Declared',
+    'Not Declared',
+  ];
+  List<String> ulezList = [
+    'Compatible',
+    'Not Compatible',
   ];
 
   @override
@@ -724,60 +734,74 @@ class _SearchCarsState extends State<SearchCars> {
                       SizedBox(
                         height: 15,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            'CAT(S/N)',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                      Container(
+                        child: DropdownButtonFormField<String>(
+                          iconSize: 25,
+                          style: GoogleFonts.roboto(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                          value: CAT,
+                          hint: Text(
+                            'CAT (S/N) Status',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.492,
-                                right: 5),
-                            child: CupertinoSwitch(
-                                value: CAT,
-                                activeColor: Colors.deepPurple,
-                                onChanged: (bool value) {
-                                  setState((() {
-                                    CAT = value;
-                                  }));
-                                }),
-                          )
-                        ],
-                      ),
-                      Divider(
-                        color: Colors.black45,
-                        thickness: 1,
+                          isExpanded: true,
+                          onChanged: (String val) {
+                            setState(() {
+                              this.CAT = val;
+                            });
+                          },
+                          items: catList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please select a model';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       SizedBox(
                         height: 15,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            'Ultra Low Emission Zone',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                      Container(
+                        child: DropdownButtonFormField<String>(
+                          iconSize: 25,
+                          style: GoogleFonts.roboto(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                          value: ulez,
+                          hint: Text(
+                            'Ultra Low Emission Zone Compliant',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.24,
-                                right: 5),
-                            child: CupertinoSwitch(
-                                value: ulez,
-                                activeColor: Colors.deepPurple,
-                                onChanged: (bool value) {
-                                  setState((() {
-                                    ulez = value;
-                                  }));
-                                }),
-                          )
-                        ],
-                      ),
-                      Divider(
-                        color: Colors.black45,
-                        thickness: 1,
+                          isExpanded: true,
+                          onChanged: (String val) {
+                            setState(() {
+                              this.ulez = val;
+                            });
+                          },
+                          items: ulezList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please select a model';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       SizedBox(
                         height: 10,
@@ -853,8 +877,8 @@ class _SearchCarsState extends State<SearchCars> {
       String co2,
       String tax,
       String mot,
-      bool cat,
-      bool ulez) {
+      String cat,
+      String ulez) {
     Stream<QuerySnapshot> result;
     Query<Object> query;
     CollectionReference _carRef = FirebaseFirestore.instance.collection('cars');
@@ -895,9 +919,20 @@ class _SearchCarsState extends State<SearchCars> {
     if (mot != null) {
       query = query.where('motStatus', isEqualTo: mot);
     }
-    if (cat == true) {
-      print(cat);
-      query = query.where('cat', isEqualTo: 'true');
+    if (cat != null) {
+      if (cat == 'Declared') {
+        query = query.where('cat', isEqualTo: 'true');
+      } else {
+        query = query.where('cat', isEqualTo: 'false');
+      }
+    }
+
+    if (ulez != null) {
+      if (ulez == 'Compatible') {
+        query = query.where('ulez', isEqualTo: 'true');
+      } else {
+        query = query.where('ulez', isEqualTo: 'false');
+      }
     }
 
     result = query.snapshots();

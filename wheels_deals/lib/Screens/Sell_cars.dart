@@ -218,6 +218,7 @@ class _sellCarsState extends State<sellCars> {
                       validPostcode = await checkPostcode(this.Postcode);
 
                       String eurostatus = "", taxdue = "", motExpiry = "";
+                      bool ulez;
 
                       if (car.euroStatus != null) {
                         eurostatus = car.euroStatus;
@@ -226,6 +227,19 @@ class _sellCarsState extends State<sellCars> {
                       } else {
                         eurostatus = "";
                       }
+
+                      if (eurostatus.isNotEmpty || eurostatus == 'Elec') {
+                        ulez = true;
+                      } else if (car.fuelType == 'DIESEL' &&
+                          car.yearOfManufacture < 2015) {
+                        ulez = false;
+                      } else if (car.fuelType == 'PETROL' &&
+                          car.yearOfManufacture < 2006) {
+                        ulez = false;
+                      } else {
+                        ulez = true;
+                      }
+
                       if (car.motExpiry != null) {
                         motExpiry = car.motExpiry;
                       } else {
@@ -274,7 +288,8 @@ class _sellCarsState extends State<sellCars> {
                           'time': DateTime.now().toString(),
                           'userCreatedTime': userCreatedTime,
                           'location': location,
-                          'latlng': latlng
+                          'latlng': latlng,
+                          'ulez': ulez.toString(),
                         };
 
                         addData(carData).then((value) {
