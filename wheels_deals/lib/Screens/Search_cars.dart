@@ -14,8 +14,17 @@ class _SearchCarsState extends State<SearchCars> {
   final GlobalKey<FormState> _formSearchCars = GlobalKey<FormState>();
 
   String Make;
-  String Model, BodyType, Gearbox, FuelType, co2, numofDoors, engineCapacity;
-  bool CAT = false, ulez = false, taxStatus = false, motStatus = false;
+  String Model,
+      Colour,
+      BodyType,
+      Gearbox,
+      FuelType,
+      co2,
+      numofDoors,
+      engineCapacity,
+      taxStatus,
+      motStatus;
+  bool CAT = false, ulez = false;
   String minYear,
       maxYear,
       minPrice,
@@ -27,12 +36,41 @@ class _SearchCarsState extends State<SearchCars> {
   var yearRange = RangeValues(1999, 1999);
   List<String> makeList = carModels().getMakes();
   List<String> modelList = [];
+  List<String> colourList = [
+    'Black',
+    'White',
+    'Grey',
+    'Silver',
+    'Blue',
+    'Red',
+    'Green',
+    'Yellow',
+    'Beige',
+    'Brown',
+    'Purple',
+    'Gold',
+    'Orange'
+  ];
   List<String> engineList = ['1L', '1L-2L'];
   List<String> gearboxList = ['Automatic', 'Manual'];
   List<String> bodyTypeList = carModels().getBodyTypes();
   List<String> numofDoorsList = ['3 Doors', '5 Doors'];
   List<String> co2List = ['>99g', '>150g', '>200g', '200g+'];
-  List<String> fuelList = ['Petrol', 'Diesel', 'Hybrid', 'Electricity'];
+  List<String> fuelList = [
+    'Petrol',
+    'Diesel',
+    'Hybrid Electric',
+    'Electricity'
+  ];
+  List<String> taxList = [
+    'Taxed',
+    'Untaxed',
+    'SORN',
+  ];
+  List<String> motList = [
+    'Valid',
+    'Not valid',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +168,42 @@ class _SearchCarsState extends State<SearchCars> {
                             });
                           },
                           items: modelList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please select a model';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        child: DropdownButtonFormField<String>(
+                          iconSize: 25,
+                          style: GoogleFonts.roboto(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                          value: Colour,
+                          hint: Text(
+                            'Colour',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          isExpanded: true,
+                          onChanged: (String val) {
+                            setState(() {
+                              this.Colour = val;
+                            });
+                          },
+                          items: colourList
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -578,60 +652,74 @@ class _SearchCarsState extends State<SearchCars> {
                       SizedBox(
                         height: 15,
                       ),
-                      Row(
-                        children: [
-                          Text(
+                      Container(
+                        child: DropdownButtonFormField<String>(
+                          iconSize: 25,
+                          style: GoogleFonts.roboto(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                          value: taxStatus,
+                          hint: Text(
                             'Tax Status',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.48,
-                                right: 5),
-                            child: CupertinoSwitch(
-                                value: taxStatus,
-                                activeColor: Colors.deepPurple,
-                                onChanged: (bool value) {
-                                  setState((() {
-                                    taxStatus = value;
-                                  }));
-                                }),
-                          )
-                        ],
-                      ),
-                      Divider(
-                        color: Colors.black45,
-                        thickness: 1,
+                          isExpanded: true,
+                          onChanged: (String val) {
+                            setState(() {
+                              this.taxStatus = val;
+                            });
+                          },
+                          items: taxList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please select a model';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       SizedBox(
                         height: 15,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            'Mot Status',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                      Container(
+                        child: DropdownButtonFormField<String>(
+                          iconSize: 25,
+                          style: GoogleFonts.roboto(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                          value: motStatus,
+                          hint: Text(
+                            'MOT Status',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.47,
-                                right: 5),
-                            child: CupertinoSwitch(
-                                value: motStatus,
-                                activeColor: Colors.deepPurple,
-                                onChanged: (bool value) {
-                                  setState((() {
-                                    motStatus = value;
-                                  }));
-                                }),
-                          )
-                        ],
-                      ),
-                      Divider(
-                        color: Colors.black45,
-                        thickness: 1,
+                          isExpanded: true,
+                          onChanged: (String val) {
+                            setState(() {
+                              this.motStatus = val;
+                            });
+                          },
+                          items: motList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please select a model';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       SizedBox(
                         height: 15,
@@ -706,6 +794,7 @@ class _SearchCarsState extends State<SearchCars> {
                                   Stream<QuerySnapshot> res = buildsearchQuery(
                                       Make,
                                       Model,
+                                      Colour,
                                       minPrice,
                                       maxPrice,
                                       minMileage,
@@ -748,6 +837,7 @@ class _SearchCarsState extends State<SearchCars> {
   Stream<QuerySnapshot> buildsearchQuery(
       String make,
       String model,
+      String colour,
       String minPrice,
       String maxPrice,
       String minMileage,
@@ -761,46 +851,56 @@ class _SearchCarsState extends State<SearchCars> {
       String numofdoors,
       String fueltype,
       String co2,
-      bool tax,
-      bool mot,
+      String tax,
+      String mot,
       bool cat,
       bool ulez) {
     Stream<QuerySnapshot> result;
+    Query<Object> query;
     CollectionReference _carRef = FirebaseFirestore.instance.collection('cars');
+    query = _carRef;
+
+    /*if (mot != null) {
+      query = query.where('motStatus', isEqualTo: "Valid");
+    } else {
+      query = query.where('motStatus', isEqualTo: "Not Valid");
+    } */
     if (make != null) {
-      if (model != null) {
-        return _carRef
-            .where('make', isEqualTo: make.toUpperCase())
-            .where('model', isEqualTo: model)
-            .snapshots();
-      } else {
-        return _carRef.where('make', isEqualTo: make.toUpperCase()).snapshots();
-      }
+      query = query.where('make', isEqualTo: make.toUpperCase());
     }
-    if (maxPrice != null) {
-      if (model != null) {
-        return _carRef
-            .where('make', isEqualTo: make.toUpperCase())
-            .where('model', isEqualTo: model)
-            .snapshots();
-      } else {
-        return _carRef
-            .where('price', isLessThan: int.tryParse(maxPrice))
-            .snapshots();
-      }
+    if (model != null) {
+      query = query.where('model', isEqualTo: model);
+    }
+    if (colour != null) {
+      query = query.where('colour', isEqualTo: colour.toUpperCase());
+    }
+    if (gearbox != null) {
+      query = query.where('gearbox', isEqualTo: gearbox);
+    }
+    if (bodyType != null) {
+      query = query.where('bodyType', isEqualTo: bodyType);
+    }
+    if (numofdoors != null) {
+      query = query.where('numofDoors', isEqualTo: numofdoors);
+    }
+    if (co2 != null) {
+      query = query.where('co2', isEqualTo: co2);
     }
     if (fueltype != null) {
-      return _carRef
-          .where('fuelType', isEqualTo: fueltype.toUpperCase())
-          .snapshots();
+      query = query.where('fuelType', isEqualTo: fueltype.toUpperCase());
     }
-    if (tax == true) {
-      return _carRef.where('taxStatus', isEqualTo: "Taxed").snapshots();
+    if (tax != null) {
+      query = query.where('taxStatus', isEqualTo: tax);
     }
-    if (mot == true) {
-      return _carRef.where('motStatus', isEqualTo: "Valid").snapshots();
+    if (mot != null) {
+      query = query.where('motStatus', isEqualTo: mot);
+    }
+    if (cat == true) {
+      print(cat);
+      query = query.where('cat', isEqualTo: 'true');
     }
 
-    //return _carRef.orderBy("time", descending: true).snapshots();
+    result = query.snapshots();
+    return result;
   }
 }
