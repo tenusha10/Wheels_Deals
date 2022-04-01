@@ -975,7 +975,6 @@ class _SearchCarsState extends State<SearchCars> {
                                       motStatus,
                                       CAT,
                                       ulez);
-
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -1055,10 +1054,10 @@ class _SearchCarsState extends State<SearchCars> {
       }
     }
 
-    if (int.parse(minYear) != null) {
+    if (minYear != null) {
       query = query.where('year', isGreaterThanOrEqualTo: int.parse(minYear));
     }
-    if (int.parse(maxYear) != null) {
+    if (maxYear != null) {
       query = query.where('year', isLessThanOrEqualTo: int.parse(maxYear));
     }
 
