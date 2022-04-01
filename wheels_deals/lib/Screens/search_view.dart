@@ -73,6 +73,7 @@ class _searchViewState extends State<searchView> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
+                  print(snapshot.error.toString());
                   return Text('Something went wrong ');
                 }
                 if (!snapshot.hasData) {
@@ -83,8 +84,8 @@ class _searchViewState extends State<searchView> {
                   children: snapshot.data.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
-                    double price = double.parse(data['price']);
-                    double mileage = double.parse(data['mileage']);
+                    int price = data['price'];
+                    int mileage = data['mileage'];
                     String membersince =
                         timeAgo.format(DateTime.parse(data['userCreatedTime']));
 
@@ -259,7 +260,7 @@ class _searchViewState extends State<searchView> {
                                     padding: const EdgeInsets.only(right: 10),
                                     child: Align(
                                         alignment: Alignment.topRight,
-                                        child: Text(data['year'])),
+                                        child: Text(data['year'].toString())),
                                   ),
                                   Icon(
                                     FontAwesomeIcons.calendarDays,

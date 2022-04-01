@@ -55,8 +55,7 @@ class _AccountScreenState extends State<AccountScreen> {
     List<String> body_types = carModels().getBodyTypes();
     List<String> gearbox_types = ['GearBox', 'Automatic', 'Manual'];
     List<String> seat_options = ['Number of Doors', '3 Door', '5 Door'];
-    double mileage = double.parse(DBdata['mileage']),
-        Price = double.parse(DBdata['price']);
+    int mileage = DBdata['mileage'], Price = DBdata['price'];
     String Description = DBdata['description'],
         Name = DBdata['userName'],
         Email = DBdata['userEmail'],
@@ -122,10 +121,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           'bodyType': bodyType,
                           'gearbox': gearbox,
                           'numofDoors': NoofDoors,
-                          'mileage': mileage.toString(),
+                          'mileage': mileage,
                           'cat': CAT.toString(),
                           'description': Description,
-                          'price': Price.toString(),
+                          'price': Price,
                           'location': location,
                           'latlng': latlng
                         };
@@ -258,7 +257,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             decoration:
                                 InputDecoration(hintText: 'Mileage (Miles)'),
                             onChanged: (value) {
-                              mileage = double.parse(value.trim());
+                              mileage = int.parse(value.trim());
                             },
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -266,7 +265,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 return 'Mileage cannot be empty';
                               }
 
-                              if (double.parse(value.trim()) > 200000) {
+                              if (int.parse(value.trim()) > 200000) {
                                 return 'Mileage is too high';
                               }
                               return null;
@@ -335,7 +334,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             decoration:
                                 InputDecoration(hintText: 'Asking Price £'),
                             onChanged: (value) {
-                              Price = double.parse(value.trim());
+                              Price = int.parse(value.trim());
                             },
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -343,7 +342,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 return 'Please enter a price £';
                               }
 
-                              if (double.parse(value.trim()) <= 99) {
+                              if (int.parse(value.trim()) <= 99) {
                                 return 'Car value is too low, minimum value = £100';
                               }
                               return null;
@@ -526,8 +525,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           snapshot.data.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data =
                             document.data() as Map<String, dynamic>;
-                        double price = double.parse(data['price']);
-                        double mileage = double.parse(data['mileage']);
+                        int price = data['price'];
+                        int mileage = data['mileage'];
                         return Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
@@ -700,7 +699,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                               const EdgeInsets.only(right: 10),
                                           child: Align(
                                               alignment: Alignment.topRight,
-                                              child: Text(data['year'])),
+                                              child: Text(
+                                                  data['year'].toString())),
                                         ),
                                         Icon(
                                           FontAwesomeIcons.calendarAlt,

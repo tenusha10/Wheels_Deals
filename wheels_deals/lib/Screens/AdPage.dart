@@ -72,8 +72,8 @@ class _AdPageState extends State<AdPage> {
                 children: snapshot.data.docs.map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data() as Map<String, dynamic>;
-                  double price = double.parse(data['price']);
-                  double mileage = double.parse(data['mileage']);
+                  int price = data['price'];
+                  int mileage = data['mileage'];
                   String membersince =
                       timeAgo.format(DateTime.parse(data['userCreatedTime']));
 
@@ -248,7 +248,7 @@ class _AdPageState extends State<AdPage> {
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Align(
                                       alignment: Alignment.topRight,
-                                      child: Text(data['year'])),
+                                      child: Text(data['year'].toString())),
                                 ),
                                 Icon(
                                   FontAwesomeIcons.calendarDays,

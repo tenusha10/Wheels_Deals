@@ -95,8 +95,8 @@ class _saveAdsState extends State<saveAds> {
                             if (Adsnap.connectionState ==
                                 ConnectionState.done) {
                               Map data = Adsnap.data.data();
-                              double price = double.parse(data['price']);
-                              double mileage = double.parse(data['mileage']);
+                              int price = data['price'];
+                              int mileage = data['mileage'];
                               String membersince = timeAgo.format(
                                   DateTime.parse(data['userCreatedTime']));
 
@@ -288,7 +288,8 @@ class _saveAdsState extends State<saveAds> {
                                                   right: 10),
                                               child: Align(
                                                   alignment: Alignment.topRight,
-                                                  child: Text(data['year'])),
+                                                  child: Text(
+                                                      data['year'].toString())),
                                             ),
                                             Icon(
                                               FontAwesomeIcons.calendarDays,

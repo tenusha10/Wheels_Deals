@@ -7,6 +7,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wheels_deals/API/CarModels.dart';
 import 'package:wheels_deals/API/fetchedCar.dart';
 import 'package:wheels_deals/Googlemaps_requests/MapUtils.dart';
 import 'package:wheels_deals/Googlemaps_requests/distanceMatrix.dart';
@@ -159,8 +160,8 @@ class _ViewAdState extends State<ViewAd> {
               }
               if (snapshot.connectionState == ConnectionState.done) {
                 Map<String, dynamic> data = snapshot.data.data();
-                double price = double.parse(data['price']);
-                double mileage = double.parse(data['mileage']);
+                int price = data['price'];
+                int mileage = data['mileage'];
                 List imageList = data['imageURls'];
 
                 String membersince =
@@ -307,7 +308,7 @@ class _ViewAdState extends State<ViewAd> {
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Align(
                                       alignment: Alignment.topRight,
-                                      child: Text(data['year'])),
+                                      child: Text(data['year'].toString())),
                                 ),
                                 Icon(
                                   FontAwesomeIcons.calendarDays,
@@ -339,7 +340,8 @@ class _ViewAdState extends State<ViewAd> {
                                   padding: const EdgeInsets.only(left: 8),
                                   child: Align(
                                     child: Text(
-                                      data['engineCapacity'] + 'L',
+                                      carModels().getEngineSize(
+                                          data['engineCapacity']),
                                       style: TextStyle(
                                         fontSize: 14,
                                       ),
@@ -420,7 +422,8 @@ class _ViewAdState extends State<ViewAd> {
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Align(
                                       alignment: Alignment.topRight,
-                                      child: Text(data['co2'] + 'g')),
+                                      child:
+                                          Text(data['co2'].toString() + 'g')),
                                 ),
                                 Icon(
                                   MyFlutterApp.carbon_dioxide,

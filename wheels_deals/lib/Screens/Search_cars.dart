@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/API/CarModels.dart';
+
 import 'package:wheels_deals/Screens/search_view.dart';
 
 class SearchCars extends StatefulWidget {
@@ -53,11 +55,11 @@ class _SearchCarsState extends State<SearchCars> {
     'Gold',
     'Orange'
   ];
-  List<String> engineList = ['1L', '1L-2L'];
+  List<String> engineList = ['1L', '1.5L', '2L', '3L', '4L', '5L', '6L'];
   List<String> gearboxList = ['Automatic', 'Manual'];
   List<String> bodyTypeList = carModels().getBodyTypes();
   List<String> numofDoorsList = ['3 Doors', '5 Doors'];
-  List<String> co2List = ['>99g', '>150g', '>200g', '200g+'];
+  List<String> co2List = ['>99g', '>150g', '>200g'];
   List<String> fuelList = [
     'Petrol',
     'Diesel',
@@ -80,6 +82,63 @@ class _SearchCarsState extends State<SearchCars> {
   List<String> ulezList = [
     'Compatible',
     'Not Compatible',
+  ];
+  List<String> priceList = [
+    '500',
+    '1000',
+    '1500',
+    '2000',
+    '2500',
+    '3000',
+    '3500',
+    '4000',
+    '4500',
+    '5000',
+    '10000',
+    '15000',
+    '20000',
+    '25000',
+    '30000',
+    '35000',
+    '40000',
+    '45000',
+    '50000',
+    '55000',
+    '60000',
+    '65000',
+    '70000',
+    '75000',
+    '80000',
+    '85000',
+    '90000',
+    '95000',
+    '100000',
+    '150000',
+    '200000'
+  ];
+  List<String> mileageList = [
+    '5000',
+    '10000',
+    '15000',
+    '20000',
+    '25000',
+    '30000',
+    '35000',
+    '40000',
+    '45000',
+    '50000',
+    '55000',
+    '60000',
+    '65000',
+    '70000',
+    '75000',
+    '80000',
+    '85000',
+    '90000',
+    '95000',
+    '100000',
+    '150000',
+    '200000'
   ];
 
   @override
@@ -113,16 +172,56 @@ class _SearchCarsState extends State<SearchCars> {
                 child: Form(
                   child: Column(
                     children: [
-                      Text(
-                        'Search Cars for Sale',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            'Search Cars for Sale',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 5, left: 5),
+                            child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  Make = null;
+                                  Model = null;
+                                  Colour = null;
+                                  minPrice = null;
+                                  maxPrice = null;
+                                  minMileage = null;
+                                  maxMileage = null;
+                                  minEngineCapacity = null;
+                                  maxEngineCapacity = null;
+                                  Gearbox = null;
+                                  BodyType = null;
+                                  numofDoors = null;
+                                  co2 = null;
+                                  FuelType = null;
+                                  taxStatus = null;
+                                  motStatus = null;
+                                  CAT = null;
+                                  ulez = null;
+                                  yearRange =
+                                      yearRange = RangeValues(1999, 1999);
+                                });
+                              },
+                              tooltip: 'Reset',
+                              icon: Icon(
+                                FontAwesomeIcons.arrowRotateLeft,
+                                color: Colors.black,
+                              ),
+                              iconSize: 20,
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Container(
-                        child: DropdownButtonFormField<String>(
+                          child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
                           iconSize: 25,
                           style: GoogleFonts.roboto(
                               fontSize: 18,
@@ -148,13 +247,11 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a Make';
-                            }
-                            return null;
-                          },
                         ),
+                      )),
+                      Divider(
+                        color: Colors.black45,
+                        thickness: 1,
                       ),
                       SizedBox(
                         height: 10,
@@ -238,62 +335,75 @@ class _SearchCarsState extends State<SearchCars> {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
-                            width: 8,
+                          Padding(
+                            padding: EdgeInsets.only(left: 35, right: 5),
+                            child: Container(
+                                width: 100,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    iconSize: 25,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    value: minPrice,
+                                    hint: Text(
+                                      'Min',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    isExpanded: false,
+                                    onChanged: (String val) {
+                                      setState(() {
+                                        this.minPrice = val;
+                                      });
+                                    },
+                                    items: priceList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                )),
                           ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 30, right: 5, top: 10, bottom: 10),
-                            height: 50,
-                            width: 100,
-                            child: TextFormField(
-                              decoration: InputDecoration(hintText: 'Min £'),
-                              onChanged: (value) {
-                                this.minPrice = value.trim();
-                              },
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value.trim() == null || value.isEmpty) {
-                                  return 'Mileage cannot be empty';
-                                }
-
-                                if (double.parse(value.trim()) > 200000) {
-                                  return 'Mileage is too high';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 50,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 30, right: 5, top: 10, bottom: 10),
-                            height: 50,
-                            width: 100,
-                            child: TextFormField(
-                              decoration: InputDecoration(hintText: 'Max £'),
-                              onChanged: (value) {
-                                this.maxPrice = value.trim();
-                              },
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value.trim() == null || value.isEmpty) {
-                                  return 'Mileage cannot be empty';
-                                }
-
-                                if (double.parse(value.trim()) > 200000) {
-                                  return 'Mileage is too high';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 60, right: 5),
+                              child: Container(
+                                width: 100,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    iconSize: 25,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    value: maxPrice,
+                                    hint: Text(
+                                      'Max',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    isExpanded: true,
+                                    onChanged: (String val) {
+                                      setState(() {
+                                        this.maxPrice = val;
+                                      });
+                                    },
+                                    items: priceList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ))
                         ],
-                      ),
-                      SizedBox(
-                        height: 10,
                       ),
                       Divider(
                         color: Colors.black45,
@@ -309,59 +419,75 @@ class _SearchCarsState extends State<SearchCars> {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 30, right: 5, top: 10, bottom: 10),
-                            height: 50,
-                            width: 100,
-                            child: TextFormField(
-                              decoration: InputDecoration(hintText: 'Min'),
-                              onChanged: (value) {
-                                this.minMileage = value.trim();
-                              },
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value.trim() == null || value.isEmpty) {
-                                  return 'Mileage cannot be empty';
-                                }
-
-                                if (double.parse(value.trim()) > 200000) {
-                                  return 'Mileage is too high';
-                                }
-                                return null;
-                              },
-                            ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 29, right: 5),
+                            child: Container(
+                                width: 100,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    iconSize: 25,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    value: minMileage,
+                                    hint: Text(
+                                      'Min',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    isExpanded: false,
+                                    onChanged: (String val) {
+                                      setState(() {
+                                        this.minMileage = val;
+                                      });
+                                    },
+                                    items: mileageList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                )),
                           ),
-                          SizedBox(
-                            width: 50,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 30, right: 5, top: 10, bottom: 10),
-                            height: 50,
-                            width: 100,
-                            child: TextFormField(
-                              decoration: InputDecoration(hintText: 'Max'),
-                              onChanged: (value) {
-                                this.maxMileage = value.trim();
-                              },
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value.trim() == null || value.isEmpty) {
-                                  return 'Mileage cannot be empty';
-                                }
-
-                                if (double.parse(value.trim()) > 200000) {
-                                  return 'Mileage is too high';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 60, right: 5),
+                              child: Container(
+                                width: 100,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    iconSize: 25,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    value: maxMileage,
+                                    hint: Text(
+                                      'Max',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    isExpanded: true,
+                                    onChanged: (String val) {
+                                      setState(() {
+                                        this.maxMileage = val;
+                                      });
+                                    },
+                                    items: mileageList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ))
                         ],
-                      ),
-                      SizedBox(
-                        height: 10,
                       ),
                       Divider(
                         color: Colors.black45,
@@ -377,62 +503,75 @@ class _SearchCarsState extends State<SearchCars> {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
-                            width: 10,
+                          Padding(
+                            padding: EdgeInsets.only(left: 38, right: 5),
+                            child: Container(
+                                width: 100,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    iconSize: 25,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    value: minEngineCapacity,
+                                    hint: Text(
+                                      'Min',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    isExpanded: false,
+                                    onChanged: (String val) {
+                                      setState(() {
+                                        this.minEngineCapacity = val;
+                                      });
+                                    },
+                                    items: engineList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                )),
                           ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 30, right: 5, top: 10, bottom: 10),
-                            height: 50,
-                            width: 100,
-                            child: TextFormField(
-                              decoration: InputDecoration(hintText: 'Min'),
-                              onChanged: (value) {
-                                this.minEngineCapacity = value.trim();
-                              },
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value.trim() == null || value.isEmpty) {
-                                  return 'Mileage cannot be empty';
-                                }
-
-                                if (double.parse(value.trim()) > 200000) {
-                                  return 'Mileage is too high';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 50,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 30, right: 5, top: 10, bottom: 10),
-                            height: 50,
-                            width: 100,
-                            child: TextFormField(
-                              decoration: InputDecoration(hintText: 'Max'),
-                              onChanged: (value) {
-                                this.maxEngineCapacity = value.trim();
-                              },
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value.trim() == null || value.isEmpty) {
-                                  return 'Mileage cannot be empty';
-                                }
-
-                                if (double.parse(value.trim()) > 200000) {
-                                  return 'Mileage is too high';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 60, right: 5),
+                              child: Container(
+                                width: 100,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    iconSize: 25,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    value: maxEngineCapacity,
+                                    hint: Text(
+                                      'Max',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    isExpanded: true,
+                                    onChanged: (String val) {
+                                      setState(() {
+                                        this.maxEngineCapacity = val;
+                                      });
+                                    },
+                                    items: engineList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ))
                         ],
-                      ),
-                      SizedBox(
-                        height: 10,
                       ),
                       Divider(
                         color: Colors.black45,
@@ -884,11 +1023,45 @@ class _SearchCarsState extends State<SearchCars> {
     CollectionReference _carRef = FirebaseFirestore.instance.collection('cars');
     query = _carRef;
 
-    /*if (mot != null) {
-      query = query.where('motStatus', isEqualTo: "Valid");
-    } else {
-      query = query.where('motStatus', isEqualTo: "Not Valid");
-    } */
+    if (minPrice != null) {
+      query = query.where('price', isGreaterThanOrEqualTo: int.parse(minPrice));
+    }
+    if (maxPrice != null) {
+      query = query.where('price', isLessThanOrEqualTo: int.parse(maxPrice));
+    }
+    if (minMileage != null) {
+      query =
+          query.where('mileage', isGreaterThanOrEqualTo: int.parse(minMileage));
+    }
+    if (maxMileage != null) {
+      query =
+          query.where('mileage', isLessThanOrEqualTo: int.parse(maxMileage));
+    }
+    if (minEngine != null) {
+      int min = carModels().getEngineCapacity(minEngine);
+      query = query.where('engineCapacity', isGreaterThanOrEqualTo: min);
+    }
+    if (maxEngine != null) {
+      int max = carModels().getEngineCapacity(maxEngine);
+      query = query.where('engineCapacity', isLessThanOrEqualTo: max);
+    }
+    if (co2 != null) {
+      if (co2 == '>99g') {
+        query = query.where('co2', isLessThanOrEqualTo: 99);
+      } else if (co2 == '>150g') {
+        query = query.where('co2', isLessThanOrEqualTo: 150);
+      } else if (co2 == '>200g') {
+        query = query.where('co2', isLessThanOrEqualTo: 200);
+      }
+    }
+
+    if (int.parse(minYear) != null) {
+      query = query.where('year', isGreaterThanOrEqualTo: int.parse(minYear));
+    }
+    if (int.parse(maxYear) != null) {
+      query = query.where('year', isLessThanOrEqualTo: int.parse(maxYear));
+    }
+
     if (make != null) {
       query = query.where('make', isEqualTo: make.toUpperCase());
     }
@@ -907,9 +1080,6 @@ class _SearchCarsState extends State<SearchCars> {
     if (numofdoors != null) {
       query = query.where('numofDoors', isEqualTo: numofdoors);
     }
-    if (co2 != null) {
-      query = query.where('co2', isEqualTo: co2);
-    }
     if (fueltype != null) {
       query = query.where('fuelType', isEqualTo: fueltype.toUpperCase());
     }
@@ -926,7 +1096,6 @@ class _SearchCarsState extends State<SearchCars> {
         query = query.where('cat', isEqualTo: 'false');
       }
     }
-
     if (ulez != null) {
       if (ulez == 'Compatible') {
         query = query.where('ulez', isEqualTo: 'true');

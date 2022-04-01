@@ -7,6 +7,52 @@ class carModels {
     this.Model,
   });
 
+  String getEngineSize(int engine) {
+    if (engine == 0) {
+      return 'Electric Motor';
+    } else if (engine <= 999) {
+      return '1L';
+    } else if (engine >= 1000 && engine <= 1500) {
+      return '1.5L';
+    } else if (engine >= 1500 && engine <= 2000) {
+      return '2L';
+    } else if (engine >= 2000 && engine <= 2500) {
+      return '2.5L';
+    } else if (engine >= 2500 && engine <= 3000) {
+      return '3L';
+    } else if (engine >= 3000 && engine <= 3500) {
+      return '3.5L';
+    } else if (engine >= 3500 && engine <= 4000) {
+      return '4L';
+    } else if (engine >= 4000 && engine <= 4500) {
+      return '4.5L';
+    } else if (engine >= 4500 && engine <= 5000) {
+      return '5L';
+    } else if (engine >= 5000 && engine <= 5500) {
+      return '5.5L';
+    } else if (engine >= 5500) {
+      return '6L';
+    }
+  }
+
+  int getEngineCapacity(String engine) {
+    if (engine == '1L') {
+      return 990;
+    } else if (engine == '1.5L') {
+      return 1400;
+    } else if (engine == '2L') {
+      return 1999;
+    } else if (engine == '3L') {
+      return 2999;
+    } else if (engine == '4L') {
+      return 3999;
+    } else if (engine == '5L') {
+      return 4999;
+    } else if (engine == '6L') {
+      return 5999;
+    }
+  }
+
   List<String> getBodyTypes() {
     List<String> BodyTypes = <String>[];
     BodyTypes = [

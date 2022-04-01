@@ -42,7 +42,7 @@ class _sellCarsState extends State<sellCars> {
   final _Email = TextEditingController();
   String _reg;
   String Name, Telephone, Email, Postcode;
-  double Price, mileage;
+  int Price, mileage;
   bool CAT = false;
   bool visibility = false;
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -267,18 +267,18 @@ class _sellCarsState extends State<sellCars> {
                           'registration': car.registrationNumber,
                           'make': car.make,
                           'colour': car.colour,
-                          'year': car.yearOfManufacture.toString(),
+                          'year': car.yearOfManufacture,
                           'fuelType': car.fuelType,
-                          'co2': car.co2Emissions.toString(),
-                          'engineCapacity': car.engineCapacity.toString(),
+                          'co2': car.co2Emissions,
+                          'engineCapacity': car.engineCapacity,
                           'model': this.model,
                           'bodyType': this.bodyType,
                           'gearbox': this.gearbox,
                           'numofDoors': this.NoofDoors,
-                          'mileage': this.mileage.toString(),
+                          'mileage': this.mileage,
                           'cat': this.CAT.toString(),
                           'description': this.Description,
-                          'price': this.Price.toString(),
+                          'price': this.Price,
                           'imageURls': imageUrlList,
                           'taxStatus': car.taxStatus,
                           'taxDueDate': taxdue,
@@ -526,7 +526,7 @@ class _sellCarsState extends State<sellCars> {
                             decoration:
                                 InputDecoration(hintText: 'Mileage (Miles)'),
                             onChanged: (value) {
-                              this.mileage = double.parse(value.trim());
+                              this.mileage = int.parse(value.trim());
                             },
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -534,7 +534,7 @@ class _sellCarsState extends State<sellCars> {
                                 return 'Mileage cannot be empty';
                               }
 
-                              if (double.parse(value.trim()) > 200000) {
+                              if (int.parse(value.trim()) > 200000) {
                                 return 'Mileage is too high';
                               }
                               return null;
@@ -601,7 +601,7 @@ class _sellCarsState extends State<sellCars> {
                             decoration:
                                 InputDecoration(hintText: 'Asking Price £'),
                             onChanged: (value) {
-                              this.Price = double.parse(value.trim());
+                              this.Price = int.parse(value.trim());
                             },
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -609,7 +609,7 @@ class _sellCarsState extends State<sellCars> {
                                 return 'Please enter a price £';
                               }
 
-                              if (double.parse(value.trim()) <= 99) {
+                              if (int.parse(value.trim()) <= 99) {
                                 return 'Car value is too low, minimum value = £100';
                               }
                               return null;
