@@ -106,6 +106,11 @@ class _ViewAdState extends State<ViewAd> {
       await launch(uri);
     }
 
+    phonecall(String phoneNumber) async {
+      String uri = 'tel:${phoneNumber}';
+      await launch(uri);
+    }
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -1082,7 +1087,7 @@ class _ViewAdState extends State<ViewAd> {
                                   padding: EdgeInsets.only(left: 20, right: 5),
                                   child: InkWell(
                                     onTap: () {
-                                      sendEmail(data['userEmail']);
+                                      phonecall(data['userPhoneNumber']);
                                     },
                                     child: Container(
                                         height: 40,
@@ -1110,7 +1115,7 @@ class _ViewAdState extends State<ViewAd> {
                                               width: 5,
                                             ),
                                             Icon(
-                                              FontAwesomeIcons.envelope,
+                                              FontAwesomeIcons.phone,
                                               color: Colors.white,
                                               size: 26,
                                             ),
@@ -1118,7 +1123,7 @@ class _ViewAdState extends State<ViewAd> {
                                               width: 10,
                                             ),
                                             Text(
-                                              'Email Seller',
+                                              'Call Seller',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 18),
