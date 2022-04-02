@@ -390,22 +390,6 @@ class _searchViewState extends State<searchView> {
                     break;
                   }
 
-                  /*decending
-                      ? filteredlist.sort(((a, b) {
-                          Map<String, dynamic> c = a.data();
-                          Map<String, dynamic> d = b.data();
-                          int price1 = c['price'];
-                          int price2 = d['price'];
-                          return price1.compareTo(price2);
-                        }))
-                      : filteredlist.sort(((a, b) {
-                          Map<String, dynamic> c = a.data();
-                          Map<String, dynamic> d = b.data();
-                          int price1 = c['price'];
-                          int price2 = d['price'];
-                          return price2.compareTo(price1);
-                        })); */
-
                   if (decending == true) {
                     if (disMileage == true) {
                       filteredlist.sort(((a, b) {
@@ -483,10 +467,15 @@ class _searchViewState extends State<searchView> {
                                     color: Colors.black54,
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 5),
-                                    child: Text('${filteredlist.length}' +
-                                        ' ' +
-                                        'Cars Found'),
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      '${filteredlist.length}' +
+                                          ' ' +
+                                          'Cars Found',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   )
                                 ],
                               ),
@@ -577,38 +566,13 @@ class _searchViewState extends State<searchView> {
                                               size: 22,
                                               color: Colors.black54,
                                             ))),
-                                    /*Padding(
-                                      padding: EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        'Year:',
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only(left: 1),
-                                        child: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                yearSort = !yearSort;
-                                              });
-                                            },
-                                            icon: Icon(
-                                              yearSort
-                                                  ? FontAwesomeIcons.arrowUp19
-                                                  : FontAwesomeIcons
-                                                      .arrowDown19,
-                                              size: 22,
-                                              color: Colors.black54,
-                                            ))) */
                                   ],
                                 )),
                           ],
                         ),
                       )),
                   Container(
-                      height: MediaQuery.of(context).size.height * 0.750,
+                      height: MediaQuery.of(context).size.height * 0.75,
                       child: ListView(
                         children: filteredlist.map((document) {
                           Map<String, dynamic> data = document.data();
