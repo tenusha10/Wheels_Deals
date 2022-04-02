@@ -22,6 +22,7 @@ class _SearchCarsState extends State<SearchCars> {
       Gearbox,
       FuelType,
       co2,
+      co2CPY,
       numofDoors,
       engineCapacity,
       taxStatus,
@@ -202,6 +203,7 @@ class _SearchCarsState extends State<SearchCars> {
                                   BodyType = null;
                                   numofDoors = null;
                                   co2 = null;
+                                  co2CPY = null;
                                   FuelType = null;
                                   taxStatus = null;
                                   motStatus = null;
@@ -894,20 +896,19 @@ class _SearchCarsState extends State<SearchCars> {
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.indigo),
                                 onPressed: () {
+                                  bool pValid = false,
+                                      mValid = false,
+                                      eValid = false;
                                   //validation goes here
-                                  /* if (int.parse(minPrice) >=
-                                          int.parse(maxPrice) ||
-                                      int.parse(minMileage) >=
-                                          int.parse(maxMileage) ||
-                                      int.parse(minEngineCapacity) >=
-                                          int.parse(maxEngineCapacity)) {
+                                  if ((minPrice != null && maxPrice == null) ||
+                                      (minPrice == null && maxPrice != null)) {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                              title: Text("Validation Error"),
+                                              title: Text(" Error"),
                                               content: Text(
-                                                  'Min and Max cannot be equal ! \nMin cannot be higher than Max'),
+                                                  'Both Min and Max Required for Price'),
                                               actions: <Widget>[
                                                 TextButton(
                                                   onPressed: () =>
@@ -917,7 +918,138 @@ class _SearchCarsState extends State<SearchCars> {
                                                 )
                                               ]);
                                         });
+                                  } else if (minPrice != null &&
+                                      maxPrice != null) {
+                                    if (int.parse(minPrice) >=
+                                        int.parse(maxPrice)) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                title: Text("Validation Error"),
+                                                content: Text(
+                                                    'Min and Max cannot be equal ! \nMin cannot be higher than Max'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  )
+                                                ]);
+                                          });
+                                    } else {
+                                      pValid = true;
+                                    }
                                   } else {
+                                    pValid = true;
+                                  }
+
+                                  if ((minMileage != null &&
+                                          maxMileage == null) ||
+                                      (minMileage == null &&
+                                          maxMileage != null)) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                              title: Text(" Error"),
+                                              content: Text(
+                                                  'Both Min and Max Required for Mileage'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                )
+                                              ]);
+                                        });
+                                  } else if (minMileage != null &&
+                                      maxMileage != null) {
+                                    if (int.parse(minMileage) >=
+                                        int.parse(maxMileage)) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                title: Text("Validation Error"),
+                                                content: Text(
+                                                    'Min and Max cannot be equal ! \nMin cannot be higher than Max'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  )
+                                                ]);
+                                          });
+                                    } else {
+                                      mValid = true;
+                                    }
+                                  } else {
+                                    mValid = true;
+                                  }
+
+                                  if ((minEngineCapacity != null &&
+                                          maxEngineCapacity == null) ||
+                                      (minEngineCapacity == null &&
+                                          maxEngineCapacity != null)) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                              title: Text(" Error"),
+                                              content: Text(
+                                                  'Both Min and Max Required for Engine Capacity'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                )
+                                              ]);
+                                        });
+                                  } else if (minEngineCapacity != null &&
+                                      maxEngineCapacity != null) {
+                                    minEngineCapacityCPY = carModels()
+                                        .getEngineCapacity(minEngineCapacity)
+                                        .toString();
+
+                                    maxEngineCapacityCPY = carModels()
+                                        .getEngineCapacity(maxEngineCapacity)
+                                        .toString();
+
+                                    if (int.parse(minEngineCapacityCPY) >=
+                                        int.parse(maxEngineCapacityCPY)) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                title: Text("Validation Error"),
+                                                content: Text(
+                                                    'Min and Max cannot be equal ! \nMin cannot be higher than Max'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  )
+                                                ]);
+                                          });
+                                    } else {
+                                      eValid = true;
+                                    }
+                                  } else {
+                                    eValid = true;
+                                  }
+
+                                  if (pValid == true &&
+                                      mValid == true &&
+                                      eValid == true) {
                                     Stream<QuerySnapshot> res =
                                         buildsearchQuery(
                                             Make,
@@ -940,13 +1072,61 @@ class _SearchCarsState extends State<SearchCars> {
                                             motStatus,
                                             CAT,
                                             ulez);
+
+                                    if (co2 != null) {
+                                      if (co2 == '>99g') {
+                                        co2CPY = '99';
+                                      } else if (co2 == '>150g') {
+                                        co2CPY = '150';
+                                      } else {
+                                        co2CPY = '200';
+                                      }
+                                    }
+
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => searchView(
                                                   queryCars: res,
+                                                  minPrice: minPrice,
+                                                  maxPrice: maxPrice,
+                                                  minMileage: minMileage,
+                                                  maxMileage: maxMileage,
+                                                  minEngine:
+                                                      minEngineCapacityCPY,
+                                                  maxEngine:
+                                                      maxEngineCapacityCPY,
+                                                  minYear: minYear,
+                                                  maxYear: maxYear,
+                                                  co2: co2CPY,
                                                 )));
-                                  } */
+                                  }
+                                  /*
+                                  if (int.parse(minPrice) >=
+                                          int.parse(maxPrice) ||
+                                      int.parse(minMileage) >=
+                                          int.parse(maxMileage) ||
+                                      int.parse(minEngineCapacity) >=
+                                          int.parse(maxEngineCapacity)) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                              title: Text("Validation Error"),
+                                              content: Text(
+                                                  'Min and Max cannot be equal ! \nMin cannot be higher than Max'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                )
+                                              ]);
+                                        });
+                                  } else {
+                                    print('Good');
+                                  }
 
                                   Stream<QuerySnapshot> res = buildsearchQuery(
                                       Make,
@@ -980,6 +1160,15 @@ class _SearchCarsState extends State<SearchCars> {
                                         .getEngineCapacity(maxEngineCapacity)
                                         .toString();
                                   }
+                                  if (co2 != null) {
+                                    if (co2 == '>99g') {
+                                      co2CPY = '99';
+                                    } else if (co2 == '>150g') {
+                                      co2CPY = '150';
+                                    } else {
+                                      co2CPY = '200';
+                                    }
+                                  }
 
                                   Navigator.push(
                                       context,
@@ -994,7 +1183,8 @@ class _SearchCarsState extends State<SearchCars> {
                                                 maxEngine: maxEngineCapacityCPY,
                                                 minYear: minYear,
                                                 maxYear: maxYear,
-                                              )));
+                                                co2: co2CPY,
+                                              ))); */
                                 },
                                 child: Text(
                                   'Search Cars',

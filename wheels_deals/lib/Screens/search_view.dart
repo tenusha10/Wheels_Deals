@@ -22,6 +22,7 @@ class searchView extends StatefulWidget {
   final String minMileage, maxMileage;
   final String minEngine, maxEngine;
   final String minYear, maxYear;
+  final String co2;
 
   searchView(
       {this.queryCars,
@@ -32,7 +33,8 @@ class searchView extends StatefulWidget {
       this.maxEngine,
       this.minEngine,
       this.maxYear,
-      this.minYear});
+      this.minYear,
+      this.co2});
 
   @override
   State<searchView> createState() => _searchViewState();
@@ -390,6 +392,19 @@ class _searchViewState extends State<searchView> {
                     break;
                   }
 
+                  if (widget.co2 != null) {
+                    List<QueryDocumentSnapshot<Object>> QueryList = [];
+                    print('co2');
+                    for (int i = 0; i < filteredlist.length; i++) {
+                      Map<String, dynamic> p = filteredlist[i].data();
+                      if ((p['co2'] <= int.parse(widget.co2))) {
+                        QueryList.add(filteredlist[i]);
+                      }
+                    }
+                    filteredlist = QueryList;
+                  }
+
+                  //Sort filters
                   if (decending == true) {
                     if (disMileage == true) {
                       filteredlist.sort(((a, b) {
