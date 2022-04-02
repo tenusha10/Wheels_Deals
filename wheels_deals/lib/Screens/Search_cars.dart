@@ -36,6 +36,8 @@ class _SearchCarsState extends State<SearchCars> {
       minMileage,
       maxMileage,
       minEngineCapacity,
+      minEngineCapacityCPY,
+      maxEngineCapacityCPY,
       maxEngineCapacity;
   var yearRange = RangeValues(1999, 1999);
   List<String> makeList = carModels().getMakes();
@@ -55,7 +57,7 @@ class _SearchCarsState extends State<SearchCars> {
     'Gold',
     'Orange'
   ];
-  List<String> engineList = ['1L', '1.5L', '2L', '3L', '4L', '5L', '6L'];
+  List<String> engineList = ['>1L', '1L', '1.5L', '2L', '3L', '4L', '5L', '6L'];
   List<String> gearboxList = ['Automatic', 'Manual'];
   List<String> bodyTypeList = carModels().getBodyTypes();
   List<String> numofDoorsList = ['3 Doors', '5 Doors'];
@@ -117,6 +119,7 @@ class _SearchCarsState extends State<SearchCars> {
     '200000'
   ];
   List<String> mileageList = [
+    '1000',
     '5000',
     '10000',
     '15000',
@@ -192,6 +195,8 @@ class _SearchCarsState extends State<SearchCars> {
                                   minMileage = null;
                                   maxMileage = null;
                                   minEngineCapacity = null;
+                                  minEngineCapacityCPY = null;
+                                  maxEngineCapacityCPY = null;
                                   maxEngineCapacity = null;
                                   Gearbox = null;
                                   BodyType = null;
@@ -202,8 +207,9 @@ class _SearchCarsState extends State<SearchCars> {
                                   motStatus = null;
                                   CAT = null;
                                   ulez = null;
-                                  yearRange =
-                                      yearRange = RangeValues(1999, 1999);
+                                  minYear = null;
+                                  maxYear = null;
+                                  yearRange = RangeValues(1999, 1999);
                                 });
                               },
                               tooltip: 'Reset',
@@ -281,12 +287,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -317,12 +317,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -646,12 +640,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -682,12 +670,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -718,12 +700,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -754,12 +730,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -790,12 +760,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -826,12 +790,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -862,12 +820,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -898,12 +850,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -934,12 +880,6 @@ class _SearchCarsState extends State<SearchCars> {
                               child: Text(value),
                             );
                           }).toList(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please select a model';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       SizedBox(
@@ -954,6 +894,60 @@ class _SearchCarsState extends State<SearchCars> {
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.indigo),
                                 onPressed: () {
+                                  //validation goes here
+                                  /* if (int.parse(minPrice) >=
+                                          int.parse(maxPrice) ||
+                                      int.parse(minMileage) >=
+                                          int.parse(maxMileage) ||
+                                      int.parse(minEngineCapacity) >=
+                                          int.parse(maxEngineCapacity)) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                              title: Text("Validation Error"),
+                                              content: Text(
+                                                  'Min and Max cannot be equal ! \nMin cannot be higher than Max'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                  child: const Text('OK'),
+                                                )
+                                              ]);
+                                        });
+                                  } else {
+                                    Stream<QuerySnapshot> res =
+                                        buildsearchQuery(
+                                            Make,
+                                            Model,
+                                            Colour,
+                                            minPrice,
+                                            maxPrice,
+                                            minMileage,
+                                            maxMileage,
+                                            minEngineCapacity,
+                                            maxEngineCapacity,
+                                            minYear,
+                                            maxYear,
+                                            Gearbox,
+                                            BodyType,
+                                            numofDoors,
+                                            FuelType,
+                                            co2,
+                                            taxStatus,
+                                            motStatus,
+                                            CAT,
+                                            ulez);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => searchView(
+                                                  queryCars: res,
+                                                )));
+                                  } */
+
                                   Stream<QuerySnapshot> res = buildsearchQuery(
                                       Make,
                                       Model,
@@ -975,11 +969,31 @@ class _SearchCarsState extends State<SearchCars> {
                                       motStatus,
                                       CAT,
                                       ulez);
+
+                                  if (minEngineCapacity != null) {
+                                    minEngineCapacityCPY = carModels()
+                                        .getEngineCapacity(minEngineCapacity)
+                                        .toString();
+                                  }
+                                  if (maxEngineCapacity != null) {
+                                    maxEngineCapacityCPY = carModels()
+                                        .getEngineCapacity(maxEngineCapacity)
+                                        .toString();
+                                  }
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => searchView(
                                                 queryCars: res,
+                                                minPrice: minPrice,
+                                                maxPrice: maxPrice,
+                                                minMileage: minMileage,
+                                                maxMileage: maxMileage,
+                                                minEngine: minEngineCapacityCPY,
+                                                maxEngine: maxEngineCapacityCPY,
+                                                minYear: minYear,
+                                                maxYear: maxYear,
                                               )));
                                 },
                                 child: Text(
@@ -1022,28 +1036,6 @@ class _SearchCarsState extends State<SearchCars> {
     CollectionReference _carRef = FirebaseFirestore.instance.collection('cars');
     query = _carRef;
 
-    if (minPrice != null) {
-      query = query.where('price', isGreaterThanOrEqualTo: int.parse(minPrice));
-    }
-    if (maxPrice != null) {
-      query = query.where('price', isLessThanOrEqualTo: int.parse(maxPrice));
-    }
-    if (minMileage != null) {
-      query =
-          query.where('mileage', isGreaterThanOrEqualTo: int.parse(minMileage));
-    }
-    if (maxMileage != null) {
-      query =
-          query.where('mileage', isLessThanOrEqualTo: int.parse(maxMileage));
-    }
-    if (minEngine != null) {
-      int min = carModels().getEngineCapacity(minEngine);
-      query = query.where('engineCapacity', isGreaterThanOrEqualTo: min);
-    }
-    if (maxEngine != null) {
-      int max = carModels().getEngineCapacity(maxEngine);
-      query = query.where('engineCapacity', isLessThanOrEqualTo: max);
-    }
     if (co2 != null) {
       if (co2 == '>99g') {
         query = query.where('co2', isLessThanOrEqualTo: 99);
@@ -1053,14 +1045,6 @@ class _SearchCarsState extends State<SearchCars> {
         query = query.where('co2', isLessThanOrEqualTo: 200);
       }
     }
-
-    if (minYear != null) {
-      query = query.where('year', isGreaterThanOrEqualTo: int.parse(minYear));
-    }
-    if (maxYear != null) {
-      query = query.where('year', isLessThanOrEqualTo: int.parse(maxYear));
-    }
-
     if (make != null) {
       query = query.where('make', isEqualTo: make.toUpperCase());
     }
@@ -1086,7 +1070,9 @@ class _SearchCarsState extends State<SearchCars> {
       query = query.where('taxStatus', isEqualTo: tax);
     }
     if (mot != null) {
-      query = query.where('motStatus', isEqualTo: mot);
+      if (mot == 'Not valid') {
+        query = query.where('motStatus', isEqualTo: mot);
+      }
     }
     if (cat != null) {
       if (cat == 'Declared') {

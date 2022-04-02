@@ -36,20 +36,22 @@ class carModels {
   }
 
   int getEngineCapacity(String engine) {
-    if (engine == '1L') {
-      return 990;
+    if (engine == '>1L') {
+      return 0;
+    } else if (engine == '1L') {
+      return 1000;
     } else if (engine == '1.5L') {
-      return 1400;
+      return 1600;
     } else if (engine == '2L') {
-      return 1999;
+      return 2100;
     } else if (engine == '3L') {
-      return 2999;
+      return 3199;
     } else if (engine == '4L') {
-      return 3999;
+      return 4199;
     } else if (engine == '5L') {
-      return 4999;
+      return 5199;
     } else if (engine == '6L') {
-      return 5999;
+      return 6199;
     }
   }
 
