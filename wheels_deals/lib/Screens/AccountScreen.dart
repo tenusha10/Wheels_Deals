@@ -17,6 +17,7 @@ import 'package:wheels_deals/loginScreen.dart';
 
 import '../API/CarModels.dart';
 import '../imageSelection/profile_image.dart';
+import '../imageSelection/profile_update_image.dart';
 import '../login.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -469,7 +470,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   if (_formKeyUpdateUser.currentState.validate()) {
                     Map<String, dynamic> userData = {
                       'userName': userName,
-                      'userNumber': userNumber
+                      'userNumber': userNumber,
+                      'imgPro': imgUrl
                     };
                     users.doc(userId).update(userData).then((value) {
                       print('users updated');
@@ -486,12 +488,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   key: _formKeyUpdateUser,
                   child: Column(
                     children: [
-                      Container(
-                        height: 60,
-                        width: 60,
-                        child: Image.network(data['imgPro']),
-                      ),
-                      ProfileImage(
+                      ProfileUpdateImage(
+                        initialUrl: imgUrl,
                         onFileChanged: ((imageUrl) {
                           setState(() {
                             imgUrl = imageUrl;
