@@ -838,7 +838,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               alignment: Alignment.center,
-              height: 620,
+              height: 450,
               width: 500,
               child: StreamBuilder<QuerySnapshot>(
                   stream: _adstream,
