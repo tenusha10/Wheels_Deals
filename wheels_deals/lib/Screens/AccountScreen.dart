@@ -8,6 +8,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
+import 'package:wheels_deals/Screens/seller_page.dart';
 import 'package:wheels_deals/authentication_service.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
@@ -15,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:wheels_deals/loginScreen.dart';
 
 import '../API/CarModels.dart';
+import '../imageSelection/profile_image.dart';
 import '../login.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -28,7 +30,9 @@ class _AccountScreenState extends State<AccountScreen> {
       .where('uId', isEqualTo: userId)
       .orderBy("time", descending: true)
       .snapshots();
+
   final GlobalKey<FormState> _formKeyUpdateCar = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyUpdateUser = GlobalKey<FormState>();
   RegExp regExp = new RegExp(
     r'^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}',
     caseSensitive: false,
@@ -432,6 +436,138 @@ class _AccountScreenState extends State<AccountScreen> {
         });
   }
 
+  Future showDialogForUpdateUser(data, docID) async {
+    String imgUrl = data['imgPro'];
+    final _name = TextEditingController();
+    _name.text = data['userName'];
+    final _phoneNumber = TextEditingController();
+    _phoneNumber.text = data['userNumber'];
+
+    String userName = data['userName'], userNumber = data['userNumber'];
+
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Edit Your details",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              ElevatedButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ElevatedButton(
+                child: Text('Update Details'),
+                onPressed: () async {
+                  CollectionReference users =
+                      FirebaseFirestore.instance.collection('users');
+                  if (_formKeyUpdateUser.currentState.validate()) {
+                    Map<String, dynamic> userData = {
+                      'userName': userName,
+                      'userNumber': userNumber
+                    };
+                    users.doc(userId).update(userData).then((value) {
+                      print('users updated');
+                      Navigator.pop(context);
+                    }).catchError((e) {
+                      print(e);
+                    });
+                  }
+                },
+              ),
+            ],
+            content: SingleChildScrollView(
+              child: Form(
+                  key: _formKeyUpdateUser,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 60,
+                        width: 60,
+                        child: Image.network(data['imgPro']),
+                      ),
+                      ProfileImage(
+                        onFileChanged: ((imageUrl) {
+                          setState(() {
+                            imgUrl = imageUrl;
+                          });
+                        }),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        controller: _name,
+                        decoration: InputDecoration(hintText: 'Your Name'),
+                        onChanged: (value) {
+                          userName = value;
+                        },
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value.trim() == null || value.isEmpty) {
+                            return 'Name cannot be empty';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        controller: _phoneNumber,
+                        decoration:
+                            InputDecoration(hintText: 'Your Phone Number'),
+                        onChanged: (value) {
+                          userNumber = value;
+                        },
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value.trim() == null || value.isEmpty) {
+                            return 'Number cannot be empty';
+                          }
+                          if (!regExp_phonenumber.hasMatch(value.trim())) {
+                            return 'Invalid Phone number format';
+                          }
+                          if (value.trim().length > 11) {
+                            return 'Number is too long';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  )),
+            ),
+          );
+        });
+
+/*
+      return AlertDialog(
+      title: Text(
+        "Edit Your details",
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        ElevatedButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        ElevatedButton(
+          child: Text('Update Details'),
+          onPressed: () async {},
+        ),
+      ],
+    );
+    */
+  }
+
   Future showDialogToDelete(data, DocID) async {
     CollectionReference cars = FirebaseFirestore.instance.collection('cars');
     return showDialog(
@@ -471,6 +607,45 @@ class _AccountScreenState extends State<AccountScreen> {
         });
   }
 
+  Future showDialogToDeleteUser(data, DocID) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Delete Account?',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              SizedBox(
+                width: 10,
+              ),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(FontAwesomeIcons.faceSmileBeam),
+                  label: Text('Cancel')),
+              SizedBox(
+                width: 10,
+              ),
+              ElevatedButton.icon(
+                  onPressed: () async {
+                    users.doc(DocID).delete().then((value) async {
+                      Navigator.pop(context);
+                      await FirebaseAuth.instance.signOut();
+                    }).catchError((error) => print(error));
+                  },
+                  icon: Icon(FontAwesomeIcons.faceSadTear),
+                  label: Text('Confirm'))
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -498,6 +673,163 @@ class _AccountScreenState extends State<AccountScreen> {
                       });
                     },
                     child: Text('Sign out'))),
+            Padding(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: Text(
+                'Account Information',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+                child: FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userId)
+                        .get(),
+                    builder: (con, snap) {
+                      if (snap.hasData) {
+                        Map<String, dynamic> data = snap.data.data();
+
+                        return Padding(
+                          padding: EdgeInsets.only(top: 10, left: 10, right: 5),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            shadowColor: Colors.grey,
+                            clipBehavior: Clip.antiAlias,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  onTap: () {},
+                                  leading: GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              image:
+                                                  NetworkImage(data['imgPro']),
+                                              fit: BoxFit.fill)),
+                                    ),
+                                  ),
+                                  title: GestureDetector(
+                                      onTap: () {},
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 10, bottom: 10),
+                                        child: Text(
+                                          data['userName'],
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )),
+                                  subtitle: GestureDetector(
+                                      onTap: () {},
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                FontAwesomeIcons
+                                                    .mobileScreenButton,
+                                                size: 20,
+                                                color: Colors.grey,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                data['userNumber']
+                                                    .toString()
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.6)),
+                                              ),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Icon(
+                                                FontAwesomeIcons.envelope,
+                                                size: 20,
+                                                color: Colors.black54,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                userEmail,
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.6)),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () async {
+                                                    showDialogForUpdateUser(
+                                                        data, userId);
+                                                  },
+                                                  icon: Icon(
+                                                    FontAwesomeIcons.userPen,
+                                                    size: 20,
+                                                    color: Colors.black54,
+                                                  )),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 3),
+                                                child: Text('Edit Details'),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 10),
+                                                child: IconButton(
+                                                  onPressed: () async {
+                                                    showDialogToDeleteUser(
+                                                        data, userId);
+                                                  },
+                                                  icon: Icon(
+                                                    FontAwesomeIcons.userXmark,
+                                                    size: 20,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 3),
+                                                child: Text('Delete Account'),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.idCard,
+                                        size: 20,
+                                        color: Colors.black54,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    })),
             Text(
               'Manage Ads',
               style: GoogleFonts.patrickHand(
