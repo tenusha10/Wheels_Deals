@@ -983,7 +983,7 @@ class _ViewAdState extends State<ViewAd> {
                                     width: 50,
                                   ),
                                   Padding(
-                                      padding: EdgeInsets.only(left: 40),
+                                      padding: EdgeInsets.only(left: 30),
                                       child: Icon(
                                         FontAwesomeIcons.route,
                                         color: Colors.black54,
