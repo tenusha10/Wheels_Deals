@@ -19,6 +19,7 @@ import '../API/CarModels.dart';
 import '../imageSelection/profile_image.dart';
 import '../imageSelection/profile_update_image.dart';
 import '../login.dart';
+import '../presentation/my_flutter_app_icons.dart';
 
 class AccountScreen extends StatefulWidget {
   @override
@@ -67,12 +68,15 @@ class _AccountScreenState extends State<AccountScreen> {
         Telephone = DBdata['userPhoneNumber'],
         Postcode = DBdata['userPostcode'];
     var C = DBdata['cat'];
+
     bool CAT = false;
     if (C == 'true') {
       CAT = true;
     } else {
       CAT = false;
     }
+
+    bool Sold = DBdata['sold'];
 
     final _Email = TextEditingController();
     _Email.text = DBdata['userEmail'].toString();
@@ -131,7 +135,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           'description': Description,
                           'price': Price,
                           'location': location,
-                          'latlng': latlng
+                          'latlng': latlng,
+                          'sold': Sold
                         };
                         cars.doc(docID).update(carData).then((value) {
                           print('updated');
@@ -290,6 +295,24 @@ class _AccountScreenState extends State<AccountScreen> {
                                   onChanged: (bool value) {
                                     setState((() {
                                       CAT = value;
+                                    }));
+                                  }),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'Sold ?     ',
+                              ),
+                              CupertinoSwitch(
+                                  value: Sold,
+                                  activeColor: Colors.deepPurple,
+                                  onChanged: (bool value) {
+                                    setState((() {
+                                      Sold = value;
                                     }));
                                   }),
                             ],
@@ -779,7 +802,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                   icon: Icon(
                                                     FontAwesomeIcons.userPen,
                                                     size: 20,
-                                                    color: Colors.black54,
+                                                    color: Colors.deepPurple,
                                                   )),
                                               Padding(
                                                 padding:
@@ -797,7 +820,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                   icon: Icon(
                                                     FontAwesomeIcons.userXmark,
                                                     size: 20,
-                                                    color: Colors.black54,
+                                                    color: Colors.red,
                                                   ),
                                                 ),
                                               ),
@@ -908,7 +931,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           }
                                         }),
                                         child: Icon(
-                                          FontAwesomeIcons.edit,
+                                          FontAwesomeIcons.penToSquare,
                                           size: 20,
                                           color: Colors.black54,
                                         ),
@@ -929,6 +952,16 @@ class _AccountScreenState extends State<AccountScreen> {
                                             size: 20,
                                             color: Colors.black54,
                                           )),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      data['sold']
+                                          ? Icon(MyFlutterApp.sold_solid,
+                                              size: 30, color: Colors.red)
+                                          : Icon(
+                                              FontAwesomeIcons.rectangleAd,
+                                              color: Colors.deepPurple,
+                                            )
                                     ],
                                   )),
                               Padding(
@@ -1083,11 +1116,19 @@ class _AccountScreenState extends State<AccountScreen> {
                                               alignment: Alignment.topRight,
                                               child: Text(data['gearbox'])),
                                         ),
-                                        Icon(
-                                          FontAwesomeIcons.cogs,
-                                          color: Colors.black54,
-                                          size: 20,
-                                        ),
+                                        data['gearbox'] == 'Manual'
+                                            ? Icon(
+                                                MyFlutterApp
+                                                    .manual_transmission,
+                                                color: Colors.black54,
+                                                size: 22,
+                                              )
+                                            : Icon(
+                                                MyFlutterApp
+                                                    .automatic_transmission,
+                                                color: Colors.black54,
+                                                size: 24,
+                                              ),
                                       ],
                                     )
                                   ],

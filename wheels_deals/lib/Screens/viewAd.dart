@@ -168,6 +168,7 @@ class _ViewAdState extends State<ViewAd> {
                 int price = data['price'];
                 int mileage = data['mileage'];
                 List imageList = data['imageURls'];
+                bool sold = data['sold'];
 
                 String membersince =
                     timeAgo.format(DateTime.parse(data['userCreatedTime']));
@@ -229,7 +230,7 @@ class _ViewAdState extends State<ViewAd> {
                               textAlign: TextAlign.left,
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: 200),
+                              padding: EdgeInsets.only(left: 50),
                               child: Text(
                                 mileage.round().toString() + ' miles',
                                 style: GoogleFonts.anton(
@@ -244,7 +245,22 @@ class _ViewAdState extends State<ViewAd> {
                                 size: 20,
                                 color: Colors.black87,
                               ),
-                            )
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.2),
+                                child: sold
+                                    ? Icon(
+                                        MyFlutterApp.sold_solid,
+                                        size: 60,
+                                        color: Colors.red,
+                                      )
+                                    : Icon(
+                                        MyFlutterApp.available,
+                                        size: 60,
+                                        color: Colors.deepPurple,
+                                      ))
                           ],
                         ),
                       ),

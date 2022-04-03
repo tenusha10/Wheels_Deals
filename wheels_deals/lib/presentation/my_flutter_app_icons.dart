@@ -41,4 +41,10 @@ class MyFlutterApp {
       IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData carbon_dioxide =
       IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sold_solid =
+      IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sold_tag =
+      IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData available =
+      IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

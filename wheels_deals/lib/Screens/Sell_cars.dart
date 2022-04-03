@@ -289,6 +289,7 @@ class _sellCarsState extends State<sellCars> {
                           'userCreatedTime': userCreatedTime,
                           'location': location,
                           'latlng': latlng,
+                          'sold': false,
                           'ulez': ulez.toString(),
                         };
 

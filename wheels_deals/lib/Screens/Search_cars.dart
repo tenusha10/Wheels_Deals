@@ -1279,7 +1279,7 @@ class _SearchCarsState extends State<SearchCars> {
       }
     }
 
-    result = query.snapshots();
+    result = query.where('sold', isEqualTo: false).snapshots();
     return result;
   }
 }

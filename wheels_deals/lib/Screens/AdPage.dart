@@ -137,11 +137,14 @@ class _AdPageState extends State<AdPage> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
-                              FontAwesomeIcons.rectangleAd,
-                              size: 20,
-                              color: Colors.deepPurple,
-                            ),
+                            data['sold']
+                                ? Icon(MyFlutterApp.sold_solid,
+                                    size: 30, color: Colors.red)
+                                : Icon(
+                                    FontAwesomeIcons.rectangleAd,
+                                    color: Colors.deepPurple,
+                                    size: 20,
+                                  )
                           ],
                         ),
                       ),
