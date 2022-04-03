@@ -332,7 +332,7 @@ class _SearchCarsState extends State<SearchCars> {
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 35, right: 5),
+                            padding: EdgeInsets.only(left: 20, right: 5),
                             child: Container(
                                 width: 100,
                                 child: DropdownButtonHideUnderline(
@@ -366,7 +366,7 @@ class _SearchCarsState extends State<SearchCars> {
                                 )),
                           ),
                           Padding(
-                              padding: EdgeInsets.only(left: 60, right: 5),
+                              padding: EdgeInsets.only(left: 30, right: 5),
                               child: Container(
                                 width: 100,
                                 child: DropdownButtonHideUnderline(
@@ -416,7 +416,7 @@ class _SearchCarsState extends State<SearchCars> {
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 29, right: 5),
+                            padding: EdgeInsets.only(left: 13, right: 5),
                             child: Container(
                                 width: 100,
                                 child: DropdownButtonHideUnderline(
@@ -450,7 +450,7 @@ class _SearchCarsState extends State<SearchCars> {
                                 )),
                           ),
                           Padding(
-                              padding: EdgeInsets.only(left: 60, right: 5),
+                              padding: EdgeInsets.only(left: 30, right: 5),
                               child: Container(
                                 width: 100,
                                 child: DropdownButtonHideUnderline(
@@ -500,7 +500,7 @@ class _SearchCarsState extends State<SearchCars> {
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 38, right: 5),
+                            padding: EdgeInsets.only(left: 23, right: 5),
                             child: Container(
                                 width: 100,
                                 child: DropdownButtonHideUnderline(
@@ -534,7 +534,7 @@ class _SearchCarsState extends State<SearchCars> {
                                 )),
                           ),
                           Padding(
-                              padding: EdgeInsets.only(left: 60, right: 5),
+                              padding: EdgeInsets.only(left: 30, right: 5),
                               child: Container(
                                 width: 100,
                                 child: DropdownButtonHideUnderline(

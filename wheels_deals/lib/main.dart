@@ -4,9 +4,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:wheels_deals/API/LocalAuthApi.dart';
 import 'package:wheels_deals/Screens/HomeScreen.dart';
+import 'package:wheels_deals/Screens/auth_screen.dart';
 import 'package:wheels_deals/authentication_service.dart';
 import 'package:wheels_deals/globalVariables.dart';
+import 'package:wheels_deals/login.dart';
 import 'package:wheels_deals/loginScreen.dart';
 import 'package:wheels_deals/splashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -81,7 +84,7 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
     if (firebaseUser != null) {
-      return HomeScreen();
+      return auth_screen();
     } else {
       //return splashScreen();
       return loginScreen();

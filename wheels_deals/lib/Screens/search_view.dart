@@ -587,7 +587,7 @@ class _searchViewState extends State<searchView> {
                         ),
                       )),
                   Container(
-                      height: MediaQuery.of(context).size.height * 0.75,
+                      height: MediaQuery.of(context).size.height * 0.72,
                       child: ListView(
                         children: filteredlist.map((document) {
                           Map<String, dynamic> data = document.data();

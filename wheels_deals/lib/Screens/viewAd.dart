@@ -888,6 +888,7 @@ class _ViewAdState extends State<ViewAd> {
                                                       .toString()
                                                       .toUpperCase(),
                                                   style: TextStyle(
+                                                      fontSize: 12,
                                                       color: Colors.black
                                                           .withOpacity(0.6)),
                                                 ),

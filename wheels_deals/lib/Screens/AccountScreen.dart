@@ -681,12 +681,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: ElevatedButton(
                     onPressed: () async {
                       await FirebaseAuth.instance.signOut().then((value) {
-                        /*Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => loginScreen())); */
-                        Navigator.pop(context);
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => loginScreen()));
@@ -725,8 +720,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                   leading: GestureDetector(
                                     onTap: () {},
                                     child: Container(
-                                      width: 60,
-                                      height: 60,
+                                      width: 50,
+                                      height: 50,
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
@@ -790,7 +785,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 10),
+                                          SizedBox(height: 5),
                                           Row(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
@@ -811,7 +806,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               ),
                                               Padding(
                                                 padding:
-                                                    EdgeInsets.only(left: 10),
+                                                    EdgeInsets.only(left: 5),
                                                 child: IconButton(
                                                   onPressed: () async {
                                                     showDialogToDeleteUser(
