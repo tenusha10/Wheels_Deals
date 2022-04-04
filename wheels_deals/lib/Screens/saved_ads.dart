@@ -71,8 +71,8 @@ class _saveAdsState extends State<saveAds> {
                   )),
               Container(
                 alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height * 0.73,
-                width: MediaQuery.of(context).size.width * 0.95,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width * 0.98,
                 child: StreamBuilder<QuerySnapshot>(
                     stream: _savedAdstream,
                     builder: (BuildContext context,

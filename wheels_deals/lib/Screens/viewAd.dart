@@ -1051,7 +1051,7 @@ class _ViewAdState extends State<ViewAd> {
                               ))),
                       Padding(
                           padding:
-                              EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                              EdgeInsets.only(left: 5, top: 10, bottom: 10),
                           child: Row(
                             children: [
                               InkWell(
@@ -1060,7 +1060,7 @@ class _ViewAdState extends State<ViewAd> {
                                 },
                                 child: Container(
                                     height: 40,
-                                    width: 180,
+                                    width: 160,
                                     decoration: BoxDecoration(
                                         gradient: new LinearGradient(
                                             colors: [
@@ -1080,16 +1080,13 @@ class _ViewAdState extends State<ViewAd> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        SizedBox(
-                                          width: 5,
-                                        ),
                                         Icon(
                                           FontAwesomeIcons.commentSms,
                                           color: Colors.white,
                                           size: 26,
                                         ),
                                         SizedBox(
-                                          width: 10,
+                                          width: 5,
                                         ),
                                         Text(
                                           'Text Seller',
@@ -1101,7 +1098,7 @@ class _ViewAdState extends State<ViewAd> {
                                     )),
                               ),
                               Padding(
-                                  padding: EdgeInsets.only(left: 20, right: 5),
+                                  padding: EdgeInsets.only(left: 10, right: 5),
                                   child: InkWell(
                                     onTap: () {
                                       phonecall(data['userPhoneNumber']);
@@ -1128,16 +1125,13 @@ class _ViewAdState extends State<ViewAd> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            SizedBox(
-                                              width: 5,
-                                            ),
                                             Icon(
                                               FontAwesomeIcons.phone,
                                               color: Colors.white,
                                               size: 26,
                                             ),
                                             SizedBox(
-                                              width: 10,
+                                              width: 5,
                                             ),
                                             Text(
                                               'Call Seller',

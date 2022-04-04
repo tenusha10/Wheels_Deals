@@ -149,7 +149,7 @@ class _SearchCarsState extends State<SearchCars> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          width: 500,
+          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(

@@ -787,6 +787,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                           ),
                                           SizedBox(height: 5),
                                           Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               IconButton(
@@ -799,11 +801,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                                     size: 20,
                                                     color: Colors.deepPurple,
                                                   )),
-                                              Padding(
+                                              /*Padding(
                                                 padding:
                                                     EdgeInsets.only(left: 3),
                                                 child: Text('Edit Details'),
-                                              ),
+                                              ), */
                                               Padding(
                                                 padding:
                                                     EdgeInsets.only(left: 5),
@@ -819,11 +821,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                                   ),
                                                 ),
                                               ),
-                                              Padding(
+                                              /*Padding(
                                                 padding:
                                                     EdgeInsets.only(left: 3),
                                                 child: Text('Delete Account'),
-                                              ),
+                                              ), */
                                             ],
                                           ),
                                         ],
@@ -856,8 +858,8 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               alignment: Alignment.center,
-              height: 450,
-              width: 500,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               child: StreamBuilder<QuerySnapshot>(
                   stream: _adstream,
                   builder: (BuildContext context,
