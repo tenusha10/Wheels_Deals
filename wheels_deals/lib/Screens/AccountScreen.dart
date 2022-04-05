@@ -697,6 +697,7 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
             ),
             Container(
+                width: MediaQuery.of(context).size.width,
                 child: FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection('users')
@@ -808,7 +809,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               ), */
                                               Padding(
                                                 padding:
-                                                    EdgeInsets.only(left: 5),
+                                                    EdgeInsets.only(left: 15),
                                                 child: IconButton(
                                                   onPressed: () async {
                                                     showDialogToDeleteUser(

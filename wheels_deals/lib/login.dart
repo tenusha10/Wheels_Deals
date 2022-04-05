@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
 import 'package:wheels_deals/DialogBox/loadingDialog.dart';
 import 'package:wheels_deals/Screens/HomeScreen.dart';
+import 'package:wheels_deals/Screens/forgotPassword.dart';
 import 'package:wheels_deals/Widgets/customTextField.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -86,7 +87,20 @@ class _loginState extends State<login> {
               ),
             ),
             SizedBox(
-              height: 50,
+              height: 30,
+            ),
+            GestureDetector(
+              child: Text(
+                'Forgot Password ?',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.deepPurple,
+                    fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ForgotPassword()));
+              },
             )
           ],
         ),
