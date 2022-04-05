@@ -1098,7 +1098,10 @@ class _ViewAdState extends State<ViewAd> {
                                     )),
                               ),
                               Padding(
-                                  padding: EdgeInsets.only(left: 10, right: 5),
+                                  padding: EdgeInsets.only(
+                                      left: MediaQuery.of(context).size.width *
+                                          0.15,
+                                      right: 5),
                                   child: InkWell(
                                     onTap: () {
                                       phonecall(data['userPhoneNumber']);
