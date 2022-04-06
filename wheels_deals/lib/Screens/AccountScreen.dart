@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Screens/seller_page.dart';
 import 'package:wheels_deals/authentication_service.dart';
@@ -35,6 +36,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   final GlobalKey<FormState> _formKeyUpdateCar = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyUpdateUser = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyDeleteUser = GlobalKey<FormState>();
   RegExp regExp = new RegExp(
     r'^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}',
     caseSensitive: false,
@@ -467,7 +469,13 @@ class _AccountScreenState extends State<AccountScreen> {
     final _phoneNumber = TextEditingController();
     _phoneNumber.text = data['userNumber'];
 
+    final _email = TextEditingController();
+    _email.text = FirebaseAuth.instance.currentUser.email;
+    String email = '';
+    String password = '', newPassword;
+
     String userName = data['userName'], userNumber = data['userNumber'];
+    String newEmail = userEmail;
 
     return showDialog(
         context: context,
@@ -491,6 +499,13 @@ class _AccountScreenState extends State<AccountScreen> {
                   CollectionReference users =
                       FirebaseFirestore.instance.collection('users');
                   if (_formKeyUpdateUser.currentState.validate()) {
+                    AuthCredential credential = EmailAuthProvider.credential(
+                        email: email, password: password);
+                    await FirebaseAuth.instance.currentUser
+                        .reauthenticateWithCredential(credential)
+                        .catchError((e) {
+                      print(e);
+                    });
                     Map<String, dynamic> userData = {
                       'userName': userName,
                       'userNumber': userNumber,
@@ -502,6 +517,17 @@ class _AccountScreenState extends State<AccountScreen> {
                     }).catchError((e) {
                       print(e);
                     });
+                    await FirebaseAuth.instance.currentUser
+                        .updateEmail(newEmail)
+                        .then((value) => print('Email changed'))
+                        .catchError((e) {
+                      print(e);
+                    });
+
+                    await FirebaseAuth.instance.currentUser
+                        .updatePassword(newPassword)
+                        .then((value) => print('Password updated'))
+                        .catchError((e) => print(e));
                   }
                 },
               ),
@@ -526,7 +552,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         controller: _name,
                         decoration: InputDecoration(hintText: 'Your Name'),
                         onChanged: (value) {
-                          userName = value;
+                          userName = value.trim();
                         },
                         keyboardType: TextInputType.name,
                         validator: (value) {
@@ -544,7 +570,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         decoration:
                             InputDecoration(hintText: 'Your Phone Number'),
                         onChanged: (value) {
-                          userNumber = value;
+                          userNumber = value.trim();
                         },
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -560,37 +586,85 @@ class _AccountScreenState extends State<AccountScreen> {
                           return null;
                         },
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        controller: _email,
+                        decoration: InputDecoration(hintText: 'Email Address'),
+                        onChanged: (value) {
+                          newEmail = value.trim();
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value.trim() == null || value.isEmpty) {
+                            return 'Email cannot be empty';
+                          }
+                          if (!regExp_Email.hasMatch(value.trim())) {
+                            return 'Invalid Email format';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(hintText: 'New Password'),
+                        onChanged: (value) {
+                          newPassword = value.trim();
+                        },
+                        obscureText: true,
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Text(
+                          'Changes require you to reauthenticate, please enter your email and password below'),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        decoration:
+                            InputDecoration(hintText: 'Previous Email Address'),
+                        onChanged: (value) {
+                          email = value.trim();
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value.trim() == null || value.isEmpty) {
+                            return 'Email cannot be empty';
+                          }
+                          if (!regExp_Email.hasMatch(value.trim())) {
+                            return 'Invalid Email format';
+                          }
+                          return null;
+                        },
+                      ),
+                      TextFormField(
+                        decoration:
+                            InputDecoration(hintText: 'Previous Password'),
+                        onChanged: (value) {
+                          password = value.trim();
+                        },
+                        obscureText: true,
+                        validator: (value) {
+                          if (value.trim() == null || value.isEmpty) {
+                            return 'Password cannot be empty';
+                          }
+                          return null;
+                        },
+                      ),
                     ],
                   )),
             ),
           );
         });
-
-/*
-      return AlertDialog(
-      title: Text(
-        "Edit Your details",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
-      ),
-      actions: [
-        ElevatedButton(
-          child: Text('Cancel'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        ElevatedButton(
-          child: Text('Update Details'),
-          onPressed: () async {},
-        ),
-      ],
-    );
-    */
   }
 
   Future showDialogToDelete(data, DocID) async {
     CollectionReference cars = FirebaseFirestore.instance.collection('cars');
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
     return showDialog(
         context: context,
         builder: (context) {
@@ -614,8 +688,18 @@ class _AccountScreenState extends State<AccountScreen> {
                 width: 10,
               ),
               ElevatedButton.icon(
-                  onPressed: () {
-                    cars
+                  onPressed: () async {
+                    await users.get().then((value) {
+                      value.docs.forEach((doc) async {
+                        await users
+                            .doc(doc.id)
+                            .collection('Saved')
+                            .doc(DocID)
+                            .delete()
+                            .then((value) => print('deleted'));
+                      });
+                    });
+                    await cars
                         .doc(DocID)
                         .delete()
                         .then((value) => Navigator.pop(context))
@@ -630,6 +714,8 @@ class _AccountScreenState extends State<AccountScreen> {
 
   Future showDialogToDeleteUser(data, DocID) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
+    String email = userEmail;
+    String password = '';
 
     return showDialog(
         context: context,
@@ -640,6 +726,43 @@ class _AccountScreenState extends State<AccountScreen> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
+            content: Form(
+                key: _formKeyDeleteUser,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Please Enter your login details below'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(hintText: 'Login Email'),
+                      onChanged: (value) {
+                        email = value;
+                      },
+                      keyboardType: TextInputType.name,
+                      validator: (value) {
+                        if (value.trim() == null || value.isEmpty) {
+                          return 'Email cannot be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(hintText: 'Password'),
+                      onChanged: (value) {
+                        password = value;
+                      },
+                      obscureText: true,
+                      validator: (value) {
+                        if (value.trim() == null || value.isEmpty) {
+                          return 'Password cannot be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                )),
             actions: [
               SizedBox(
                 width: 10,
@@ -655,10 +778,32 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               ElevatedButton.icon(
                   onPressed: () async {
-                    users.doc(DocID).delete().then((value) async {
-                      Navigator.pop(context);
-                      await FirebaseAuth.instance.signOut();
-                    }).catchError((error) => print(error));
+                    if (_formKeyDeleteUser.currentState.validate()) {
+                      AuthCredential credential = EmailAuthProvider.credential(
+                          email: email, password: password);
+                      await FirebaseAuth.instance.currentUser
+                          .reauthenticateWithCredential(credential)
+                          .then((value) => print('Re authenticated'))
+                          .catchError((e) {
+                        print(e);
+                      });
+                      try {
+                        await FirebaseAuth.instance.currentUser.delete();
+                        users.doc(DocID).delete().then((value) async {
+                          Navigator.pop(context);
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => loginScreen()));
+                        }).catchError((error) => print(error));
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'requires-recent-login') {
+                          print(
+                              'The user must reauthenticate before this operation can be executed.');
+                        }
+                      }
+                    }
                   },
                   icon: Icon(FontAwesomeIcons.faceSadTear),
                   label: Text('Confirm'))
@@ -671,12 +816,11 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.deepPurple[50],
-        body: SingleChildScrollView(
-            child: Column(
+        body: Column(
           children: [
             Container(
                 width: 80,
-                height: 80,
+                height: 40,
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () async {
@@ -859,8 +1003,8 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               alignment: Alignment.center,
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.45,
+              width: MediaQuery.of(context).size.width * 0.9,
               child: StreamBuilder<QuerySnapshot>(
                   stream: _adstream,
                   builder: (BuildContext context,
@@ -1192,6 +1336,6 @@ class _AccountScreenState extends State<AccountScreen> {
                   }),
             )
           ],
-        )));
+        ));
   }
 }
