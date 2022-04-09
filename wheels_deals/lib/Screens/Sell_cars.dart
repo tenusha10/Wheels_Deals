@@ -735,7 +735,7 @@ class _sellCarsState extends State<sellCars> {
                         height: 5,
                       ),
                       Text(
-                        'Post an Advert',
+                        'Sell Your Car',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 24,
@@ -825,7 +825,7 @@ class _sellCarsState extends State<sellCars> {
                             }
                           },
                           child: Text(
-                            'Find Car',
+                            'Find My Car',
                             style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ),

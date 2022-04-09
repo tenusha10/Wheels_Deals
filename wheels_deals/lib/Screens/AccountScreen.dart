@@ -482,7 +482,7 @@ class _AccountScreenState extends State<AccountScreen> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              "Edit Your details",
+              "Edit Your Account Details",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
