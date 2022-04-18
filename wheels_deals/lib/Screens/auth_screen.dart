@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wheels_deals/Screens/HomeScreen.dart';
-import 'package:wheels_deals/loginScreen.dart';
+import 'package:wheels_deals/Screens/loginScreen.dart';
 
 import '../API/LocalAuthApi.dart';
 

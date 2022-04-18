@@ -104,16 +104,6 @@ class _ProfileImageState extends State<ProfileImage> {
     await _uploadFile(file.path);
   }
 
-  Future<File> compressImage(String path, int quality) async {
-    final newPath = p.join((await getTemporaryDirectory()).path,
-        '${DateTime.now()}.${p.extension(path)}');
-
-    final result = await FlutterImageCompress.compressAndGetFile(path, newPath,
-        quality: quality);
-
-    return result;
-  }
-
   Future _uploadFile(String path) async {
     final ref = storage.FirebaseStorage.instance
         .ref()

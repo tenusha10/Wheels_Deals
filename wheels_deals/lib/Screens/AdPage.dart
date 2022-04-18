@@ -20,6 +20,7 @@ class AdPage extends StatefulWidget {
 class _AdPageState extends State<AdPage> {
   final Stream<QuerySnapshot> _carsStream = FirebaseFirestore.instance
       .collection('cars')
+      .limit(20)
       .orderBy("time", descending: true)
       .snapshots();
   final CollectionReference _usersAdref =

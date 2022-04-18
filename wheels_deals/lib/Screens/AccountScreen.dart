@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,19 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wheels_deals/DialogBox/errorDialogbox.dart';
+
 import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
-import 'package:wheels_deals/Screens/seller_page.dart';
-import 'package:wheels_deals/authentication_service.dart';
+
 import 'package:wheels_deals/globalVariables.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
 import 'package:http/http.dart' as http;
-import 'package:wheels_deals/loginScreen.dart';
 
 import '../API/CarModels.dart';
-import '../imageSelection/profile_image.dart';
+
 import '../imageSelection/profile_update_image.dart';
-import '../login.dart';
+import 'package:wheels_deals/Screens/loginScreen.dart';
 import '../presentation/my_flutter_app_icons.dart';
 
 class AccountScreen extends StatefulWidget {

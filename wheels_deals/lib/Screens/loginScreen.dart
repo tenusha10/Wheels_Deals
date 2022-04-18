@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wheels_deals/login.dart';
-import 'package:wheels_deals/register.dart';
+import 'package:wheels_deals/Screens/login.dart';
+import 'package:wheels_deals/Screens/register.dart';
 
 class loginScreen extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wheels_deals/Screens/HomeScreen.dart';
-import 'package:wheels_deals/loginScreen.dart';
+import 'package:wheels_deals/Screens/loginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wheels_deals/main.dart';
 

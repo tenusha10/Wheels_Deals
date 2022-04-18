@@ -131,7 +131,6 @@ class _registerState extends State<register> {
       'imgPro': imageUrl,
       'time': DateTime.now().toString()
     };
-
     FirebaseFirestore.instance.collection('users').doc(userId).set(userData);
   }
 

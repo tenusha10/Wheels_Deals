@@ -1,17 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:wheels_deals/API/LocalAuthApi.dart';
-import 'package:wheels_deals/Screens/HomeScreen.dart';
 import 'package:wheels_deals/Screens/auth_screen.dart';
+import 'package:wheels_deals/Screens/loginScreen.dart';
+
 import 'package:wheels_deals/authentication_service.dart';
 import 'package:wheels_deals/globalVariables.dart';
-import 'package:wheels_deals/login.dart';
-import 'package:wheels_deals/loginScreen.dart';
-import 'package:wheels_deals/splashScreen.dart';
+import 'package:wheels_deals/Screens/splashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:google_fonts/google_fonts.dart';

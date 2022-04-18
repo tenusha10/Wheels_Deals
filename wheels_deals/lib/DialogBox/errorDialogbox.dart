@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wheels_deals/loginScreen.dart';
+import 'package:wheels_deals/Screens/loginScreen.dart';
 
 class ErrorAlertDialog extends StatelessWidget {
   final String message;

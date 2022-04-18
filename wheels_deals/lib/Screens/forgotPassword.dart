@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wheels_deals/loginScreen.dart';
+import 'package:wheels_deals/Screens/loginScreen.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override

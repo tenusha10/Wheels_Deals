@@ -117,7 +117,6 @@ class _loginState extends State<login> {
           );
         });
     User currentUser;
-
     await _auth
         .signInWithEmailAndPassword(
       email: _emailController.text.trim(),
