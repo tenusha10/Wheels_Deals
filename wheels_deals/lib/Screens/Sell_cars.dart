@@ -162,24 +162,6 @@ class _sellCarsState extends State<sellCars> {
     }
   }
 
-  Future uploadFile(File image) async {
-    final String empty = "Failed to Upload";
-    firebase_storage.UploadTask task;
-    if (image == null) {
-      return empty;
-    }
-    final fileName = p.basename(image.path);
-    final destination = 'files/$fileName';
-    task = FirebaseApi.uploadFile(destination, image);
-
-    if (task == null) {
-      return empty;
-    }
-    final snapshot = await task.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
-    imageUrlList.add(urlDownload);
-  }
-
   Future<bool> showView(regPlate) async {
     var car = await getcarsdvla(regPlate);
     List<String> carmodels = carModels().getModels(car.make);
@@ -209,7 +191,7 @@ class _sellCarsState extends State<sellCars> {
                       bodyType = "Body Type";
                       gearbox = 'GearBox';
                       NoofDoors = 'Number of Doors';
-                      imageUrlList = [];
+                      //imageUrlList = [];
                     },
                   ),
                   ElevatedButton(
@@ -295,9 +277,9 @@ class _sellCarsState extends State<sellCars> {
 
                         addData(carData).then((value) {
                           print('Data added');
-                          imageUrlList = [];
+                          //imageUrlList = [];
                           Navigator.pop(context);
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()));
@@ -794,15 +776,20 @@ class _sellCarsState extends State<sellCars> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKeySell2.currentState.validate()) {
-                              if (!imageUrl1.isEmpty) {
+                              if (!imageUrl1.isEmpty &&
+                                  !imageUrlList.contains(imageUrl1)) {
                                 imageUrlList.add(imageUrl1);
-                              } else if (!imageUrl2.isEmpty) {
-                                imageUrlList.add(imageUrl2);
-                              } else if (!imageUrl3.isEmpty) {
-                                imageUrlList.add(imageUrl3);
-                              } else {
-                                print('no images');
                               }
+                              if (!imageUrl2.isEmpty &&
+                                  !imageUrlList.contains(imageUrl2)) {
+                                imageUrlList.add(imageUrl2);
+                              }
+
+                              if (!imageUrl3.isEmpty &&
+                                  !imageUrlList.contains(imageUrl3)) {
+                                imageUrlList.add(imageUrl3);
+                              }
+
                               if (imageUrlList.isNotEmpty) {
                                 showView(_reg);
                               } else {

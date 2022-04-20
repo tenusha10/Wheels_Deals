@@ -64,12 +64,4 @@ class DVLACar {
       yearOfManufacture: json['yearOfManufacture'],
     );
   }
-
-  /*DVLACar.fromJson(Map<String, dynamic> json)
-      : registrationNumber = json['registrationNumber'],
-        co2Emissions = json['co2Emissions'],
-        engineCapacity = json['engineCapacity'],
-        euroStatus = json['euroStatus'],
-        markedForExport = json['markedForExport'],
-        fuelType = json['fuelType']; */
 }

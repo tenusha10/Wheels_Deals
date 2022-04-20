@@ -1101,90 +1101,6 @@ class _SearchCarsState extends State<SearchCars> {
                                                   co2: co2CPY,
                                                 )));
                                   }
-                                  /*
-                                  if (int.parse(minPrice) >=
-                                          int.parse(maxPrice) ||
-                                      int.parse(minMileage) >=
-                                          int.parse(maxMileage) ||
-                                      int.parse(minEngineCapacity) >=
-                                          int.parse(maxEngineCapacity)) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                              title: Text("Validation Error"),
-                                              content: Text(
-                                                  'Min and Max cannot be equal ! \nMin cannot be higher than Max'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          context, 'OK'),
-                                                  child: const Text('OK'),
-                                                )
-                                              ]);
-                                        });
-                                  } else {
-                                    print('Good');
-                                  }
-
-                                  Stream<QuerySnapshot> res = buildsearchQuery(
-                                      Make,
-                                      Model,
-                                      Colour,
-                                      minPrice,
-                                      maxPrice,
-                                      minMileage,
-                                      maxMileage,
-                                      minEngineCapacity,
-                                      maxEngineCapacity,
-                                      minYear,
-                                      maxYear,
-                                      Gearbox,
-                                      BodyType,
-                                      numofDoors,
-                                      FuelType,
-                                      co2,
-                                      taxStatus,
-                                      motStatus,
-                                      CAT,
-                                      ulez);
-
-                                  if (minEngineCapacity != null) {
-                                    minEngineCapacityCPY = carModels()
-                                        .getEngineCapacity(minEngineCapacity)
-                                        .toString();
-                                  }
-                                  if (maxEngineCapacity != null) {
-                                    maxEngineCapacityCPY = carModels()
-                                        .getEngineCapacity(maxEngineCapacity)
-                                        .toString();
-                                  }
-                                  if (co2 != null) {
-                                    if (co2 == '>99g') {
-                                      co2CPY = '99';
-                                    } else if (co2 == '>150g') {
-                                      co2CPY = '150';
-                                    } else {
-                                      co2CPY = '200';
-                                    }
-                                  }
-
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => searchView(
-                                                queryCars: res,
-                                                minPrice: minPrice,
-                                                maxPrice: maxPrice,
-                                                minMileage: minMileage,
-                                                maxMileage: maxMileage,
-                                                minEngine: minEngineCapacityCPY,
-                                                maxEngine: maxEngineCapacityCPY,
-                                                minYear: minYear,
-                                                maxYear: maxYear,
-                                                co2: co2CPY,
-                                              ))); */
                                 },
                                 child: Text(
                                   'Search Cars',
@@ -1225,7 +1141,6 @@ class _SearchCarsState extends State<SearchCars> {
     Query<Object> query;
     CollectionReference _carRef = FirebaseFirestore.instance.collection('cars');
     query = _carRef;
-
     if (co2 != null) {
       if (co2 == '>99g') {
         query = query.where('co2', isLessThanOrEqualTo: 99);
@@ -1278,7 +1193,6 @@ class _SearchCarsState extends State<SearchCars> {
         query = query.where('ulez', isEqualTo: 'false');
       }
     }
-
     result = query.where('sold', isEqualTo: false).snapshots();
     return result;
   }

@@ -173,6 +173,7 @@ class _ViewAdState extends State<ViewAd> {
                 String membersince =
                     timeAgo.format(DateTime.parse(data['userCreatedTime']));
 
+                //declared static map controller
                 sMaps.StaticMapController _controller =
                     sMaps.StaticMapController(
                         width: 500,

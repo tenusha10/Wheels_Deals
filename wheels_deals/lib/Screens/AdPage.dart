@@ -153,7 +153,6 @@ class _AdPageState extends State<AdPage> {
                         onTap: () async {
                           bool f = false;
                           f = await checkifFavourites(document.id);
-
                           Navigator.push(
                               context,
                               MaterialPageRoute(

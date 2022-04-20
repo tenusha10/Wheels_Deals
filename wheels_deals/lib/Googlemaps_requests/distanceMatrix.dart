@@ -10,8 +10,7 @@ class distanceMatrix {
     );
     if (response.statusCode == 200) {
       var decodeData = jsonDecode(response.body);
-      //return decodeData['rows'][0]['elements'][0]['distance']['text']
-      // .toString();
+
       return decodeData;
     }
   }

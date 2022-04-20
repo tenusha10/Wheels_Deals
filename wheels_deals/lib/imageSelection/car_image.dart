@@ -97,8 +97,6 @@ class _carImageState extends State<carImage> {
     if (file == null) {
       return;
     }
-    //file = await compressImage(file.path, 35);
-
     await _uploadFile(file.path);
   }
 

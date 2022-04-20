@@ -135,9 +135,6 @@ class carModels {
       "Venturi",
       "Volkswagen",
       "Volvo",
-      "Zagato",
-      "Zaz",
-      "Zil",
     ];
     return BodyTypes;
   }
@@ -274,7 +271,15 @@ class carModels {
         'WRX'
       ];
     } else if (make.toUpperCase().contains('SEAT')) {
-      ModelList = ['Ibiza', 'Leon', 'Ateca', 'Arona', 'Tarraco', 'Mii'];
+      ModelList = [
+        'Model',
+        'Ibiza',
+        'Leon',
+        'Ateca',
+        'Arona',
+        'Tarraco',
+        'Mii'
+      ];
     } else if (make.toUpperCase().contains('SKODA')) {
       ModelList = [
         'Model',
@@ -347,13 +352,14 @@ class carModels {
         'MX-5'
       ];
     } else if (make.toLowerCase() == ('maserati')) {
-      ModelList = ['Quattroporte', 'Levante', 'GT', 'GranCabrio'];
+      ModelList = ['Model', 'Quattroporte', 'Levante', 'GT', 'GranCabrio'];
     } else if (make.toLowerCase() == ('lotus')) {
-      ModelList = ['Elise', 'Exige', 'Evora'];
+      ModelList = ['Model', 'Elise', 'Exige', 'Evora'];
     } else if (make.toLowerCase() == ('lexus')) {
-      ModelList = ['UX', 'NX', 'ES', 'RX', 'RC', 'LC', 'LS', 'LFA'];
+      ModelList = ['Model', 'UX', 'NX', 'ES', 'RX', 'RC', 'LC', 'LS', 'LFA'];
     } else if (make.toLowerCase() == ('land Rover').toLowerCase()) {
       ModelList = [
+        'Model',
         'Range Rover',
         'Defender',
         'Discovery',
