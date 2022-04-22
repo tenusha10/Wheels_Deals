@@ -216,7 +216,7 @@ class _sellCarsState extends State<sellCars> {
                           car.yearOfManufacture < 2015) {
                         ulez = false;
                       } else if (car.fuelType == 'PETROL' &&
-                          car.yearOfManufacture < 2006) {
+                          car.yearOfManufacture < 2005) {
                         ulez = false;
                       } else {
                         ulez = true;

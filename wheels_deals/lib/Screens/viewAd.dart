@@ -8,17 +8,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wheels_deals/API/CarModels.dart';
-import 'package:wheels_deals/API/fetchedCar.dart';
 import 'package:wheels_deals/Googlemaps_requests/MapUtils.dart';
 import 'package:wheels_deals/Googlemaps_requests/distanceMatrix.dart';
-import 'package:wheels_deals/Googlemaps_requests/geocodeRequest.dart';
 import 'package:wheels_deals/Screens/seller_page.dart';
 import 'package:wheels_deals/Widgets/image_swipe.dart';
 import 'package:wheels_deals/globalVariables.dart';
 import '/presentation/my_flutter_app_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:timeago/timeago.dart' as timeAgo;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_static_maps_controller/google_static_maps_controller.dart'
     as sMaps;
 import 'package:favorite_button/favorite_button.dart';
