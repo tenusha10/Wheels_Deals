@@ -813,7 +813,8 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.deepPurple[50],
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
           children: [
             Container(
                 width: 80,
@@ -889,7 +890,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: Column(
                                         children: [
                                           Row(
-                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Icon(
                                                 FontAwesomeIcons
@@ -908,9 +909,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                                     color: Colors.black
                                                         .withOpacity(0.6)),
                                               ),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
                                               Icon(
                                                 FontAwesomeIcons.envelope,
                                                 size: 20,
@@ -1333,6 +1336,6 @@ class _AccountScreenState extends State<AccountScreen> {
                   }),
             )
           ],
-        ));
+        )));
   }
 }

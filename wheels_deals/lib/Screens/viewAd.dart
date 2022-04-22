@@ -130,6 +130,7 @@ class _ViewAdState extends State<ViewAd> {
           ),
         ],
         flexibleSpace: Container(
+          width: MediaQuery.of(context).size.width,
           decoration: new BoxDecoration(
               gradient: new LinearGradient(
                   colors: [Colors.deepPurpleAccent, Colors.purple],
@@ -140,6 +141,7 @@ class _ViewAdState extends State<ViewAd> {
         ),
       ),
       body: Container(
+          width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topRight,
