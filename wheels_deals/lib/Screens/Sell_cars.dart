@@ -810,6 +810,7 @@ class _sellCarsState extends State<sellCars> {
                                     });
                               }
                             }
+                            //showView(_reg);
                           },
                           child: Text(
                             'Find My Car',

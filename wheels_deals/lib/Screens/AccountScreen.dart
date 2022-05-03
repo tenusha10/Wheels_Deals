@@ -711,6 +711,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   Future showDialogToDeleteUser(data, DocID) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
+    CollectionReference cars = FirebaseFirestore.instance.collection('cars');
     String email = userEmail;
     String password = '';
 
@@ -786,7 +787,15 @@ class _AccountScreenState extends State<AccountScreen> {
                       });
                       try {
                         await FirebaseAuth.instance.currentUser.delete();
-                        users.doc(DocID).delete().then((value) async {
+                        cars
+                            .where('uId', isEqualTo: userId)
+                            .get()
+                            .then((value) async {
+                          for (DocumentSnapshot docsnap in value.docs) {
+                            await docsnap.reference.delete();
+                          }
+                        });
+                        users.doc(userId).delete().then((value) async {
                           Navigator.pop(context);
                           await FirebaseAuth.instance.signOut();
                           Navigator.pushReplacement(

@@ -73,66 +73,40 @@ class carModels {
     BodyTypes = [
       "Abarth",
       "Alfa Romeo",
-      "Ariel",
       "Aston Martin",
       "Audi",
       "Bentley",
       "BMW",
-      "Bugatti",
-      "Chevrolet",
-      "Chrysler",
       "Citroen",
-      "Corvette",
       "Cupra",
       "Dacia",
-      "Dodge",
       "Ferrari",
       "Fiat",
       "Ford",
-      "General Motors",
-      "GMC",
       "Honda",
-      "Hummer",
       "Hyundai",
-      "Infiniti",
-      "Isuzu",
       "Jaguar",
       "Jeep",
       "Kia",
-      "Koenigsegg",
       "Lamborghini",
-      "Lancia",
       "Land Rover",
       "Lexus",
-      "Lotus",
       "Maserati",
-      "Maybach",
       "Mazda",
-      "Mclaren",
       "Mercedes-Benz",
       "Mini",
       "Mitsubishi",
       "Nissan",
-      "Opel",
-      "Pagani",
       "Peugeot",
       "Porsche",
-      "Proton",
       "Renault",
-      "Rimac",
-      "Rolls Royce",
-      "Scania",
       "Seat",
       "Skoda",
-      "Smart",
       "Subaru",
       "Suzuki",
-      "Tatra",
       "Tesla",
       "Toyota",
       "Vauxhall",
-      "Vector Motors",
-      "Venturi",
       "Volkswagen",
       "Volvo",
     ];
@@ -262,6 +236,7 @@ class carModels {
       ModelList = ['Model', 'XC40', 'XC60', 'XC90', 'S60', 'S90', 'V60', 'V90'];
     } else if (make.toUpperCase().contains('SUBARU')) {
       ModelList = [
+        'Model',
         'XV',
         'Impreza',
         'Forester',
@@ -327,8 +302,17 @@ class carModels {
         'Vivaro',
         'Insignia'
       ];
-    } else if (make.toLowerCase() == ('nissan').toLowerCase()) {
-      ModelList = ['Model', 'Leaf', 'Ariya', 'Micra', 'Juke', 'Qashqai', 'GTR'];
+    } else if (make.toLowerCase() == ('nissan')) {
+      ModelList = [
+        'Model',
+        'Leaf',
+        'Ariya',
+        'Micra',
+        'Juke',
+        'Qashqai',
+        'GTR',
+        'X-Trail'
+      ];
     } else if (make.toLowerCase() == ('mini')) {
       ModelList = [
         'Model',
@@ -357,7 +341,7 @@ class carModels {
       ModelList = ['Model', 'Elise', 'Exige', 'Evora'];
     } else if (make.toLowerCase() == ('lexus')) {
       ModelList = ['Model', 'UX', 'NX', 'ES', 'RX', 'RC', 'LC', 'LS', 'LFA'];
-    } else if (make.toLowerCase() == ('land Rover').toLowerCase()) {
+    } else if (make.toLowerCase() == ('land rover').toLowerCase()) {
       ModelList = [
         'Model',
         'Range Rover',
@@ -368,17 +352,43 @@ class carModels {
         'Range Rover Sport',
         'Range Rover Velar'
       ];
-    } else if (make.toLowerCase() == ('Lamborghini')) {
-    } else if (make.toLowerCase() == ('Kia')) {
-    } else if (make.toLowerCase() == ('Jeep')) {
-    } else if (make.toLowerCase() == ('Jaguar')) {
-    } else if (make.toLowerCase() == ('Isuzu')) {
-    } else if (make.contains('Infinity')) {
-    } else if (make.contains('Hyundai')) {
-    } else if (make.contains('Honda')) {
-    } else if (make.contains('Fiat')) {
-    } else if (make.contains('Ferrari')) {
-    } else if (make.contains('Dacia')) {
+    } else if (make.toLowerCase() == ('lamborghini')) {
+      ModelList = ['Model', 'Urus', 'Aventador', 'Huracan'];
+    } else if (make.toLowerCase() == ('kia')) {
+      ModelList = [
+        'Model',
+        'Sportage',
+        'Picanto',
+        'Optima',
+        'Sorento',
+        'Rio',
+        'Creed',
+        'Stinger'
+      ];
+    } else if (make.toLowerCase() == ('jeep')) {
+      ModelList = ['Model', 'Wrangler', 'Compass', 'Cherokee', 'Renegade'];
+    } else if (make.toLowerCase() == ('jaguar')) {
+      ModelList = ['Model', 'F-PACE', 'XE', 'XF', 'I-PACE', 'E-PACE'];
+    } else if (make.toLowerCase() == ('hyundai')) {
+      ModelList = [
+        'Model',
+        'i10',
+        'i20',
+        'i30',
+        'IONIQ',
+        'KONA',
+        'TUCSON',
+        'SANTE',
+        'NEXO'
+      ];
+    } else if (make.toLowerCase() == ('honda')) {
+      ModelList = ['Model', 'Civic', 'HR-V', 'CR-V', 'Jazz'];
+    } else if (make.toLowerCase() == ('fiat')) {
+      ModelList = ['Model', '500', 'Panda', 'Tipo'];
+    } else if (make.toLowerCase() == ('ferrari')) {
+      ModelList = ['Model', 'Roma', 'F8', '488'];
+    } else if (make.toLowerCase() == ('dacia')) {
+      ModelList = ['Model', 'Sandero', 'Duster', 'Logan'];
     } else if (make.toLowerCase() == ('CITROEN').toLowerCase()) {
       ModelList = [
         'Model',
@@ -389,12 +399,19 @@ class carModels {
         'DS3',
         'DS7',
       ];
-    } else if (make.contains('Chevrolet')) {
-    } else if (make.contains('Chrysler')) {
-    } else if (make.contains('Bentley')) {
-    } else if (make.contains('Aston Martin')) {
-    } else if (make.contains('Alfa Romeo')) {
-    } else if (make.contains('Abarth')) {}
+    } else if (make.toLowerCase() == ('Bentley').toLowerCase()) {
+      ModelList = ['Model', 'Continental GT', 'Bentayga', 'Mulsanne'];
+    } else if (make.toLowerCase() == ('ASTON MARTIN').toLowerCase()) {
+      ModelList = ['Model', 'DB11', 'DBX', 'VANTAGE'];
+    } else if (make.toLowerCase() == ('alfa romeo').toLowerCase()) {
+      ModelList = ['Model', 'Stelvio', 'Giulia', 'Giulietta', '159', 'Mito'];
+    } else if (make.toLowerCase() == ('abarth')) {
+      ModelList = ['Model', 'Abarth 595', 'Abarth 500'];
+    } else if (make.toLowerCase() == ('suzuki')) {
+      ModelList = ['Model', 'Swift', 'Vitara', 'Ignis', 'Across'];
+    } else if (make.toLowerCase() == ('peugeot')) {
+      ModelList = ['Model', '108', '208', '308', '2008', '3008', '508', '5008'];
+    }
     return ModelList;
   }
 }
